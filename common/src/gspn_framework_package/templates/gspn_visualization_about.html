@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>About Flask</title>
+  </head>
+  <body>
+    {% extends "gspn_visualization_template.html" %}
+    {% block content %}
+    <p> This module is used for the offline visualization of a GSPN simulation. </p>
+    <p> You can drag the places and the transitions to any place you want. </p>
+    <p> You can also zoom in the network and move it around. </p>
+    <p> On the left side you have the built GSPN. On the right side you have several metrics that you can test on the
+    built GSPN. All you need to do is insert the input and click on the button on the right. The Result will appear inside
+    the white box in the middle. </p>
+
+    {% endblock %}
+  </body>
+</html>
