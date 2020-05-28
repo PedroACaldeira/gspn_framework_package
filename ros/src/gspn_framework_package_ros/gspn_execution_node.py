@@ -13,6 +13,7 @@ import ast
 import rospy
 import actionlib
 import gspn_framework_package.msg
+from gspn_framework_package.msg import ExecGSPNAction
 # Files from my package
 from gspn_framework_package import policy
 from gspn_framework_package import gspn as pn
@@ -408,28 +409,23 @@ class GSPNExecutionROS(object):
         # Setup number of (initial) tokens
         self.__number_of_tokens = self.__gspn.get_number_of_tokens()
 
-        # Setup token_positions list
-        marking = self.__gspn.get_current_marking()
-        for place in marking:
-            j = 0
-            while j != marking[place]:
-                self.__token_positions.append(place)
-                j = j + 1
-
-        rclpy.init()
         # Setup client node with publisher and subscriber
         node_name = "executor_" + str(self.__robot_id)
         self.__client_node = Node(node_name, namespace="robot_" + str(self.__robot_id))
-        self.__client_node.publisher = self.__client_node.create_publisher(GSPNFiringData, '/TRANSITIONS_FIRED', 10)
-        self.__client_node.subscription = self.__client_node.create_subscription(GSPNFiringData, '/TRANSITIONS_FIRED', self.topic_listener_callback, 10)
-        self.__client_node.subscription  # prevent unused variable warning
-        self.__client_node.i = 0
+
+        # THE CODE BELLOW THIS IS IMPORTANT
+        #self.__client_node.publisher = self.__client_node.create_publisher(GSPNFiringData, '/TRANSITIONS_FIRED', 10)
+        #self.__client_node.subscription = self.__client_node.create_subscription(GSPNFiringData, '/TRANSITIONS_FIRED', self.topic_listener_callback, 10)
+        #self.__client_node.subscription  # prevent unused variable warning
+        #self.__client_node.i = 0
 
         action_type = self.__place_to_client_mapping[self.__current_place][0]
         server_name = self.__place_to_client_mapping[self.__current_place][1]
-
-        self.__action_client = rclpy.action.ActionClient(self.__client_node, action_type, server_name)
+        self.__action_client = actionlib.ActionClient(server_name, action_type)
+        # self.__action_client = rclpy.action.ActionClient(self.__client_node, action_type, server_name)
+        self.__action_client.wait_for_server()
         current_place = self.__current_place
+        goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
 
         if self.__full_synchronization == False:
             # Setup client node with service and service client
@@ -437,8 +433,11 @@ class GSPNExecutionROS(object):
             self.__client_node.srv = self.__client_node.create_service(CurrentPlace, 'current_place', self.service_return_current_place_callback)
             self.__client_node.req = CurrentPlace.Request()
 
-        self.action_send_goal(current_place, action_type, server_name)
-        rclpy.spin(self.__client_node)
+        # self.action_send_goal(current_place, action_type, server_name)
+        self.__action_client.send_goal(goal)
+        self.__action_client.wait_for_result()
+        print(self.__action_client.get_result())
+        # rclpy.spin(self.__client_node)
 
 
 '''
@@ -502,11 +501,11 @@ def main():
 
     sys.path.append(os.path.join(project_path))
 
-    with open('/home/pedroac/ros2_ws/src/gspn_framework/gspn_framework/gspn_execution_input.json') as f:
+    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input.json') as f:
         data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
-    to_open = '/home/pedroac/ros2_ws/src/gspn_framework/gspn_framework/' + data["gspn"]
+    to_open = '/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/' + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
 
     p_to_c_mapping = ast.literal_eval(data["place_to_client_mapping"])
@@ -514,8 +513,8 @@ def main():
     # This is due to the fact that JSON only accepts strings.
     # And so, now I need to parse it and change its value.
     for place in p_to_c_mapping:
-        if p_to_c_mapping[place][0] == 'Simple':
-            p_to_c_mapping[place][0] = Simple
+        if p_to_c_mapping[place][0] == 'ExecGSPN':
+            p_to_c_mapping[place][0] = ExecGSPNAction
 
     places_tuple = ast.literal_eval(data["places_tuple"])
     policy_dictionary = ast.literal_eval(data["policy_dictionary"])
