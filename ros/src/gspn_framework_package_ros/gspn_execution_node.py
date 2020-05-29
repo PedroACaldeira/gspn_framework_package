@@ -223,9 +223,11 @@ class GSPNExecutionROS(object):
             print(self.__action_client._action_name + ': Goal failed with status: {0}'.format(status))
 
 
-    def action_goal_response_callback(self, future):
-        goal_handle = future.result()
-        if not goal_handle.accepted:
+    def action_goal_response_callback(self, result, status):
+        goal_handle = result
+        print("result ", result)
+        print("status ", status)
+        if not status.accepted:
             print('Goal rejected :( '+ self.__action_client._action_name)
             return
 
@@ -236,21 +238,18 @@ class GSPNExecutionROS(object):
 
 
     def action_feedback_callback(self, feedback):
-        print('Received feedback: {0}'.format(feedback.feedback.time_passed))
+        print('Received feedback: {0}'.format(feedback.time_passed))
 
 
     def action_send_goal(self, current_place, action_type, server_name):
-        print('Waiting for action server '+ server_name)
+
         self.__action_client.wait_for_server()
-        goal_msg = action_type.Goal()
-        goal_msg.place = current_place
+        print('Waiting for action server '+ server_name)
+        goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
         print('Sending goal request to '+ server_name)
-
-        self.__action_client._send_goal_future = self.__action_client.send_goal_async(
-            goal_msg,
-            feedback_callback=self.action_feedback_callback)
-
-        self.__action_client._send_goal_future.add_done_callback(self.action_goal_response_callback)
+        #self.__action_client._send_goal_future = self.__action_client.send_goal_async(goal_msg, feedback_callback=self.action_feedback_callback)
+        #self.__action_client._send_goal_future.add_done_callback(self.action_goal_response_callback)
+        self.__action_client.send_goal(goal, done_cb=self.action_goal_response_callback, feedback_cb=self.action_feedback_callback)
 
 
     '''
@@ -424,10 +423,7 @@ class GSPNExecutionROS(object):
         #Setup action client
         action_type = self.__place_to_client_mapping[self.__current_place][0]
         server_name = self.__place_to_client_mapping[self.__current_place][1]
-        self.__action_client = actionlib.ActionClient(server_name, action_type)
-        self.__action_client.wait_for_server()
-        current_place = self.__current_place
-        goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
+        self.__action_client = actionlib.SimpleActionClient(server_name, action_type)
 
         if self.__full_synchronization == False:
             # Setup client node with service and service client
@@ -436,10 +432,8 @@ class GSPNExecutionROS(object):
             self.__client_node.req = CurrentPlace.Request()
 
         # self.action_send_goal(current_place, action_type, server_name)
-        self.__action_client.send_goal(goal)
-        self.__action_client.wait_for_result()
-        print(self.__action_client.get_result())
-        # rclpy.spin(self.__client_node)
+        self.action_send_goal(self.__current_place, action_type, server_name)
+        rospy.spin()
 
 
 '''
