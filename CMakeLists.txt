@@ -6,6 +6,7 @@ find_package(catkin REQUIRED
  actionlib_msgs
  std_msgs
  rospy
+ message_generation
 )
 
 catkin_python_setup()
@@ -15,6 +16,13 @@ add_action_files(
   ros/action
   FILES
   ExecGSPN.action
+)
+
+add_message_files(
+  DIRECTORY
+  ros/msgs
+  FILES
+  GSPNFiringData.msg
 )
 
 generate_messages(

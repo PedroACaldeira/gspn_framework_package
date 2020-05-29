@@ -14,6 +14,7 @@ import rospy
 import actionlib
 import gspn_framework_package.msg
 from gspn_framework_package.msg import ExecGSPNAction
+from gspn_framework_package.msg import GSPNFiringData
 # Files from my package
 from gspn_framework_package import policy
 from gspn_framework_package import gspn as pn
@@ -62,6 +63,9 @@ class GSPNExecutionROS(object):
         self.__action_client = 0
         self.__robot_id = robot_id
         self.__full_synchronization = full_synchronization
+
+        self.__publisher = 0
+        self.__subscriber = 0
 
     def get_path(self):
         return self.__project_path
@@ -401,6 +405,10 @@ class GSPNExecutionROS(object):
         4- action servers;
         5- initial action clients.
         '''
+        # Initialize ROS node
+        node_name = "executor_" + str(self.__robot_id)
+        rospy.init_node(node_name)
+
         # Setup project path
         path_name = self.get_path()
         self.__project_path = os.path.join(path_name)
@@ -409,20 +417,14 @@ class GSPNExecutionROS(object):
         # Setup number of (initial) tokens
         self.__number_of_tokens = self.__gspn.get_number_of_tokens()
 
-        # Setup client node with publisher and subscriber
-        node_name = "executor_" + str(self.__robot_id)
-        self.__client_node = Node(node_name, namespace="robot_" + str(self.__robot_id))
+        # Setup publisher and subscriber
+        self.__publisher = rospy.Publisher('/TRANSITIONS_FIRED', GSPNFiringData, queue_size=10)
+        self.__subscriber = rospy.Subscriber('/TRANSITIONS_FIRED', GSPNFiringData, self.topic_listener_callback, queue_size=10)
 
-        # THE CODE BELLOW THIS IS IMPORTANT
-        #self.__client_node.publisher = self.__client_node.create_publisher(GSPNFiringData, '/TRANSITIONS_FIRED', 10)
-        #self.__client_node.subscription = self.__client_node.create_subscription(GSPNFiringData, '/TRANSITIONS_FIRED', self.topic_listener_callback, 10)
-        #self.__client_node.subscription  # prevent unused variable warning
-        #self.__client_node.i = 0
-
+        #Setup action client
         action_type = self.__place_to_client_mapping[self.__current_place][0]
         server_name = self.__place_to_client_mapping[self.__current_place][1]
         self.__action_client = actionlib.ActionClient(server_name, action_type)
-        # self.__action_client = rclpy.action.ActionClient(self.__client_node, action_type, server_name)
         self.__action_client.wait_for_server()
         current_place = self.__current_place
         goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
