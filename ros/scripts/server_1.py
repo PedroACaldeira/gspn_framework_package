@@ -57,7 +57,7 @@ class MinimalActionServer(object):
 
         success = True
 
-        self._feedback.time_passed = [0]
+        self._feedback.time_passed = []
 
         # Start executing the action
         for i in range(1, 5):
@@ -79,7 +79,7 @@ class MinimalActionServer(object):
 
         if success:
             self._result.transition = 't1'
-            rospy.loginfo('SERVER 1 : Returning result: {0}'.format(result.transition))
+            rospy.loginfo('SERVER 1 : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
 
         return self._result.transition

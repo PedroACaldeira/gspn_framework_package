@@ -223,11 +223,11 @@ class GSPNExecutionROS(object):
             print(self.__action_client._action_name + ': Goal failed with status: {0}'.format(status))
 
 
-    def action_goal_response_callback(self, result, status):
-        goal_handle = result
-        print("result ", result)
+    def action_goal_response_callback(self, status, result):
         print("status ", status)
-        if not status.accepted:
+        print("result ", result)
+        goal_handle = future.result()
+        if not goal_handle.accepted:
             print('Goal rejected :( '+ self.__action_client._action_name)
             return
 
