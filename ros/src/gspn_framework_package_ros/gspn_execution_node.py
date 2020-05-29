@@ -125,12 +125,12 @@ class GSPNExecutionROS(object):
 
     def topic_listener_callback(self, msg):
         if msg.robot_id != self.__robot_id:
-            self.__client_node.get_logger().info('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
+            rospy.loginfo('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
             print("BEFORE", self.__gspn.get_current_marking())
             self.fire_execution(msg.transition)
             print("AFTER", self.__gspn.get_current_marking())
         else:
-            self.__client_node.get_logger().info('I heard myself firing %s' % msg.transition)
+            rospy.loginfo('I heard myself firing %s' % msg.transition)
 
 
     def topic_talker_callback(self, fired_transition):
@@ -140,22 +140,21 @@ class GSPNExecutionROS(object):
         # - robot_id;
         # - timestamp.
         msg = GSPNFiringData()
-        current_time = self.__client_node.get_clock().now()
+        current_time = rospy.get_rostime()
         msg.transition = str(fired_transition)
         msg.marking = str(self.__gspn.get_current_marking())
         msg.robot_id = self.__robot_id
         print("current time ", current_time)
         msg.timestamp = str(current_time)
 
-        self.__client_node.publisher.publish(msg)
-        self.__client_node.get_logger().info('Robot %s firing %s'% (msg.robot_id, msg.transition))
-        self.__client_node.i += 1
+        self.__publisher.publish(msg)
+        rospy.loginfo('Robot %s firing %s'% (msg.robot_id, msg.transition))
 
 
     def service_return_current_place_callback(self, request, response):
         response.current_place = self.__current_place
         response.robot_id = self.__robot_id
-        self.__client_node.get_logger().info('Returning %s from robot %s' % (self.__current_place, self.__robot_id))
+        rospy.loginfo('Returning %s from robot %s' % (self.__current_place, self.__robot_id))
         return response
 
 
@@ -163,13 +162,13 @@ class GSPNExecutionROS(object):
         self.__client_node.future = self.__client_node.cli.call_async(self.__client_node.req)
 
 
-    def action_get_result_callback(self, future):
+    def action_get_result_callback(self, status, result):
+        print("status ", status)
+        print("result ", result)
 
-        result = future.result().result
-        status = future.result().status
-
-        if status == GoalStatus.STATUS_SUCCEEDED:
-            print(self.__action_client._action_name + ': Goal succeeded! Result: {0}'.format(result.transition))
+        # status == 3 means SUCCESS
+        if status == 3:
+            print(': Goal succeeded! Result: {0}'.format(result.transition))
 
             bool_output_arcs = self.check_output_arcs(self.__current_place)
 
@@ -191,9 +190,8 @@ class GSPNExecutionROS(object):
                     else:
                         imm_transition_to_fire = self.get_policy_transition()
                         if imm_transition_to_fire == False:
-                            print("The policy does not include this case: ", self.__gspn.get_current_marking())
-                            self.__client_node.destroy_client(self.__action_client)
-                            self.__client_node.destroy_node()
+                            reason = "The policy does not include this case: " + self.__gspn.get_current_marking()
+                            rospy.signal_shutdown(reason)
                             return
                         else:
                             self.fire_execution(imm_transition_to_fire)
@@ -208,24 +206,17 @@ class GSPNExecutionROS(object):
 
                 action_type = self.__place_to_client_mapping[self.__current_place][0]
                 server_name = self.__place_to_client_mapping[self.__current_place][1]
-                self.__client_node.destroy_client(self.__action_client)
-                self.__action_client = rclpy.action.ActionClient(self.__client_node, action_type, server_name)
-
-                current_place = self.__current_place
-                self.action_send_goal(current_place, action_type, server_name)
+                self.__action_client = actionlib.SimpleActionClient(server_name, action_type)
+                self.action_send_goal(self.__current_place, action_type, server_name)
 
             else:
-                print("The place has no output arcs.")
-                self.__client_node.destroy_client(self.__action_client)
-                self.__client_node.destroy_node()
+                rospy.signal_shutdown("The place has no output arcs.")
 
         else:
             print(self.__action_client._action_name + ': Goal failed with status: {0}'.format(status))
 
 
-    def action_goal_response_callback(self, status, result):
-        print("status ", status)
-        print("result ", result)
+    def action_goal_response_callback(self, future):
         goal_handle = future.result()
         if not goal_handle.accepted:
             print('Goal rejected :( '+ self.__action_client._action_name)
@@ -242,14 +233,11 @@ class GSPNExecutionROS(object):
 
 
     def action_send_goal(self, current_place, action_type, server_name):
-
         self.__action_client.wait_for_server()
         print('Waiting for action server '+ server_name)
         goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
         print('Sending goal request to '+ server_name)
-        #self.__action_client._send_goal_future = self.__action_client.send_goal_async(goal_msg, feedback_callback=self.action_feedback_callback)
-        #self.__action_client._send_goal_future.add_done_callback(self.action_goal_response_callback)
-        self.__action_client.send_goal(goal, done_cb=self.action_goal_response_callback, feedback_cb=self.action_feedback_callback)
+        self.__action_client.send_goal(goal, done_cb=self.action_get_result_callback, feedback_cb=self.action_feedback_callback)
 
 
     '''
