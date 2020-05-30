@@ -2,5 +2,5 @@
   "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2']}",
   "places_tuple": "('p1', 'p2')",
   "policy_dictionary": "{(1, 1): {'t4': 0, 't5': 1}}",
-  "full_synchronization":"True"
+  "full_synchronization":"False"
 }

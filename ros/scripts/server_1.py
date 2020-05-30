@@ -78,7 +78,7 @@ class MinimalActionServer(object):
             time.sleep(1)
 
         if success:
-            self._result.transition = 't1'
+            self._result.transition = 'None'
             rospy.loginfo('SERVER 1 : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
 

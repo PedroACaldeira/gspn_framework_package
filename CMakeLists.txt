@@ -18,6 +18,13 @@ add_action_files(
   ExecGSPN.action
 )
 
+add_service_files(
+  DIRECTORY
+  ros/msgs
+  FILES
+  CurrentPlace.srv
+)
+
 add_message_files(
   DIRECTORY
   ros/msgs

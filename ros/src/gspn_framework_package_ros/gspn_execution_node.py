@@ -15,6 +15,7 @@ import actionlib
 import gspn_framework_package.msg
 from gspn_framework_package.msg import ExecGSPNAction
 from gspn_framework_package.msg import GSPNFiringData
+from gspn_framework_package.srv import CurrentPlace,CurrentPlaceResponse
 # Files from my package
 from gspn_framework_package import policy
 from gspn_framework_package import gspn as pn
@@ -66,6 +67,7 @@ class GSPNExecutionROS(object):
 
         self.__publisher = 0
         self.__subscriber = 0
+        self.__service = 0
 
     def get_path(self):
         return self.__project_path
@@ -151,15 +153,33 @@ class GSPNExecutionROS(object):
         rospy.loginfo('Robot %s firing %s'% (msg.robot_id, msg.transition))
 
 
-    def service_return_current_place_callback(self, request, response):
-        response.current_place = self.__current_place
-        response.robot_id = self.__robot_id
+    def service_return_current_place_callback(self):
         rospy.loginfo('Returning %s from robot %s' % (self.__current_place, self.__robot_id))
-        return response
+        return CurrentPlaceResponse(self.__current_place, self.__robot_id)
 
 
     def service_send_request(self):
-        self.__client_node.future = self.__client_node.cli.call_async(self.__client_node.req)
+        number_connections = self.__publisher.get_num_connections()
+        current_robot_id = 1
+        answers = []
+        while current_robot_id <= number_connections:
+            if current_robot_id != self.__robot_id:
+                service_name = 'current_place_robot_' + str(current_robot_id)
+                print("service name ", service_name)
+                rospy.wait_for_service(service_name)
+                print("wait done")
+
+                try:
+                    current_place = rospy.ServiceProxy(service_name, CurrentPlace)
+                    answer = self.service_return_current_place_callback()
+                    print("ANSWER RECEIVED ", answer)
+                    answers.append(answer)
+
+                except rospy.ServiceException as e:
+                    print("Service call failed: %s"%e)
+
+            current_robot_id = current_robot_id + 1
+        return answers
 
 
     def action_get_result_callback(self, status, result):
@@ -176,29 +196,24 @@ class GSPNExecutionROS(object):
                 if result.transition == 'None':
                     print("Immediate transition")
 
-                    if self.__full_synchronization == False:
-                        self.service_send_request()
-                        robot_places = []
-                        while True:
-                            rclpy.spin_once(self.__client_node)
-                            if self.__client_node.future.done():
-                                robot_places.append(self.__client_node.future.result().current_place)
-                        print("robot places ", robot_places)
-
-                    else:
+                    if self.__full_synchronization == True:
                         imm_transition_to_fire = self.get_policy_transition()
                         if imm_transition_to_fire == False:
-                            reason = "The policy does not include this case: " + self.__gspn.get_current_marking()
-                            rospy.signal_shutdown(reason)
+                            print("The policy does not include this case.")
                             return
                         else:
                             self.fire_execution(imm_transition_to_fire)
                             self.topic_talker_callback(imm_transition_to_fire)
+                    else:
+                        print("we need to get the current marking updated")
+                        answers = self.service_send_request()
+                        print("ANSWERS LIST ", answers)
                 else:
                     print("exponential transition")
                     print(result.transition)
                     self.fire_execution(result.transition)
-                    self.topic_talker_callback(result.transition)
+                    if self.__full_synchronization == True:
+                        self.topic_talker_callback(result.transition)
 
                 print("AFTER", self.__gspn.get_current_marking())
 
@@ -208,7 +223,7 @@ class GSPNExecutionROS(object):
                 self.action_send_goal(self.__current_place, action_type, server_name)
 
             else:
-                rospy.signal_shutdown("The place has no output arcs.")
+                print("The place has no output arcs.")
 
         else:
             print(self.__action_client._action_name + ': Goal failed with status: {0}'.format(status))
@@ -412,10 +427,10 @@ class GSPNExecutionROS(object):
         self.__action_client = actionlib.SimpleActionClient(server_name, action_type)
 
         if self.__full_synchronization == False:
-            # Setup client node with service and service client
-            self.__client_node.cli = self.__client_node.create_client(CurrentPlace, 'current_place')
-            self.__client_node.srv = self.__client_node.create_service(CurrentPlace, 'current_place', self.service_return_current_place_callback)
-            self.__client_node.req = CurrentPlace.Request()
+            # setup service
+            service_name = 'current_place_robot_' + str(self.__robot_id)
+            self.__service = rospy.Service(service_name, CurrentPlace, self.service_return_current_place_callback)
+            print("Ready to return current place on service ", service_name)
 
         self.action_send_goal(self.__current_place, action_type, server_name)
         rospy.spin()
