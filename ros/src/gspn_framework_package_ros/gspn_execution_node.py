@@ -172,13 +172,11 @@ class GSPNExecutionROS(object):
         while current_robot_id <= number_connections:
             if current_robot_id != self.__robot_id:
                 service_name = '/robot_' + str(current_robot_id) + '/current_place_robot_' + str(current_robot_id)
-                rospy.wait_for_service(service_name)
-                print("CURRENT PLACE ", GEN_CURRENT_PLACE)
+                rospy.wait_for_service(service_name, timeout=10)
 
                 try:
                     service_current_place_function = rospy.ServiceProxy(service_name, CurrentPlace)
                     answer = service_current_place_function()
-                    print("ANSWER RECEIVED ", answer)
                     answers.append(answer.current_place)
 
                 except rospy.ServiceException as e:
@@ -212,10 +210,8 @@ class GSPNExecutionROS(object):
                             self.topic_talker_callback(imm_transition_to_fire)
                     else:
                         answers = self.service_send_request()
-                        print("ANSWERS ", answers)
                         new_marking = {}
                         new_marking[self.__current_place] = 1
-                        print("new marking first ", new_marking)
                         for place_list in answers:
                             if place_list in new_marking:
                                 new_marking[place_list] = new_marking[place_list] + 1
@@ -228,9 +224,7 @@ class GSPNExecutionROS(object):
                             if nplace not in new_marking:
                                 new_marking[nplace] = 0
 
-
                         self.__gspn.set_places(old_marking)
-                        print("self gspn places ", self.__gspn.get_places())
                         imm_transition_to_fire = self.get_policy_transition()
 
                         if imm_transition_to_fire == False:
