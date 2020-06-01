@@ -212,32 +212,32 @@ class GSPNExecutionROS(object):
                             self.topic_talker_callback(imm_transition_to_fire)
                     else:
                         answers = self.service_send_request()
-                        print("ANSWERS LIST ", answers)
-                        print("CURRENT MARKING ", self.__gspn.get_current_marking())
+                        print("ANSWERS ", answers)
                         new_marking = {}
                         new_marking[self.__current_place] = 1
+                        print("new marking first ", new_marking)
                         for place_list in answers:
-                            print("YO ", place_list)
                             if place_list in new_marking:
-                                new_marking[place_list] = new_marking[places_list] + 1
+                                new_marking[place_list] = new_marking[place_list] + 1
                             else:
                                 new_marking[place_list] = 1
 
-                        print("BEFORE BEFORE ", self.__gspn.get_places())
                         old_marking = self.__gspn.get_places()
 
-                        for nplace in new_marking:
-                            old_marking[nplace] = new_marking[nplace]
+                        for nplace in old_marking:
+                            if nplace not in new_marking:
+                                new_marking[nplace] = 0
+
 
                         self.__gspn.set_places(old_marking)
-                        print("AFTER AFTER ", self.__gspn.get_places())
+                        print("self gspn places ", self.__gspn.get_places())
                         imm_transition_to_fire = self.get_policy_transition()
+
                         if imm_transition_to_fire == False:
                             print("The policy does not include this case.")
                             return
                         else:
                             self.fire_execution(imm_transition_to_fire)
-                            self.topic_talker_callback(imm_transition_to_fire)
 
                 else:
                     print("exponential transition")
@@ -492,8 +492,10 @@ def main():
         if p_to_c_mapping[place][0] == 'ExecGSPN':
             p_to_c_mapping[place][0] = ExecGSPNAction
 
-    places_tuple = ast.literal_eval(data["places_tuple"])
     policy_dictionary = ast.literal_eval(data["policy_dictionary"])
+    places_tuple = ast.literal_eval(data["places_tuple"])
+    created_policy = policy.Policy(policy_dictionary, places_tuple)
+
     full_synchronization = ast.literal_eval(data["full_synchronization"])
 
     user_robot_id = input("Please insert this robot's id: ")
@@ -501,7 +503,7 @@ def main():
     global GEN_CURRENT_PLACE
     GEN_CURRENT_PLACE = user_current_place
 
-    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
+    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
     my_execution.ros_gspn_execution()
 
 
