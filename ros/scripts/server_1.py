@@ -60,7 +60,7 @@ class MinimalActionServer(object):
         self._feedback.time_passed = []
 
         # Start executing the action
-        for i in range(1, 5):
+        for i in range(1, 10):
             if self._as.is_preempt_requested():
                 self._as.set_preempted()
                 success = False
@@ -78,7 +78,7 @@ class MinimalActionServer(object):
             time.sleep(1)
 
         if success:
-            self._result.transition = 'None'
+            self._result.transition = 't1'
             rospy.loginfo('SERVER 1 : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
 

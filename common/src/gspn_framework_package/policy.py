@@ -15,4 +15,3 @@ class Policy(object):
 
     def get_places_tuple(self):
         return self.__places_tuple
-

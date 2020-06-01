@@ -22,6 +22,13 @@ from gspn_framework_package import gspn as pn
 from gspn_framework_package import gspn_tools
 
 
+GEN_CURRENT_PLACE = 0
+
+def service_current_place_function(argyment):
+    print("CURRENT PLACE ", GEN_CURRENT_PLACE)
+    return CurrentPlaceResponse(GEN_CURRENT_PLACE)
+
+
 class GSPNExecutionROS(object):
 
     def __init__(self, gspn, place_to_client_mapping, policy, project_path, initial_place, robot_id, full_synchronization):
@@ -164,16 +171,15 @@ class GSPNExecutionROS(object):
         answers = []
         while current_robot_id <= number_connections:
             if current_robot_id != self.__robot_id:
-                service_name = 'current_place_robot_' + str(current_robot_id)
-                print("service name ", service_name)
+                service_name = '/robot_' + str(current_robot_id) + '/current_place_robot_' + str(current_robot_id)
                 rospy.wait_for_service(service_name)
-                print("wait done")
+                print("CURRENT PLACE ", GEN_CURRENT_PLACE)
 
                 try:
-                    current_place = rospy.ServiceProxy(service_name, CurrentPlace)
-                    answer = self.service_return_current_place_callback()
+                    service_current_place_function = rospy.ServiceProxy(service_name, CurrentPlace)
+                    answer = service_current_place_function()
                     print("ANSWER RECEIVED ", answer)
-                    answers.append(answer)
+                    answers.append(answer.current_place)
 
                 except rospy.ServiceException as e:
                     print("Service call failed: %s"%e)
@@ -205,9 +211,34 @@ class GSPNExecutionROS(object):
                             self.fire_execution(imm_transition_to_fire)
                             self.topic_talker_callback(imm_transition_to_fire)
                     else:
-                        print("we need to get the current marking updated")
                         answers = self.service_send_request()
                         print("ANSWERS LIST ", answers)
+                        print("CURRENT MARKING ", self.__gspn.get_current_marking())
+                        new_marking = {}
+                        new_marking[self.__current_place] = 1
+                        for place_list in answers:
+                            print("YO ", place_list)
+                            if place_list in new_marking:
+                                new_marking[place_list] = new_marking[places_list] + 1
+                            else:
+                                new_marking[place_list] = 1
+
+                        print("BEFORE BEFORE ", self.__gspn.get_places())
+                        old_marking = self.__gspn.get_places()
+
+                        for nplace in new_marking:
+                            old_marking[nplace] = new_marking[nplace]
+
+                        self.__gspn.set_places(old_marking)
+                        print("AFTER AFTER ", self.__gspn.get_places())
+                        imm_transition_to_fire = self.get_policy_transition()
+                        if imm_transition_to_fire == False:
+                            print("The policy does not include this case.")
+                            return
+                        else:
+                            self.fire_execution(imm_transition_to_fire)
+                            self.topic_talker_callback(imm_transition_to_fire)
+
                 else:
                     print("exponential transition")
                     print(result.transition)
@@ -277,6 +308,8 @@ class GSPNExecutionROS(object):
             new_place = self.__gspn.index_to_places[arcs[1][index][0]]
             self.__gspn.fire_transition(transition)
             self.__current_place = new_place
+            global GEN_CURRENT_PLACE
+            GEN_CURRENT_PLACE = new_place
 
         # 1 to many
         elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
@@ -429,7 +462,7 @@ class GSPNExecutionROS(object):
         if self.__full_synchronization == False:
             # setup service
             service_name = 'current_place_robot_' + str(self.__robot_id)
-            self.__service = rospy.Service(service_name, CurrentPlace, self.service_return_current_place_callback)
+            self.__service = rospy.Service(service_name, CurrentPlace, service_current_place_function)
             print("Ready to return current place on service ", service_name)
 
         self.action_send_goal(self.__current_place, action_type, server_name)
@@ -465,6 +498,8 @@ def main():
 
     user_robot_id = input("Please insert this robot's id: ")
     user_current_place = input("Please insert the robot's current place: ")
+    global GEN_CURRENT_PLACE
+    GEN_CURRENT_PLACE = user_current_place
 
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
     my_execution.ros_gspn_execution()

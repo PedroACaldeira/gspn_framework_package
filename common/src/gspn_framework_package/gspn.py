@@ -58,6 +58,9 @@ class GSPN(object):
     def get_places(self):
         return self.__places
 
+    def set_places(self, new_places):
+        self.__places = new_places
+
     def get_number_of_tokens(self):
         total = 0
         for place in self.__places:

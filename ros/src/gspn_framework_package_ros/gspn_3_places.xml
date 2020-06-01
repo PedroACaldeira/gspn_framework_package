@@ -34,7 +34,7 @@
       </graphics>
     </name>
     <initialMarking>
-      <value>Default,0</value>
+      <value>Default,1</value>
       <graphics>
         <offset x="0.0" y="0.0"/>
       </graphics>
@@ -46,12 +46,12 @@
 
   <place id="p3">
     <graphics>
-      <position x="585.0" y="285.0"/>
+      <position x="315.0" y="135.0"/>
     </graphics>
     <name>
-      <value>p3</value>
+      <value>p2</value>
       <graphics>
-        <offset x="54.0" y="46.0"/>
+        <offset x="30.0" y="-1.0"/>
       </graphics>
     </name>
     <initialMarking>
@@ -95,12 +95,12 @@
 
   <transition id="t2">
     <graphics>
-      <position x="600.0" y="210.0"/>
+      <position x="330.0" y="705.0"/>
     </graphics>
     <name>
-      <value>t2</value>
+      <value>T10</value>
       <graphics>
-        <offset x="36.0" y="3.0"/>
+        <offset x="4.0" y="12.0"/>
       </graphics>
     </name>
     <orientation>
@@ -110,7 +110,7 @@
       <value>1.0</value>
     </rate>
     <timed>
-      <value>true</value>
+      <value>false</value>
     </timed>
     <infiniteServer>
       <value>false</value>
@@ -122,6 +122,7 @@
 
 
   <arc id="p1 to t1" source="p1" target="t1">
+    <graphics/>
     <inscription>
       <value>Default,1</value>
       <graphics/>
@@ -135,6 +136,7 @@
   </arc>
 
   <arc id="p2 to t2" source="p2" target="t2">
+    <graphics/>
     <inscription>
       <value>Default,1</value>
       <graphics/>
@@ -142,13 +144,14 @@
     <tagged>
       <value>false</value>
     </tagged>
-    <arcpath id="000" x="333" y="220" curvePoint="false"/>
-    <arcpath id="001" x="372" y="297" curvePoint="false"/>
+    <arcpath id="000" x="341" y="495" curvePoint="false"/>
+    <arcpath id="001" x="907" y="617" curvePoint="false"/>
     <type value="normal"/>
   </arc>
 
 
   <arc id="t1 to p2" source="t1" target="p2">
+    <graphics/>
     <inscription>
       <value>Default,1</value>
       <graphics/>
@@ -162,18 +165,18 @@
   </arc>
 
   <arc id="t2 to p3" source="t2" target="p3">
+    <graphics/>
     <inscription>
       <value>Default,1</value>
       <graphics/>
     </inscription>
-      <tagged>
+    <tagged>
       <value>false</value>
     </tagged>
-    <arcpath id="000" x="916" y="387" curvePoint="false"/>
-    <arcpath id="001" x="1198" y="243" curvePoint="false"/>
+    <arcpath id="000" x="341" y="374" curvePoint="false"/>
+    <arcpath id="001" x="282" y="617" curvePoint="false"/>
     <type value="normal"/>
   </arc>
-
 
   </net>
 </pnml>
