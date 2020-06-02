@@ -27,13 +27,13 @@ class MinimalActionServer(object):
         self._action_server = ActionServer(
             self,
             Simple,
-            'simple_1',
+            'simple_4',
             execute_callback=self.execute_callback,
             callback_group=ReentrantCallbackGroup(),
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
         '''
-        rospy.loginfo('SERVER 2 : ONLINE')
+        rospy.loginfo('SERVER 4 : ONLINE')
         self._as.start()
 
     def destroy(self):
@@ -43,33 +43,33 @@ class MinimalActionServer(object):
     def goal_callback(self, goal_request):
         """Accepts or rejects a client request to begin an action."""
         # This server allows multiple goals in parallel
-        self.get_logger().info('SERVER 2 : Received goal request')
+        self.get_logger().info('SERVER 4 : Received goal request')
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accepts or rejects a client request to cancel an action."""
-        self.get_logger().info('SERVER 2 : Received cancel request')
+        self.get_logger().info('SERVER 4 : Received cancel request')
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal):
         """Executes a goal."""
-        rospy.loginfo('SERVER 2 : Executing goal...')
+        rospy.loginfo('SERVER 4 : Executing goal...')
 
         success = True
 
         self._feedback.time_passed = []
 
         # Start executing the action
-        for i in range(1, 10):
+        for i in range(1, 5):
             if self._as.is_preempt_requested():
                 self._as.set_preempted()
                 success = False
-                rospy.loginfo('SERVER 2 : Goal canceled')
+                rospy.loginfo('SERVER 4 : Goal canceled')
                 break
             # Update Fibonacci sequence
             self._feedback.time_passed.append(i)
 
-            rospy.loginfo('SERVER 2 : Publishing feedback: {0}'.format(self._feedback.time_passed))
+            rospy.loginfo('SERVER 4 : Publishing feedback: {0}'.format(self._feedback.time_passed))
 
             # Publish the feedback
             self._as.publish_feedback(self._feedback)
@@ -78,14 +78,14 @@ class MinimalActionServer(object):
             time.sleep(1)
 
         if success:
-            self._result.transition = 't2'
-            rospy.loginfo('SERVER 2 : Returning result: {0}'.format(self._result.transition))
+            self._result.transition = 'None'
+            rospy.loginfo('SERVER 4 : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
 
         return self._result.transition
 
 
 if __name__ == '__main__':
-    rospy.init_node('action_server_2')
+    rospy.init_node('action_server_4')
     minimal_action_server = MinimalActionServer(rospy.get_name())
     rospy.spin()

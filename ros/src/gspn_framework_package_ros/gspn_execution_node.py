@@ -224,7 +224,7 @@ class GSPNExecutionROS(object):
                             if nplace not in new_marking:
                                 new_marking[nplace] = 0
 
-                        self.__gspn.set_places(old_marking)
+                        self.__gspn.set_places(new_marking)
                         imm_transition_to_fire = self.get_policy_transition()
 
                         if imm_transition_to_fire == False:
