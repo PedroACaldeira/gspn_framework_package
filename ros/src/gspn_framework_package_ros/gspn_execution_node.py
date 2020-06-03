@@ -433,8 +433,6 @@ class GSPNExecutionROS(object):
         5- initial action clients.
         '''
         # Initialize ROS node
-        node_name = "executor_" + str(self.__robot_id)
-        rospy.init_node(node_name)
 
         # Setup project path
         path_name = self.get_path()
@@ -465,8 +463,22 @@ class GSPNExecutionROS(object):
 
 def main():
 
+    #print("argv 1 ", a)
+    #print("argv 2 ", b)
+
     #json_file = input("Insert JSON file with GSPN Execution general elements: ")
     #file_to_open = str(json_file)
+
+    # Gotta fix this: use split to split the namespace and take out the int
+    namespace = str(rospy.get_namespace())
+    splitted_1 = namespace.split("_")
+    splitted_2 = splitted_1[1].split("/")
+    node_name = "executor_" + str(splitted_2[0])
+    print("node name", node_name)
+
+
+    rospy.init_node(node_name)
+
     project_path = "/home/pedroac/ros2_ws/src/gspn_framework/gspn_framework"
 
     sys.path.append(os.path.join(project_path))
@@ -492,8 +504,11 @@ def main():
 
     full_synchronization = ast.literal_eval(data["full_synchronization"])
 
-    user_robot_id = input("Please insert this robot's id: ")
-    user_current_place = input("Please insert the robot's current place: ")
+    user_robot_id = rospy.get_param("~user_robot_id")
+    user_current_place = rospy.get_param("~user_current_place")
+
+    #user_robot_id = input("Please insert this robot's id: ")
+    #user_current_place = input("Please insert the robot's current place: ")
     global GEN_CURRENT_PLACE
     GEN_CURRENT_PLACE = user_current_place
 
@@ -502,4 +517,5 @@ def main():
 
 
 if __name__ == "__main__":
+    #main(sys.argv[1], sys.argv[2])
     main()
