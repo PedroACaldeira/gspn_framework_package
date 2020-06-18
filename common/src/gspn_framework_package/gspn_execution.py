@@ -225,11 +225,10 @@ class GSPNexecution(object):
 
     def execute_gspn(self):
         '''
-        Prepares the following elements of the execution:
+       Setup of the execution:
         1- token_states list and number of (initial) tokens;
         2- token_positions list;
-        3- project path;
-        4- Turns on action servers.
+        3- project path.
         '''
 
         # Setup token_states list and number of (initial) tokens
@@ -281,7 +280,7 @@ class GSPNexecution(object):
                                 if element != splitted_path[-1]:
                                     new_path = new_path + "." + element
 
-                            dirpath = os.getcwd()
+                            # dirpath = os.getcwd()
                             function_location = new_path
                             function_name = splitted_path[-1]
                             module_to_exec = __import__(function_location, fromlist=[function_name])
@@ -294,15 +293,39 @@ class GSPNexecution(object):
                         self.__token_states[thread_number] = 'Done'
 
                     if self.__token_states[thread_number] == 'Done':
-                        res_policy = self.apply_policy(thread_number, self.__futures[thread_number].result())
+                        result = self.__futures[thread_number].result()
+                        print("BEFORE", self.__gspn.get_current_marking())
+                        if result is None:
+                            execution_policy = self.get_policy()
+                            current_marking = self.__gspn.get_current_marking()
+                            order = execution_policy.get_places_tuple()
+                            marking_tuple = self.convert_to_tuple(current_marking, order)
+                            pol_dict = execution_policy.get_policy_dictionary()
+                            transition_dictionary = self.get_transitions(marking_tuple, pol_dict)
+
+                            if transition_dictionary:
+                                print("Immediate Transition")
+                                transition_list = []
+                                probability_list = []
+                                for transition in transition_dictionary:
+                                    transition_list.append(transition)
+                                    probability_list.append(transition_dictionary[transition])
+                                transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
+                                print("TRANSITION TO FIRE", transition_to_fire)
+                                self.fire_execution(transition_to_fire, thread_number)
+                            else:
+                                print("The place has no outbound connections.")
+                                self.__token_states[thread_number] = 'Inactive'
+
+                        else:
+                            print("Exponential Transition")
+                            self.fire_execution(result, thread_number)
+                        print("AFTER", self.__gspn.get_current_marking())
 
                         if self.__token_states[thread_number] == 'Waiting':
                             print("i am waiting")
 
-                        elif res_policy == -2:
-                            # This state is achieved when the token reaches a place with no connections.
-                            self.__token_states[thread_number] = 'Inactive'
-                        else:
+                        elif self.__token_states[thread_number] == 'Done':
                             self.__token_states[thread_number] = 'Free'
                         print("--------")
 
@@ -318,6 +341,7 @@ def main():
     tool = gspn_tools.GSPNtools()
     to_open = 'C:/Users/calde/Desktop/gspn_framework_package/common/src/gspn_framework_package/' + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
+    print("my pn stuff", my_pn.get_current_marking())
 
     p_to_f_mapping = ast.literal_eval(data["place_to_function_mapping"])
     policy_dictionary = ast.literal_eval(data["policy_dictionary"])

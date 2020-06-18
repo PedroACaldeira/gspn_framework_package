@@ -14,7 +14,12 @@
   <component name="ProjectId" id="1dUEihLAgZAgdWwooh8HSiQiwGW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../ros/src/gspn_framework_package_ros/gspn_execution_node.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\calde\Desktop\gspn_framework_package\common\src\gspn_framework_package" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

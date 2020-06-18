@@ -49,7 +49,7 @@
       <position x="315.0" y="135.0"/>
     </graphics>
     <name>
-      <value>p2</value>
+      <value>p3</value>
       <graphics>
         <offset x="30.0" y="-1.0"/>
       </graphics>
@@ -98,7 +98,7 @@
       <position x="330.0" y="705.0"/>
     </graphics>
     <name>
-      <value>T10</value>
+      <value>t2</value>
       <graphics>
         <offset x="4.0" y="12.0"/>
       </graphics>
@@ -110,7 +110,7 @@
       <value>1.0</value>
     </rate>
     <timed>
-      <value>false</value>
+      <value>true</value>
     </timed>
     <infiniteServer>
       <value>false</value>
