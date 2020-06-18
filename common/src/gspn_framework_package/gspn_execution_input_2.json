@@ -1,5 +1,5 @@
-{ "gspn":"gspn_3_places.xml",
-  "place_to_function_mapping": "{'p1': 'folder.functions.count_Number1', 'p2': 'folder.functions.count_Number2', 'p3': 'functions2.do_nothing'}",
+{ "gspn":"gspn_case_sync_create.xml",
+  "place_to_function_mapping": "{'p1': 'folder.functions.count_Number1', 'p2': 'folder.functions.count_Number2', 'p3': 'functions2.do_nothing', 'p4': 'functions2.do_nothing'}",
   "places_tuple": "('p1', 'p2', 'p3', 'p4', 'p5', 'p6')",
   "policy_dictionary": "{(0,0,1,1,0,0): {'t4':1}, (0,1,0,1,0,0): {'t5':1}}"
 }

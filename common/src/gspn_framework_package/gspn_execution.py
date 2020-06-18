@@ -157,9 +157,24 @@ class GSPNexecution(object):
         elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
             translation_marking = self.translate_arcs_to_marking(arcs, marking)
             check_flag = True
+            # We go through the marking and check it
             for el in translation_marking:
                 if marking[el] < translation_marking[el]:
                     check_flag = False
+
+            # We go through the states and see if all of them are 'Waiting'
+            number_of_waiting = 0
+            for place in translation_marking:
+                for pos_index in range(len(self.__token_positions)):
+                    if self.__token_positions[pos_index] == place:
+                        if self.__token_states[pos_index] == 'Waiting':
+                            number_of_waiting = number_of_waiting + 1
+                            break
+            if number_of_waiting == len(translation_marking) - 1:
+                check_flag = True
+            else:
+                check_flag = False
+
             if check_flag:
                 # Create tokens on next places
                 i = 0
@@ -187,41 +202,6 @@ class GSPNexecution(object):
             else:
                 self.__token_states[token_id] = 'Waiting'
 
-    def apply_policy(self, token_id, result):
-        '''
-        Applies the calculated policy. If we have an immediate transition, the policy is checked. Otherwise, we simply
-        fire the transition that resulted from the function that was executed.
-        :param token_id: number of the token that is about to fire
-        :param result: result of the current place function
-        :return: -2 if the current place has no output transitions. If successful, there is no return value
-        '''
-
-        print("BEFORE", self.__gspn.get_current_marking())
-        # IMMEDIATE transitions case
-        if result is None:
-            execution_policy = self.get_policy()
-            current_marking = self.__gspn.get_current_marking()
-            order = execution_policy.get_places_tuple()
-            marking_tuple = self.convert_to_tuple(current_marking, order)
-            pol_dict = execution_policy.get_policy_dictionary()
-            transition_dictionary = self.get_transitions(marking_tuple, pol_dict)
-
-            if transition_dictionary:
-                transition_list = []
-                probability_list = []
-                for transition in transition_dictionary:
-                    transition_list.append(transition)
-                    probability_list.append(transition_dictionary[transition])
-                transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
-                print("TRANSITION TO FIRE", transition_to_fire)
-                self.fire_execution(transition_to_fire, token_id)
-            else:
-                return -2
-
-        # EXPONENTIAL transitions case
-        else:
-            self.fire_execution(result, token_id)
-        print("AFTER", self.__gspn.get_current_marking())
 
     def execute_gspn(self):
         '''
@@ -335,13 +315,12 @@ def main():
     sys.path.append(os.path.join(project_path))
 
     with open(
-            'C:/Users/calde/Desktop/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input.json') as f:
+            'C:/Users/calde/Desktop/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json') as f:
         data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
     to_open = 'C:/Users/calde/Desktop/gspn_framework_package/common/src/gspn_framework_package/' + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
-    print("my pn stuff", my_pn.get_current_marking())
 
     p_to_f_mapping = ast.literal_eval(data["place_to_function_mapping"])
     policy_dictionary = ast.literal_eval(data["policy_dictionary"])
