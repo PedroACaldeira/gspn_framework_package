@@ -483,7 +483,7 @@ def main():
 
     sys.path.append(os.path.join(project_path))
 
-    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input.json') as f:
+    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input_simple.json') as f:
         data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
@@ -513,6 +513,7 @@ def main():
     GEN_CURRENT_PLACE = user_current_place
 
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
+    #time.sleep(60)
     my_execution.ros_gspn_execution()
 
 

@@ -1,0 +1,6 @@
+{ "gspn":"gspn_2_places.xml",
+  "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2']}",
+  "places_tuple": "('p1', 'p2')",
+  "policy_dictionary": "{(0,0,1): {'t4':1}}",
+  "full_synchronization":"True"
+}
