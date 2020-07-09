@@ -1,4 +1,11 @@
 <launch>
+	<include file="$(find gspn_framework_package)/ros/launch/single_robot/single_robot_simulation.launch"/>
+	<include file="$(find gspn_framework_package)/ros/launch/single_robot/single_robot_navigation.launch"/>
+
+	<node pkg="gspn_framework_package" ns="robot_1" type="server_1_goto.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="server_2.py" name="action_server_2" output="screen"/>
+
+	<!--
 
 	<include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
 
@@ -7,13 +14,11 @@
   <include file="$(find gspn_framework_package)/ros/launch/turtlebot/turtlebot3_gazebo_rviz.launch"/>
 
 
-	<node pkg="gspn_framework_package" ns="robot_1" type="server_1_goto.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="server_2.py" name="action_server_2" output="screen"/>
-
 	<node pkg="gspn_framework_package" ns="robot_2" type="server_1_goto.py" name="action_server_1" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_2" type="server_2.py" name="action_server_2" output="screen"/>
 
 	<node pkg="gspn_framework_package" ns="robot_3" type="server_1_goto.py" name="action_server_1" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_3" type="server_2.py" name="action_server_2" output="screen"/>
+-->
 
 </launch>

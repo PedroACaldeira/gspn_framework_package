@@ -1,0 +1,38 @@
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <param name="/use_sim_time" value="true"/>
+
+
+  <!-- Map server -->
+  <arg name="map_file" default="$(find gspn_framework_package)/ros/config/map.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+  </node>
+
+  <group ns="robot_1">
+    <param name="tf_prefix" value="robot_1_tf" />
+    <param name="amcl/initial_pose_x" value="1" />
+    <param name="amcl/initial_pose_y" value="1" />
+    <include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_navigation_single.launch" />
+  </group>
+
+  <group ns="robot_2">
+    <param name="tf_prefix" value="robot_2_tf" />
+    <param name="amcl/initial_pose_x" value="-1" />
+    <param name="amcl/initial_pose_y" value="1" />
+    <include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_navigation_single.launch" />
+  </group>
+
+  <group ns="robot_3">
+    <param name="tf_prefix" value="robot_3_tf" />
+    <param name="amcl/initial_pose_x" value="-1" />
+    <param name="amcl/initial_pose_y" value="1" />
+    <include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_navigation_single.launch" />
+  </group>
+
+  <include file="$(find turtlebot3_bringup)/launch/includes/description.launch.xml">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gspn_framework_package)/ros/config/myconfig.rviz"/>
+
+</launch>
