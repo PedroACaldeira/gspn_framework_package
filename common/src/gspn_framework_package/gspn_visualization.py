@@ -6,7 +6,6 @@ import gspn_tools
 from werkzeug.utils import secure_filename, redirect
 
 app = Flask(__name__)  # create an app instance
-my_pn = pn.GSPN()
 
 ALLOWED_EXTENSIONS = set(['xml'])
 
@@ -17,6 +16,8 @@ def allowed_file(filename):
 
 @app.route("/")
 def home():
+    global my_pn
+    my_pn = pn.GSPN()
     return render_template("gspn_visualization_open_gspn.html")
 
 

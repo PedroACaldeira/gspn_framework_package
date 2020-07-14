@@ -12,6 +12,7 @@
     <div class='button_container'>
       <a href=# id=test><button class='new-button'>Simulate 1 Step</button></a>
       <a href=# id=reset><button class='new-button new-button-red'>Reset Simulation</button></a>
+      <a href=# id=clearNetwork><button class='new-button new-button-red' onclick="clearNetwork()">Clear Network</button></a>
 
       <form action="{{ url_for('background_fire_chosen_transition') }}" method="post" id="userTransitionForm" enctype="multipart/form-data">
           <select id="mySelect" name="chosenTransitionDropdown" class="dropdownStyle">
@@ -175,12 +176,22 @@
         edges: edges
       };
       var options = {};
-      var network = new vis.Network(container, data, options);
+      var NETWORK = new vis.Network(container, data, options);
     </script>
 
     </body>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
+
+            function clearNetwork() {
+                console.log("before")
+                console.log(NETWORK.body)
+                var r = confirm("This action will delete your current GSPN and return to the Main Menu.");
+                if (r == true) {
+                    NETWORK.destroy();
+                    window.location.href = "/"
+                }
+            }
 
             function sleep(ms) {
               return new Promise(resolve => setTimeout(resolve, ms));
