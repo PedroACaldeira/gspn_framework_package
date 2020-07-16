@@ -1,10 +1,11 @@
 <launch>
-	<!-- Single Robot System
+	<!-- Single Robot System-->
 	<include file="$(find gspn_framework_package)/ros/launch/single_robot/single_robot_simulation.launch"/>
-	<include file="$(find gspn_framework_package)/ros/launch/single_robot/single_robot_navigation.launch"/> -->
+	<include file="$(find gspn_framework_package)/ros/launch/single_robot/single_robot_navigation.launch"/>
 
-	<!-- Multi Robot System -->
+	<!-- Multi Robot System
 	<include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_simulation.launch"/>
+	<include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_navigation.launch"/>-->
 
 	<!-- Older launch file structure -->
 	<!--

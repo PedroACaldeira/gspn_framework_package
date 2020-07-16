@@ -8,19 +8,23 @@
   </node>
 
   <group ns="robot_1">
-      <param name="tf_prefix" value="robot_1_tf"/>
+      <param name="tf_prefix" value="robot_1"/>
+      <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
       <param name="amcl/initial_pose_x" value="-0.5" />
       <param name="amcl/initial_pose_y" value="0.5" />
+      <node name="my_stp" pkg="tf" type="static_transform_publisher" args="-0.5 0.5 0 0 0 0 map robot_1/base_link 100"/>
       <include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_move_base.launch"/>
   </group>
 
   <group ns="robot_2">
-      <param name="tf_prefix" value="robot_2_tf"/>
+      <param name="tf_prefix" value="robot_2"/>
+      <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
       <param name="amcl/initial_pose_x" value="2.0" />
       <param name="amcl/initial_pose_y" value="1.0" />
+      <node name="my_stp" pkg="tf" type="static_transform_publisher" args="2.0 1.0 0 0 0 0 map robot_2/base_link 100"/>
       <include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_move_base.launch"/>
   </group>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gspn_framework_package)/ros/config/myconfig.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gspn_framework_package)/ros/config/multiconfig.rviz"/>
 
 </launch>
