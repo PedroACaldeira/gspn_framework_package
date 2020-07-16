@@ -135,8 +135,7 @@ class GSPNExecutionROS(object):
     def topic_listener_callback(self, msg):
         if msg.robot_id != self.__robot_id:
             rospy.loginfo('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
-            print("BEFORE", self.__gspn.get_current_marking())
-            self.fire_execution(msg.transition)
+            self.__gspn.fire_transition(msg.transition)
             print("AFTER", self.__gspn.get_current_marking())
         else:
             rospy.loginfo('I heard myself firing %s' % msg.transition)
@@ -153,7 +152,6 @@ class GSPNExecutionROS(object):
         msg.transition = str(fired_transition)
         msg.marking = str(self.__gspn.get_current_marking())
         msg.robot_id = self.__robot_id
-        print("current time ", current_time)
         msg.timestamp = str(current_time)
 
         self.__publisher.publish(msg)
@@ -191,6 +189,7 @@ class GSPNExecutionROS(object):
         # status == 3 means SUCCESS
         if status == 3:
             print(': Goal succeeded! Result: {0}'.format(result.transition))
+            print("current place ", self.__current_place, "current robot ", self.__robot_id)
 
             bool_output_arcs = self.check_output_arcs(self.__current_place)
 

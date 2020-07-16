@@ -48,7 +48,7 @@ def return_gspn_updates():
         return jsonify(GSPN_UPDATES)
 
 
-def online_visualization_update(msg=""):
+def online_visualization_update(msg):
     global GSPN_UPDATES
     GSPN_UPDATES.append(msg.transition)
     GSPN_UPDATES.append(msg.marking)
