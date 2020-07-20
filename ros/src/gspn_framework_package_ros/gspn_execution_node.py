@@ -28,6 +28,44 @@ def service_current_place_function(argyment):
     print("CURRENT PLACE ", GEN_CURRENT_PLACE)
     return CurrentPlaceResponse(GEN_CURRENT_PLACE)
 
+def analyze_gspn_structure(gspn_to_analyze, resources):
+    print("Initiating gspn analysis...")
+    transitions = gspn_to_analyze.get_transitions()
+    for transition in transitions:
+        arcs = gspn_to_analyze.get_connected_arcs(transition, 'transition')
+        index = gspn_to_analyze.transitions_to_index[transition]
+
+        if len(arcs[0]) > 1 and len(arcs[1][index]) == 1:
+            print("Many to one case.")
+            # We reject  because a robot cannot disappear
+            return False
+
+        elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
+            print("One to many case.")
+            # We are prunning away the places where no physical robot will exist
+            non_resource_places_counter = 0
+            for place_index in arcs[1][index]:
+                place = gspn_to_analyze.index_to_places[place_index]
+                if place not in resources:
+                    non_resource_places_counter = non_resource_places_counter + 1
+            if non_resource_places_counter > 1:
+                return False
+
+        elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
+            print("Many to many case.")
+            # We are prunning away the places where no physical robot will exist
+            non_resource_places_counter = 0
+            for place_index in arcs[1][index]:
+                place = gspn_to_analyze.index_to_places[place_index]
+                if place not in resources:
+                    non_resource_places_counter = non_resource_places_counter + 1
+            if non_resource_places_counter != len(arcs[0]):
+                return False
+
+        print("Analysis complete.")
+        return True
+
+
 
 class GSPNExecutionROS(object):
 
@@ -489,6 +527,13 @@ def main():
     to_open = '/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/' + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
 
+    # After receiving the gspn, we need to analyze it
+    resources = data["resources_list"]
+    bool_accepted = analyze_gspn_structure(my_pn, resources)
+    if bool_accepted == False:
+        print("The input GSPN is not valid.")
+        return
+
     p_to_c_mapping = ast.literal_eval(data["place_to_client_mapping"])
     # On the JSON I have to include Simple inside a string in order to work well.
     # This is due to the fact that JSON only accepts strings.
@@ -512,8 +557,8 @@ def main():
     GEN_CURRENT_PLACE = user_current_place
 
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
-    #time.sleep(60)
-    my_execution.ros_gspn_execution()
+    time.sleep(60)
+    #my_execution.ros_gspn_execution()
 
 
 if __name__ == "__main__":
