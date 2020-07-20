@@ -69,7 +69,7 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
 
 class GSPNExecutionROS(object):
 
-    def __init__(self, gspn, place_to_client_mapping, policy, project_path, initial_place, robot_id, full_synchronization):
+    def __init__(self, gspn, place_to_client_mapping, resources, policy, project_path, initial_place, robot_id, full_synchronization):
         '''
         :param gspn: a previously created gspn
         :param place_to_client_mapping: dictionary where key is the place and the value is the function
@@ -113,6 +113,7 @@ class GSPNExecutionROS(object):
         self.__publisher = 0
         self.__subscriber = 0
         self.__service = 0
+        self.__resources = resources
 
     def get_path(self):
         return self.__project_path
@@ -333,27 +334,24 @@ class GSPNExecutionROS(object):
         arcs = self.__gspn.get_connected_arcs(transition, 'transition')
         index = self.__gspn.transitions_to_index[transition]
         marking = self.__gspn.get_current_marking()
+        global GEN_CURRENT_PLACE
 
         # 1 to 1
         if len(arcs[0]) == 1 and len(arcs[1][index]) == 1:
             new_place = self.__gspn.index_to_places[arcs[1][index][0]]
             self.__gspn.fire_transition(transition)
             self.__current_place = new_place
-            global GEN_CURRENT_PLACE
             GEN_CURRENT_PLACE = new_place
 
         # 1 to many
         elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
-            i = 0
-            for i in range(len(arcs[1][index])):
-                if i == 0:
-                    new_place = self.__gspn.index_to_places[arcs[1][index][i]]
-                    # self.__token_positions[token_id] = new_place
-                else:
-                    new_place = self.__gspn.index_to_places[arcs[1][index][i]]
-                    self.__token_positions.append(new_place)
-                    self.__number_of_tokens = self.__number_of_tokens + 1
-                    self.__action_clients.append(client.MinimalActionClient("provisional", node=self.__client_node, server_name="provisional"))
+            for place_index in arcs[1][index]:
+                place = self.__gspn.index_to_places[place_index]
+                if place not in self.__resources:
+                    new_place = self.__gspn.index_to_places[arcs[1][index][0]]
+                    self.__current_place = new_place
+                    GEN_CURRENT_PLACE = new_place
+
             self.__gspn.fire_transition(transition)
 
         # many to 1
@@ -556,9 +554,9 @@ def main():
     global GEN_CURRENT_PLACE
     GEN_CURRENT_PLACE = user_current_place
 
-    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
-    time.sleep(60)
-    #my_execution.ros_gspn_execution()
+    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
+    #time.sleep(60)
+    my_execution.ros_gspn_execution()
 
 
 if __name__ == "__main__":
