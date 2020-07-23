@@ -34,9 +34,6 @@ def service_fire_sync(argument):
     return FireSyncTransitionResponse("SUCCESS")
 
 def service_current_place_status_function(argument):
-    print("CURRENT PLACE ", GEN_CURRENT_PLACE)
-    print("CURRENT STATUS ", GEN_CURRENT_STATUS)
-    print("CURRENT ROBOT ID ", GEN_ROBOT_ID)
     return CurrentPlaceResponse(GEN_CURRENT_PLACE, GEN_CURRENT_STATUS, GEN_ROBOT_ID)
 
 
@@ -78,55 +75,34 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
         return True
 
 
-
 class GSPNExecutionROS(object):
 
-    def __init__(self, gspn, place_to_client_mapping, resources, policy, project_path, initial_place, robot_id, full_synchronization):
+    def __init__(self, gspn, place_to_client_mapping, resources, policy, initial_place, robot_id, full_synchronization):
         '''
         :param gspn: a previously created gspn
         :param place_to_client_mapping: dictionary where key is the place and the value is the function
+        :param resources: list with the name of the places that are resources
         :param policy: Policy object
-        :param project_path: string with project path
         :param initial_place: string with the name of the robot's initial place
-
-        self.__token_positions is a list with the places where each token is ['p1', 'p2', 'p2'] means that token 1 is on p1, token 2
-        is on p2 and token 3 is on p2;
-        self.__number_of_tokens is the current number of tokens;
-        self.__action_clients is a list with all the action clients;
-        self.__client_node is the node where the clients will be connected to.
+        :param robot_id: number of the robot
+        :param full_synchronization: boolean flag that says whether the robots have full sync or not
 
         self.__current_place indicates where the robot is
         self.__action_client is the action client of the robot
-        self.__robot_id is the id of the robot
-        self.__full_synchronization is a boolean which represents the type of synch that the user wants
+        self.__publisher is the publisher to the GSPNFiringData topic
+        self.__subscriber is the subscriber to the GSPNFiringData topic
         '''
         self.__gspn = gspn
-        self.__token_positions = []
-
         self.__place_to_client_mapping = place_to_client_mapping
-
+        self.__resources = resources
         self.__policy = policy
-        self.__project_path = project_path
-
-        self.__number_of_tokens = 0
-        # should be removed after correcting many to many/many to 1/1 to many
-        self.__action_clients = []
-        # --
-        self.__client_node = 0
-        self.__client_node_subscriber = 0
-
         self.__current_place = initial_place
-        self.__action_client = 0
         self.__robot_id = robot_id
         self.__full_synchronization = full_synchronization
 
+        self.__action_client = 0
         self.__publisher = 0
         self.__subscriber = 0
-        self.__service = 0
-        self.__resources = resources
-
-    def get_path(self):
-        return self.__project_path
 
     def get_policy(self):
         return self.__policy
@@ -167,7 +143,6 @@ class GSPNExecutionROS(object):
             place = self.__gspn.index_to_places[i]
             translation[place] = 1
         return translation
-
 
     '''
     Callback functions section:
@@ -210,12 +185,7 @@ class GSPNExecutionROS(object):
         rospy.loginfo('Robot %s firing %s'% (msg.robot_id, msg.transition))
 
 
-    def service_return_current_place_callback(self):
-        rospy.loginfo('Returning %s from robot %s' % (self.__current_place, self.__robot_id))
-        return CurrentPlaceResponse(self.__current_place, self.__robot_id)
-
-
-    def service_send_request_status_id(self):
+    def service_send_request(self, flag):
         number_connections = self.__publisher.get_num_connections()
         current_robot_id = 1
         answers = []
@@ -227,29 +197,12 @@ class GSPNExecutionROS(object):
                 try:
                     service_current_place_status_function = rospy.ServiceProxy(service_name, CurrentPlace)
                     answer = service_current_place_status_function()
-                    answers.append(answer.robot_id)
-                    answers.append(answer.current_place)
-                    answers.append(answer.current_status)
-
-                except rospy.ServiceException as e:
-                    print("Service call failed: %s"%e)
-
-            current_robot_id = current_robot_id + 1
-        return answers
-
-    def service_send_request(self):
-        number_connections = self.__publisher.get_num_connections()
-        current_robot_id = 1
-        answers = []
-        while current_robot_id <= number_connections:
-            if current_robot_id != self.__robot_id:
-                service_name = '/robot_' + str(current_robot_id) + '/current_place_robot_' + str(current_robot_id)
-                rospy.wait_for_service(service_name, timeout=10)
-
-                try:
-                    service_current_place_status_function = rospy.ServiceProxy(service_name, CurrentPlace)
-                    answer = service_current_place_status_function()
-                    answers.append(answer.current_place)
+                    if flag == "simple":
+                        answers.append(answer.current_place)
+                    else:
+                        answers.append(answer.robot_id)
+                        answers.append(answer.current_place)
+                        answers.append(answer.current_status)
 
                 except rospy.ServiceException as e:
                     print("Service call failed: %s"%e)
@@ -284,7 +237,7 @@ class GSPNExecutionROS(object):
                             self.fire_execution(imm_transition_to_fire)
                             self.topic_talker_callback(imm_transition_to_fire)
                     else:
-                        answers = self.service_send_request()
+                        answers = self.service_send_request("simple")
                         new_marking = {}
                         new_marking[self.__current_place] = 1
                         for place_list in answers:
@@ -396,7 +349,7 @@ class GSPNExecutionROS(object):
         # Many to many
         elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
 
-            #Let's see if the marking corresponds to the necessary one.
+            # Let's see if the marking corresponds to the necessary one.
             translation_marking = self.translate_arcs_to_marking(arcs)
             check_flag = True
             for el in translation_marking:
@@ -404,7 +357,6 @@ class GSPNExecutionROS(object):
                     check_flag = False
 
             if check_flag:
-
                 # We only consider the places that are not resources
                 # This will be useful when we are firing the transition
                 possible_places = []
@@ -413,7 +365,8 @@ class GSPNExecutionROS(object):
                     if place not in self.__resources:
                         possible_places.append(place)
 
-                answers = self.service_send_request_status_id()
+                # We check where each robot is and whether it finished its task
+                answers = self.service_send_request("complete")
                 done_counter = 0
                 done_ids = []
                 for element in arcs[0]:
@@ -426,6 +379,8 @@ class GSPNExecutionROS(object):
                                 done_ids.append(answers[iterator])
                             iterator = iterator + 3
 
+                # If we have every robot waiting to be fired we enter this case
+                # The -1 is because the present robot is not considered for the count
                 if done_counter == len(arcs[0]) - 1:
                     print("I'm the last one to be ready to fire.")
                     for id in done_ids:
@@ -445,25 +400,21 @@ class GSPNExecutionROS(object):
                     place_to_go = possible_places[-1]
                     possible_places.pop()
                     GEN_CURRENT_PLACE = place_to_go
-                    self.__gspn.fire_transition(transition)
-                    self.__current_place = GEN_CURRENT_PLACE
-
 
                 else:
                     while GEN_CURRENT_STATUS == "DONE":
                         time.sleep(1)
                         print("I am waiting for a change in the status.")
                         continue
-                    self.__gspn.fire_transition(transition)
-                    self.__current_place = GEN_CURRENT_PLACE
 
             else:
                 while GEN_CURRENT_STATUS == "DONE":
                     time.sleep(1)
                     print("I am waiting for a change in the status.")
                     continue
-                self.__gspn.fire_transition(transition)
-                self.__current_place = GEN_CURRENT_PLACE
+
+            self.__gspn.fire_transition(transition)
+            self.__current_place = GEN_CURRENT_PLACE
 
     def get_policy_transition(self):
         execution_policy = self.get_policy()
@@ -500,16 +451,6 @@ class GSPNExecutionROS(object):
         4- action servers;
         5- initial action clients.
         '''
-        # Initialize ROS node
-
-        # Setup project path
-        path_name = self.get_path()
-        self.__project_path = os.path.join(path_name)
-        sys.path.append(self.__project_path)
-
-        # Setup number of (initial) tokens
-        self.__number_of_tokens = self.__gspn.get_number_of_tokens()
-
         # Setup publisher and subscriber
         self.__publisher = rospy.Publisher('/TRANSITIONS_FIRED', GSPNFiringData, queue_size=10)
         self.__subscriber = rospy.Subscriber('/TRANSITIONS_FIRED', GSPNFiringData, self.topic_listener_callback, queue_size=10)
@@ -521,7 +462,7 @@ class GSPNExecutionROS(object):
 
         # Setup current place service (used when full_synchronization == False)
         current_place_service_name = 'current_place_robot_' + str(self.__robot_id)
-        self.__service = rospy.Service(current_place_service_name, CurrentPlace, service_current_place_status_function)
+        current_place_service = rospy.Service(current_place_service_name, CurrentPlace, service_current_place_status_function)
 
         # Setup current status and change place service (used when we have many to many case)
         fire_sync_service_name = 'fire_sync_transition_' + str(self.__robot_id)
@@ -529,7 +470,6 @@ class GSPNExecutionROS(object):
 
         self.action_send_goal(self.__current_place, action_type, server_name)
         rospy.spin()
-
 
 def main():
 
@@ -539,12 +479,7 @@ def main():
     node_name = "executor_" + str(splitted_2[0])
     print("node name", node_name)
 
-
     rospy.init_node(node_name)
-
-    project_path = "/home/pedroac/ros2_ws/src/gspn_framework/gspn_framework"
-
-    sys.path.append(os.path.join(project_path))
 
     with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input_simple.json') as f:
         data = json.load(f)
@@ -582,7 +517,7 @@ def main():
     global GEN_ROBOT_ID
     GEN_ROBOT_ID = int(user_robot_id)
 
-    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
+    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
     #time.sleep(60)
     my_execution.ros_gspn_execution()
 
