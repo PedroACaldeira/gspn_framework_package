@@ -12,23 +12,38 @@ import ast
 # ROS libs
 import rospy
 import actionlib
-import gspn_framework_package.msg
-from gspn_framework_package.msg import ExecGSPNAction
-from gspn_framework_package.msg import GSPNFiringData
-from gspn_framework_package.srv import CurrentPlace,CurrentPlaceResponse
 # Files from my package
 from gspn_framework_package import policy
 from gspn_framework_package import gspn as pn
 from gspn_framework_package import gspn_tools
 
+import gspn_framework_package.msg
+from gspn_framework_package.msg import ExecGSPNAction
+from gspn_framework_package.msg import GSPNFiringData
+from gspn_framework_package.srv import CurrentPlace, CurrentPlaceResponse, FireSyncTransition, FireSyncTransitionResponse
 
 GEN_CURRENT_PLACE = 0
+GEN_CURRENT_STATUS = "DONE"
+GEN_ROBOT_ID = 0
 
-def service_current_place_function(argyment):
+def service_fire_sync(argument):
+    global GEN_CURRENT_PLACE
+    global GEN_CURRENT_STATUS
+    GEN_CURRENT_PLACE = argument.place_to_go
+    GEN_CURRENT_STATUS = "READY"
+    return FireSyncTransitionResponse("SUCCESS")
+
+def service_current_place_status_function(argument):
     print("CURRENT PLACE ", GEN_CURRENT_PLACE)
-    return CurrentPlaceResponse(GEN_CURRENT_PLACE)
+    print("CURRENT STATUS ", GEN_CURRENT_STATUS)
+    print("CURRENT ROBOT ID ", GEN_ROBOT_ID)
+    return CurrentPlaceResponse(GEN_CURRENT_PLACE, GEN_CURRENT_STATUS, GEN_ROBOT_ID)
+
 
 def analyze_gspn_structure(gspn_to_analyze, resources):
+    '''
+    Function to determine whether the input gspn is valid or not.
+    '''
     print("Initiating gspn analysis...")
     transitions = gspn_to_analyze.get_transitions()
     for transition in transitions:
@@ -36,12 +51,10 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
         index = gspn_to_analyze.transitions_to_index[transition]
 
         if len(arcs[0]) > 1 and len(arcs[1][index]) == 1:
-            print("Many to one case.")
             # We reject  because a robot cannot disappear
             return False
 
         elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
-            print("One to many case.")
             # We are prunning away the places where no physical robot will exist
             non_resource_places_counter = 0
             for place_index in arcs[1][index]:
@@ -52,7 +65,6 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
                 return False
 
         elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
-            print("Many to many case.")
             # We are prunning away the places where no physical robot will exist
             non_resource_places_counter = 0
             for place_index in arcs[1][index]:
@@ -82,8 +94,6 @@ class GSPNExecutionROS(object):
         self.__number_of_tokens is the current number of tokens;
         self.__action_clients is a list with all the action clients;
         self.__client_node is the node where the clients will be connected to.
-
-
 
         self.__current_place indicates where the robot is
         self.__action_client is the action client of the robot
@@ -172,12 +182,15 @@ class GSPNExecutionROS(object):
     '''
 
     def topic_listener_callback(self, msg):
-        if msg.robot_id != self.__robot_id:
-            rospy.loginfo('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
-            self.__gspn.fire_transition(msg.transition)
-            print("AFTER", self.__gspn.get_current_marking())
-        else:
-            rospy.loginfo('I heard myself firing %s' % msg.transition)
+        arcs = self.__gspn.get_connected_arcs(msg.transition, 'transition')
+        index = self.__gspn.transitions_to_index[msg.transition]
+        if len(arcs[0]) <= 1 or len(arcs[1][index]) <= 1:
+            if msg.robot_id != self.__robot_id:
+                rospy.loginfo('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
+                self.__gspn.fire_transition(msg.transition)
+                print("AFTER", self.__gspn.get_current_marking())
+            else:
+                rospy.loginfo('I heard myself firing %s' % msg.transition)
 
 
     def topic_talker_callback(self, fired_transition):
@@ -202,6 +215,28 @@ class GSPNExecutionROS(object):
         return CurrentPlaceResponse(self.__current_place, self.__robot_id)
 
 
+    def service_send_request_status_id(self):
+        number_connections = self.__publisher.get_num_connections()
+        current_robot_id = 1
+        answers = []
+        while current_robot_id <= number_connections:
+            if current_robot_id != self.__robot_id:
+                service_name = '/robot_' + str(current_robot_id) + '/current_place_robot_' + str(current_robot_id)
+                rospy.wait_for_service(service_name, timeout=10)
+
+                try:
+                    service_current_place_status_function = rospy.ServiceProxy(service_name, CurrentPlace)
+                    answer = service_current_place_status_function()
+                    answers.append(answer.robot_id)
+                    answers.append(answer.current_place)
+                    answers.append(answer.current_status)
+
+                except rospy.ServiceException as e:
+                    print("Service call failed: %s"%e)
+
+            current_robot_id = current_robot_id + 1
+        return answers
+
     def service_send_request(self):
         number_connections = self.__publisher.get_num_connections()
         current_robot_id = 1
@@ -212,8 +247,8 @@ class GSPNExecutionROS(object):
                 rospy.wait_for_service(service_name, timeout=10)
 
                 try:
-                    service_current_place_function = rospy.ServiceProxy(service_name, CurrentPlace)
-                    answer = service_current_place_function()
+                    service_current_place_status_function = rospy.ServiceProxy(service_name, CurrentPlace)
+                    answer = service_current_place_status_function()
                     answers.append(answer.current_place)
 
                 except rospy.ServiceException as e:
@@ -228,6 +263,8 @@ class GSPNExecutionROS(object):
         # status == 3 means SUCCESS
         if status == 3:
             print(': Goal succeeded! Result: {0}'.format(result.transition))
+            global GEN_CURRENT_STATUS
+            GEN_CURRENT_STATUS = "DONE"
             print("current place ", self.__current_place, "current robot ", self.__robot_id)
 
             bool_output_arcs = self.check_output_arcs(self.__current_place)
@@ -313,6 +350,8 @@ class GSPNExecutionROS(object):
         print('Waiting for action server '+ server_name)
         goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
         print('Sending goal request to '+ server_name)
+        global GEN_CURRENT_STATUS
+        GEN_CURRENT_STATUS = "DOING"
         self.__action_client.send_goal(goal, done_cb=self.action_get_result_callback, feedback_cb=self.action_feedback_callback)
 
 
@@ -336,14 +375,14 @@ class GSPNExecutionROS(object):
         marking = self.__gspn.get_current_marking()
         global GEN_CURRENT_PLACE
 
-        # 1 to 1
+        # One to one
         if len(arcs[0]) == 1 and len(arcs[1][index]) == 1:
             new_place = self.__gspn.index_to_places[arcs[1][index][0]]
             self.__gspn.fire_transition(transition)
             self.__current_place = new_place
             GEN_CURRENT_PLACE = new_place
 
-        # 1 to many
+        # One to many
         elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
             for place_index in arcs[1][index]:
                 place = self.__gspn.index_to_places[place_index]
@@ -354,83 +393,77 @@ class GSPNExecutionROS(object):
 
             self.__gspn.fire_transition(transition)
 
-        # many to 1
-        elif len(arcs[0]) > 1 and len(arcs[1][index]) == 1:
-            translation_marking = self.translate_arcs_to_marking(arcs)
-            check_flag = True
-
-            # We go through the marking and check it
-            for el in translation_marking:
-                if marking[el] < translation_marking[el]:
-                    check_flag = False
-
-            # We go through the states and see if all of them are 'Waiting'
-            number_of_waiting = 0
-            for place in translation_marking:
-                for pos_index in range(len(self.__token_positions)):
-                    if self.__token_positions[pos_index] == place:
-                        if self.__action_clients[pos_index].get_state() == 'Waiting':
-                            number_of_waiting = number_of_waiting + 1
-                            break
-            # -1 porque só precisas de ter x-1 a espera. quando o numero x
-            # aparece, podes disparar
-            if number_of_waiting == len(translation_marking) - 1:
-                check_flag = True
-            else:
-                check_flag = False
-
-            if check_flag:
-                new_place = self.__gspn.index_to_places[arcs[1][index][0]]
-                # old_place = self.__token_positions[token_id]
-                # self.__token_positions[token_id] = new_place
-                self.__gspn.fire_transition(transition)
-                for place_index in arcs[0]:
-                    place_with_token_to_delete = self.__gspn.index_to_places[place_index]
-                    if place_with_token_to_delete != old_place:
-                        for j in range(len(self.__token_positions)):
-                            if place_with_token_to_delete == self.__token_positions[j]:
-                                index_to_del = j
-                                self.__token_positions[index_to_del] = "null"
-                                self.__action_clients[index_to_del].set_state("VOID")
-                                break
-            else:
-                print("many to one")
-                # self.__action_clients[token_id].set_state("Waiting")
-
-        # many to many
+        # Many to many
         elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
+
+            #Let's see if the marking corresponds to the necessary one.
             translation_marking = self.translate_arcs_to_marking(arcs)
             check_flag = True
             for el in translation_marking:
                 if marking[el] < translation_marking[el]:
                     check_flag = False
+
             if check_flag:
-                # Create tokens on next places
-                i = 0
-                for i in range(len(arcs[1][index])):
-                    if i == 0:
-                        new_place = self.__gspn.index_to_places[arcs[1][index][i]]
-                        # self.__token_positions[token_id] = new_place
-                    else:
-                        new_place = self.__gspn.index_to_places[arcs[1][index][i]]
-                        self.__token_positions.append(new_place)
-                        self.__number_of_tokens = self.__number_of_tokens + 1
-                        self.__action_clients.append(client.MinimalActionClient("provisional", node=self.__client_node, server_name="provisional"))
-                        self.__gspn.fire_transition(transition)
 
-                # Delete tokens from previous places
-                for place_index in arcs[0]:
-                    place_with_token_to_delete = self.__gspn.index_to_places[place_index]
-                    for j in range(len(self.__token_positions)):
-                        if place_with_token_to_delete == self.__token_positions[j]:
-                            index_to_del = j
-                            self.__token_positions[index_to_del] = "null"
-                            self.__action_clients[index_to_del].set_state("VOID")
-                            break
+                # We only consider the places that are not resources
+                # This will be useful when we are firing the transition
+                possible_places = []
+                for place_index in arcs[1][index]:
+                    place = self.__gspn.index_to_places[place_index]
+                    if place not in self.__resources:
+                        possible_places.append(place)
+
+                answers = self.service_send_request_status_id()
+                done_counter = 0
+                done_ids = []
+                for element in arcs[0]:
+                    place_to_check = self.__gspn.index_to_places[element]
+                    iterator = 0
+                    if place_to_check != self.__current_place:
+                        while iterator != len(answers):
+                            if answers[iterator+1] == place_to_check and answers[iterator+2] == "DONE":
+                                done_counter = done_counter + 1
+                                done_ids.append(answers[iterator])
+                            iterator = iterator + 3
+
+                if done_counter == len(arcs[0]) - 1:
+                    print("I'm the last one to be ready to fire.")
+                    for id in done_ids:
+                        service_name = '/robot_' + str(id) + '/fire_sync_transition_' + str(id)
+                        rospy.wait_for_service(service_name, timeout=10)
+
+                        try:
+                            service_handle_fire_sync_function = rospy.ServiceProxy(service_name, FireSyncTransition)
+                            place_to_go = possible_places[-1]
+                            possible_places.pop()
+
+                            suc_flag = service_handle_fire_sync_function(place_to_go)
+
+                        except rospy.ServiceException as e:
+                          print("Service call failed: %s"%e)
+
+                    place_to_go = possible_places[-1]
+                    possible_places.pop()
+                    GEN_CURRENT_PLACE = place_to_go
+                    self.__gspn.fire_transition(transition)
+                    self.__current_place = GEN_CURRENT_PLACE
+
+
+                else:
+                    while GEN_CURRENT_STATUS == "DONE":
+                        time.sleep(1)
+                        print("I am waiting for a change in the status.")
+                        continue
+                    self.__gspn.fire_transition(transition)
+                    self.__current_place = GEN_CURRENT_PLACE
+
             else:
-                print("many to many")
-                # self.__action_clients[token_id].set_state("Waiting")
-
+                while GEN_CURRENT_STATUS == "DONE":
+                    time.sleep(1)
+                    print("I am waiting for a change in the status.")
+                    continue
+                self.__gspn.fire_transition(transition)
+                self.__current_place = GEN_CURRENT_PLACE
 
     def get_policy_transition(self):
         execution_policy = self.get_policy()
@@ -481,16 +514,18 @@ class GSPNExecutionROS(object):
         self.__publisher = rospy.Publisher('/TRANSITIONS_FIRED', GSPNFiringData, queue_size=10)
         self.__subscriber = rospy.Subscriber('/TRANSITIONS_FIRED', GSPNFiringData, self.topic_listener_callback, queue_size=10)
 
-        #Setup action client
+        # Setup action client
         action_type = self.__place_to_client_mapping[self.__current_place][0]
         server_name = self.__place_to_client_mapping[self.__current_place][1]
         self.__action_client = actionlib.SimpleActionClient(server_name, action_type)
 
-        if self.__full_synchronization == False:
-            # setup service
-            service_name = 'current_place_robot_' + str(self.__robot_id)
-            self.__service = rospy.Service(service_name, CurrentPlace, service_current_place_function)
-            print("Ready to return current place on service ", service_name)
+        # Setup current place service (used when full_synchronization == False)
+        current_place_service_name = 'current_place_robot_' + str(self.__robot_id)
+        self.__service = rospy.Service(current_place_service_name, CurrentPlace, service_current_place_status_function)
+
+        # Setup current status and change place service (used when we have many to many case)
+        fire_sync_service_name = 'fire_sync_transition_' + str(self.__robot_id)
+        fire_sync_service = rospy.Service(fire_sync_service_name, FireSyncTransition, service_fire_sync)
 
         self.action_send_goal(self.__current_place, action_type, server_name)
         rospy.spin()
@@ -498,13 +533,6 @@ class GSPNExecutionROS(object):
 
 def main():
 
-    #print("argv 1 ", a)
-    #print("argv 2 ", b)
-
-    #json_file = input("Insert JSON file with GSPN Execution general elements: ")
-    #file_to_open = str(json_file)
-
-    # Gotta fix this: use split to split the namespace and take out the int
     namespace = str(rospy.get_namespace())
     splitted_1 = namespace.split("_")
     splitted_2 = splitted_1[1].split("/")
@@ -549,10 +577,10 @@ def main():
     user_robot_id = rospy.get_param("~user_robot_id")
     user_current_place = rospy.get_param("~user_current_place")
 
-    #user_robot_id = input("Please insert this robot's id: ")
-    #user_current_place = input("Please insert the robot's current place: ")
     global GEN_CURRENT_PLACE
     GEN_CURRENT_PLACE = user_current_place
+    global GEN_ROBOT_ID
+    GEN_ROBOT_ID = int(user_robot_id)
 
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, project_path, str(user_current_place), int(user_robot_id), full_synchronization)
     #time.sleep(60)
@@ -560,5 +588,4 @@ def main():
 
 
 if __name__ == "__main__":
-    #main(sys.argv[1], sys.argv[2])
     main()

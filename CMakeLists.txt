@@ -23,6 +23,7 @@ add_service_files(
   ros/msgs
   FILES
   CurrentPlace.srv
+  FireSyncTransition.srv
 )
 
 add_message_files(

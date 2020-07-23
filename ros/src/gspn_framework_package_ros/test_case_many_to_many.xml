@@ -7,7 +7,7 @@
       <value>p1</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,0</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -19,7 +19,7 @@
       <value>p2</value>
     </name>
     <initialMarking>
-      <value>Default,2</value>
+      <value>Default,1</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -62,9 +62,39 @@
     </capacity>
   </place>
 
+  <place id="p6">
+    <name>
+      <value>p6</value>
+    </name>
+    <initialMarking>
+      <value>Default,1</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
   <transition id="t1">
     <name>
       <value>t1</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t2">
+    <name>
+      <value>t2</value>
     </name>
     <rate>
       <value>1.0</value>
@@ -89,7 +119,25 @@
     </tagged>
   </arc>
 
+  <arc id="p6 to t2" source="p6" target="t2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
   <arc id="p2 to t1" source="p2" target="t1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t2 to p1" source="t2" target="p1">
     <inscription>
       <value>Default,1</value>
     </inscription>
