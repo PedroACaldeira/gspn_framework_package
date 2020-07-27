@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-  <title>GSPN Visualization</title>
-  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="./static/css/gspn_visualization_template.css">
-  <body>
+    <head>
+    <title>GSPN Visualization</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./static/css/gspn_visualization_template.css">
+    <body>
     {% extends "gspn_visualization_template.html" %}
     {% block content %}
 
-    <div class='button_container'>
-      <a href=# id=test><button class='new-button'>Simulate 1 Step</button></a>
-      <a href=# id=reset><button class='new-button new-button-red'>Reset Simulation</button></a>
-      <a href=# id=clearNetwork><button class='new-button new-button-red' onclick="clearNetwork()">Clear Network</button></a>
+        <div class='button_container'>
+            <a href=# id=test><button class='new-button'>Simulate 1 Step</button></a>
+            <a href=# id=reset><button class='new-button new-button-red'>Reset Simulation</button></a>
+            <a href=# id=clearNetwork><button class='new-button new-button-red' onclick="clearNetwork()">Clear Network</button></a>
+            <a href=# id=startExecution><button class='new-button'>Start Execution</button></a>
 
-      <form action="{{ url_for('background_fire_chosen_transition') }}" method="post" id="userTransitionForm" enctype="multipart/form-data">
-          <select id="mySelect" name="chosenTransitionDropdown" class="dropdownStyle">
-          </select>
-          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-          <script type=text/javascript>
-            var parsed_exp_transitions = JSON.parse('{{data.get_enabled_transitions()[0] | tojson}}');
-            for (var exp_transition in parsed_exp_transitions) {
-                 $('<option value="'+ exp_transition +'">' + exp_transition + '</option>').appendTo('#mySelect');
-            }
-            var parsed_imm_transitions = JSON.parse('{{data.get_enabled_transitions()[1] | tojson}}');
-            for (var imm_transition in parsed_imm_transitions) {
-                 $('<option value="'+ imm_transition +'">' + imm_transition + '</option>').appendTo('#mySelect');
-            }
-          </script>
-          <input id="checkUserTransition" type="submit" class='new-button' value="Fire Chosen Transition">
-      </form>
-      <form action="{{ url_for('background_simulate_n_steps') }}" method="post" id="nStepsForm" enctype="multipart/form-data">
-          <input name="n_steps_text" class="input_box">
-          <input id="checkNSteps" type="submit" class='new-button' value="Simulate n Steps">
-      </form>
-    </div>
+            <form action="{{ url_for('background_fire_chosen_transition') }}" method="post" id="userTransitionForm" enctype="multipart/form-data">
+                <select id="mySelect" name="chosenTransitionDropdown" class="dropdownStyle"></select>
+                <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                <script type=text/javascript>
+                var parsed_exp_transitions = JSON.parse('{{data.get_enabled_transitions()[0] | tojson}}');
+                for (var exp_transition in parsed_exp_transitions) {
+                     $('<option value="'+ exp_transition +'">' + exp_transition + '</option>').appendTo('#mySelect');
+                }
+                var parsed_imm_transitions = JSON.parse('{{data.get_enabled_transitions()[1] | tojson}}');
+                for (var imm_transition in parsed_imm_transitions) {
+                     $('<option value="'+ imm_transition +'">' + imm_transition + '</option>').appendTo('#mySelect');
+                }
+                </script>
+                <input id="checkUserTransition" type="submit" class='new-button' value="Fire Chosen Transition">
+            </form>
+            <form action="{{ url_for('background_simulate_n_steps') }}" method="post" id="nStepsForm" enctype="multipart/form-data">
+              <input name="n_steps_text" class="input_box">
+              <input id="checkNSteps" type="submit" class='new-button' value="Simulate n Steps">
+            </form>
+        </div>
 
     <div id="frame_container">
         <div id="mynetwork"></div>
@@ -242,6 +242,13 @@
                     for (var imm_transition in parsed_imm_transitions) {
                          $('<option value="'+ imm_transition +'">' + imm_transition + '</option>').appendTo('#mySelect');
                     }
+                });
+                return false;
+              });
+
+              $('a#test').bind('click', function() {
+                $.getJSON('/start_execution', function(data) {
+                  console.log(data);
                 });
                 return false;
               });

@@ -4,6 +4,7 @@ from flask import Flask, render_template, jsonify, request, flash
 import gspn as pn
 import gspn_tools
 from werkzeug.utils import secure_filename, redirect
+import time
 
 app = Flask(__name__)  # create an app instance
 
@@ -112,6 +113,17 @@ def background_process_test():
     marking_and_transition_list = my_pn.simulate()
     print("marking and trans ", marking_and_transition_list)
     return jsonify(my_pn.get_current_marking(), marking_and_transition_list[-1][0], my_pn.get_enabled_transitions())
+
+
+@app.route('/start_execution')
+def start_execution():
+    new_pid = os.fork()
+    if new_pid == 0:
+        print("sleeping")
+        time.sleep(100)
+    else:
+        print("returning")
+        return jsonify("nothing")
 
 
 @app.route('/background_simulate_n_steps', methods=['GET', 'POST'])
