@@ -232,6 +232,11 @@ class GSPNexecution(object):
         self.__project_path = os.path.join(path_name)
         sys.path.append(self.__project_path)
 
+        # Create file to write the fired transition and the resulting marking
+
+        marking_transition_file = open("marking_transition.txt", 'w')
+        marking_transition_file.close()
+
         '''
         Main execution cycle. At every instant, the threads check whether the tokens are done with their functions
         or not.
@@ -293,6 +298,9 @@ class GSPNexecution(object):
                                 transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
                                 print("TRANSITION TO FIRE", transition_to_fire)
                                 self.fire_execution(transition_to_fire, thread_number)
+                                marking_transition_file = open("marking_transition.txt", 'a')
+                                marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition_to_fire) + "\n")
+                                marking_transition_file.close()
                             else:
                                 print("The place has no outbound connections.")
                                 self.__token_states[thread_number] = 'Inactive'
@@ -300,6 +308,9 @@ class GSPNexecution(object):
                         else:
                             print("Exponential Transition")
                             self.fire_execution(result, thread_number)
+                            marking_transition_file = open("marking_transition.txt", 'a')
+                            marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(result) + "\n")
+                            marking_transition_file.close()
                         print("AFTER", self.__gspn.get_current_marking())
 
                         if self.__token_states[thread_number] == 'Waiting':

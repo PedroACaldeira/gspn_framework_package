@@ -228,6 +228,20 @@
                 }
             }
 
+            setInterval(function(){
+              fetch('/return_gspn_updates').then(response => response.json()).then(data => {
+                if(data != "nothing") {
+                  for(iterator=0; iterator < data[0].length; iterator+=1) {
+                    marking_to_use = JSON.parse(data[1][iterator].replace(/'/g,"\""));
+                    console.log(data[0][iterator]);
+                    console.log(marking_to_use);
+                    change_color(data[0][iterator], marking_to_use);
+                  }
+                }
+
+              })
+            }, 1000);
+
 
             $(function() {
               $('a#test').bind('click', function() {
@@ -246,7 +260,7 @@
                 return false;
               });
 
-              $('a#test').bind('click', function() {
+              $('a#startExecution').bind('click', function() {
                 $.getJSON('/start_execution', function(data) {
                   console.log(data);
                 });

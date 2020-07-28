@@ -1,4 +1,4 @@
-from . import gspn as pn
+import gspn as pn
 import pandas as pd
 import xml.etree.ElementTree as et  # XML parser
 from graphviz import Digraph

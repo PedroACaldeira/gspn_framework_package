@@ -1,14 +1,29 @@
+# Standard libs
 import os
-
 from flask import Flask, render_template, jsonify, request, flash
-import gspn as pn
-import gspn_tools
 from werkzeug.utils import secure_filename, redirect
 import time
+import json
+import ast
+import mmap
+# Files from my package
+import gspn as pn
+import gspn_tools
+import gspn_execution
+import policy
 
 app = Flask(__name__)  # create an app instance
 
 ALLOWED_EXTENSIONS = set(['xml'])
+
+global EXECUTION_STARTED
+EXECUTION_STARTED = False
+
+global OLD_MARKING
+OLD_MARKING = 0
+
+global NUMBER_OF_UPDATES
+NUMBER_OF_UPDATES = 0
 
 
 def allowed_file(filename):
@@ -19,6 +34,8 @@ def allowed_file(filename):
 def home():
     global my_pn
     my_pn = pn.GSPN()
+    global OLD_MARKING
+    OLD_MARKING = my_pn.get_current_marking()
     return render_template("gspn_visualization_open_gspn.html")
 
 
@@ -117,14 +134,50 @@ def background_process_test():
 
 @app.route('/start_execution')
 def start_execution():
+    global EXECUTION_STARTED
+    EXECUTION_STARTED = True
     new_pid = os.fork()
     if new_pid == 0:
-        print("sleeping")
-        time.sleep(100)
+        project_path = '/home/pedro/vanilla_execution_functions'
+        with open('/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json') as f:
+            data = json.load(f)
+
+        p_to_f_mapping = ast.literal_eval(data["place_to_function_mapping"])
+        policy_dictionary = ast.literal_eval(data["policy_dictionary"])
+        places_tuple = ast.literal_eval(data["places_tuple"])
+        created_policy = policy.Policy(policy_dictionary, places_tuple)
+        my_execution = gspn_execution.GSPNexecution(my_pn, p_to_f_mapping, created_policy, project_path)
+        my_execution.execute_gspn()
+
     else:
-        print("returning")
+        time.sleep(10)
         return jsonify("nothing")
 
+
+@app.route('/return_gspn_updates')
+def return_gspn_updates():
+    global NUMBER_OF_UPDATES
+    if EXECUTION_STARTED:
+        mark_trans_file = open("marking_transition.txt", 'r')
+        content = mark_trans_file.read()
+        if len(content) != 0:
+            lines = content.split("\n")
+            lines.pop()
+            if len(lines) > NUMBER_OF_UPDATES:
+                iterator = NUMBER_OF_UPDATES
+                transition_to_send = []
+                marking_to_send = []
+                for iterator in range(len(lines)):
+                    received_marking = lines[iterator].split("=")[0]
+                    received_transition = lines[iterator].split("=")[1]
+                    transition_to_send.append(received_transition)
+                    marking_to_send.append(received_marking)
+
+                old_number = NUMBER_OF_UPDATES
+                NUMBER_OF_UPDATES = len(lines)
+                return jsonify(transition_to_send[old_number:], marking_to_send[old_number:])
+
+    return jsonify("nothing")
 
 @app.route('/background_simulate_n_steps', methods=['GET', 'POST'])
 def background_simulate_n_steps():

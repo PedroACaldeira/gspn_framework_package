@@ -1,7 +1,7 @@
 import time
 import numpy as np
 # tira daqui o from . para funcionar o gspn_execution
-from . import gspn_analysis
+import gspn_analysis
 import sparse
 
 
