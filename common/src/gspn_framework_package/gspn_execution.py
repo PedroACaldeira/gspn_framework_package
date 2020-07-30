@@ -97,6 +97,9 @@ class GSPNexecution(object):
             new_place = self.__gspn.index_to_places[arcs[1][index][0]]
             self.__token_positions[token_id] = new_place
             self.__gspn.fire_transition(transition)
+            marking_transition_file = open("marking_transition.txt", 'a')
+            marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition) + "\n")
+            marking_transition_file.close()
 
         # 1 to many
         elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
@@ -112,6 +115,9 @@ class GSPNexecution(object):
                     self.__number_of_tokens = self.__number_of_tokens + 1
                     self.__futures.append(self.__number_of_tokens)
             self.__gspn.fire_transition(transition)
+            marking_transition_file = open("marking_transition.txt", 'a')
+            marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition) + "\n")
+            marking_transition_file.close()
 
         # many to 1
         elif len(arcs[0]) > 1 and len(arcs[1][index]) == 1:
@@ -141,6 +147,9 @@ class GSPNexecution(object):
                 old_place = self.__token_positions[token_id]
                 self.__token_positions[token_id] = new_place
                 self.__gspn.fire_transition(transition)
+                marking_transition_file = open("marking_transition.txt", 'a')
+                marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition) + "\n")
+                marking_transition_file.close()
                 for place_index in arcs[0]:
                     place_with_token_to_delete = self.__gspn.index_to_places[place_index]
                     if place_with_token_to_delete != old_place:
@@ -189,6 +198,9 @@ class GSPNexecution(object):
                         self.__number_of_tokens = self.__number_of_tokens + 1
                         self.__futures.append(self.__number_of_tokens)
                         self.__gspn.fire_transition(transition)
+                        marking_transition_file = open("marking_transition.txt", 'a')
+                        marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition) + "\n")
+                        marking_transition_file.close()
 
                 # Delete tokens from previous places
                 for place_index in arcs[0]:
@@ -298,9 +310,6 @@ class GSPNexecution(object):
                                 transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
                                 print("TRANSITION TO FIRE", transition_to_fire)
                                 self.fire_execution(transition_to_fire, thread_number)
-                                marking_transition_file = open("marking_transition.txt", 'a')
-                                marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(transition_to_fire) + "\n")
-                                marking_transition_file.close()
                             else:
                                 print("The place has no outbound connections.")
                                 self.__token_states[thread_number] = 'Inactive'
@@ -308,9 +317,6 @@ class GSPNexecution(object):
                         else:
                             print("Exponential Transition")
                             self.fire_execution(result, thread_number)
-                            marking_transition_file = open("marking_transition.txt", 'a')
-                            marking_transition_file.write(str(self.__gspn.get_current_marking()) + "=" + str(result) + "\n")
-                            marking_transition_file.close()
                         print("AFTER", self.__gspn.get_current_marking())
 
                         if self.__token_states[thread_number] == 'Waiting':
