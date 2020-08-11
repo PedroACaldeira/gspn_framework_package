@@ -7,14 +7,7 @@
 	<include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_simulation.launch"/>
 	<include file="$(find gspn_framework_package)/ros/launch/multi_robot/multi_robot_navigation.launch"/>-->
 
-	<!-- Older launch file structure -->
-	<!--
-	<include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
-  <include file="$(find gspn_framework_package)/ros/launch/turtlebot/turtlebot3_navigation.launch"/>
-  <include file="$(find gspn_framework_package)/ros/launch/turtlebot/turtlebot3_gazebo_rviz.launch"/> -->
-
 	<!-- GSPN Servers -->
-
 	<node pkg="gspn_framework_package" ns="robot_1" type="server_1_goto.py" name="action_server_1" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_1" type="server_2.py" name="action_server_2" output="screen"/>
 
