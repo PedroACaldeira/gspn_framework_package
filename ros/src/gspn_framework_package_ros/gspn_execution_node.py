@@ -186,6 +186,7 @@ class GSPNExecutionROS(object):
 
 
     def service_send_request(self, flag):
+        # The flag only specifies how much do we want to return
         number_connections = self.__publisher.get_num_connections()
         current_robot_id = 1
         answers = []
@@ -477,15 +478,18 @@ def main():
     splitted_1 = namespace.split("_")
     splitted_2 = splitted_1[1].split("/")
     node_name = "executor_" + str(splitted_2[0])
-    print("node name", node_name)
+    print("Node Name", node_name)
 
     rospy.init_node(node_name)
 
-    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input_simple.json') as f:
+    user_input_file = rospy.get_param("/user_input_file")
+    user_input_path = rospy.get_param("/user_input_path")
+
+    with open(user_input_file) as f:
         data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
-    to_open = '/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/' + data["gspn"]
+    to_open = user_input_path + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
 
     # After receiving the gspn, we need to analyze it
@@ -513,8 +517,8 @@ def main():
     user_current_place = rospy.get_param("~user_current_place")
 
     global GEN_CURRENT_PLACE
-    GEN_CURRENT_PLACE = user_current_place
     global GEN_ROBOT_ID
+    GEN_CURRENT_PLACE = user_current_place
     GEN_ROBOT_ID = int(user_robot_id)
 
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
