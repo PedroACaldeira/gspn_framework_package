@@ -16,6 +16,7 @@ import actionlib
 from gspn_framework_package import policy
 from gspn_framework_package import gspn as pn
 from gspn_framework_package import gspn_tools
+from gspn_framework_package import gspn_analysis
 
 import gspn_framework_package.msg
 from gspn_framework_package.msg import ExecGSPNAction
@@ -40,8 +41,48 @@ def service_current_place_status_function(argument):
 def analyze_gspn_structure(gspn_to_analyze, resources):
     '''
     Function to determine whether the input gspn is valid or not.
+    1- We remove the places of the gspn that are considered "resources"
+    2- We remove every transition that has 0 input or output arcs
+    3- We generate the reachibility graph for the new gspn
+    4- We check if the number of tokens stays the same
     '''
     print("Initiating gspn analysis...")
+
+    '''Step 1'''
+    new_gspn_to_analyze = gspn_to_analyze
+    for resource_place in resources:
+        if resource_place in new_gspn_to_analyze.get_places():
+            new_gspn_to_analyze.remove_place(resource_place)
+
+    '''Step 2'''
+    for transition in new_gspn_to_analyze.get_transitions():
+        arcs = new_gspn_to_analyze.get_connected_arcs(transition, 'transition')
+        index = new_gspn_to_analyze.transitions_to_index[transition]
+        if len(arcs[0]) == 0 or len(arcs[1]) == 0:
+            new_gspn_to_analyze.remove_transition(transition)
+
+    new_gspn_to_analyze.set_new_initial_marking()
+
+    '''Step 3'''
+    gspn_analysis_object = gspn_analysis.CoverabilityTree(new_gspn_to_analyze)
+    gspn_analysis_object.generate()
+    reachibility_graph_nodes = gspn_analysis_object.nodes
+    max_tokens = []
+    for node in reachibility_graph_nodes:
+        total_tokens = 0
+        for element in reachibility_graph_nodes[node][0]:
+            total_tokens = total_tokens + element[1]
+        max_tokens.append(total_tokens)
+
+    '''Step 4'''
+    return min(max_tokens) == max(max_tokens)
+
+
+    time.sleep(60)
+
+    '''
+    Old Version which is working at 100%
+
     transitions = gspn_to_analyze.get_transitions()
     for transition in transitions:
         arcs = gspn_to_analyze.get_connected_arcs(transition, 'transition')
@@ -73,6 +114,8 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
 
         print("Analysis complete.")
         return True
+        '''
+
 
 
 class GSPNExecutionROS(object):
@@ -494,10 +537,13 @@ def main():
 
     # After receiving the gspn, we need to analyze it
     resources = data["resources_list"]
-    bool_accepted = analyze_gspn_structure(my_pn, resources)
+    processed_resources = ast.literal_eval(resources)
+    bool_accepted = analyze_gspn_structure(my_pn, processed_resources)
+    print(bool_accepted)
     if bool_accepted == False:
         print("The input GSPN is not valid.")
         return
+    time.sleep(60)
 
     p_to_c_mapping = ast.literal_eval(data["place_to_client_mapping"])
     # On the JSON I have to include Simple inside a string in order to work well.
