@@ -5,13 +5,7 @@ import actionlib
 import time
 
 import gspn_framework_package.msg
-'''
-import rclpy
-from rclpy.action import ActionServer, CancelResponse, GoalResponse
-from rclpy.callback_groups import ReentrantCallbackGroup
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
-'''
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 class MinimalActionServer(object):
 
@@ -20,6 +14,7 @@ class MinimalActionServer(object):
 
     def __init__(self, name):
         self._action_name = name
+        self._name_space = str(name).split("/")[1]
         self._as = actionlib.SimpleActionServer(self._action_name, gspn_framework_package.msg.ExecGSPNAction,
                                                 execute_cb=self.execute_callback, auto_start = False)
         self._as.start()
@@ -33,7 +28,7 @@ class MinimalActionServer(object):
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
         '''
-        rospy.loginfo('SERVER 2 : ONLINE')
+        rospy.loginfo('SERVER 3 : ONLINE')
         self._as.start()
 
     def destroy(self):
@@ -43,49 +38,51 @@ class MinimalActionServer(object):
     def goal_callback(self, goal_request):
         """Accepts or rejects a client request to begin an action."""
         # This server allows multiple goals in parallel
-        self.get_logger().info('SERVER 2 : Received goal request')
+        self.get_logger().info('SERVER 3 : Received goal request')
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accepts or rejects a client request to cancel an action."""
-        self.get_logger().info('SERVER 2 : Received cancel request')
+        self.get_logger().info('SERVER 3 : Received cancel request')
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal):
         """Executes a goal."""
-        rospy.loginfo('SERVER 2 : Executing goal...')
-
+        rospy.loginfo('SERVER 3 : Executing goal...')
         success = True
-
         self._feedback.time_passed = []
 
-        # Start executing the action
-        for i in range(1, 8):
-            if self._as.is_preempt_requested():
-                self._as.set_preempted()
-                success = False
-                rospy.loginfo('SERVER 2 : Goal canceled')
-                break
-            # Update Fibonacci sequence
-            self._feedback.time_passed.append(i)
+        # This server creates an action client to connect with move_base
+        client = actionlib.SimpleActionClient('/'+self._name_space+'/move_base', MoveBaseAction)
+        rospy.loginfo("Waiting for move_base action server...")
+        client.wait_for_server()
+        rospy.loginfo("Server available, executing action...")
 
-            rospy.loginfo('SERVER 2 : Publishing feedback: {0}'.format(self._feedback.time_passed))
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = -1.5
+        goal.target_pose.pose.position.y = 2.0
+        goal.target_pose.pose.orientation.w = 1.0
 
-            # Publish the feedback
-            self._as.publish_feedback(self._feedback)
+        self._feedback.time_passed.append(1)
+        time.sleep(1)
 
-            # Sleep for demonstration purposes
-            time.sleep(1)
+        client.send_goal(goal)
+        wait = client.wait_for_result()
 
-        if success:
+        if not wait:
+            rospy.logerr("Action server not available!")
+            rospy.signal_shutdown("Action server not available!")
+        else:
+            print("The move_base result was ", client.get_result())
             self._result.transition = 'None'
-            rospy.loginfo('SERVER 2 : Returning result: {0}'.format(self._result.transition))
+            rospy.loginfo('SERVER 3 : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
-
         return self._result.transition
 
 
 if __name__ == '__main__':
-    rospy.init_node('action_server_2')
+    rospy.init_node('action_server_3')
     minimal_action_server = MinimalActionServer(rospy.get_name())
     rospy.spin()

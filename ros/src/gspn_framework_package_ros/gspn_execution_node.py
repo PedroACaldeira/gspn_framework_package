@@ -77,9 +77,6 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
     '''Step 4'''
     return min(max_tokens) == max(max_tokens)
 
-
-    time.sleep(60)
-
     '''
     Old Version which is working at 100%
 
@@ -543,7 +540,6 @@ def main():
     if bool_accepted == False:
         print("The input GSPN is not valid.")
         return
-    time.sleep(60)
 
     p_to_c_mapping = ast.literal_eval(data["place_to_client_mapping"])
     # On the JSON I have to include Simple inside a string in order to work well.

@@ -60,7 +60,7 @@ class MinimalActionServer(object):
         self._feedback.time_passed = []
 
         # Start executing the action
-        for i in range(1, 4):
+        for i in range(1, 8):
             if self._as.is_preempt_requested():
                 self._as.set_preempted()
                 success = False
