@@ -10,10 +10,11 @@
     {% block content %}
 
         <div class='button_container'>
-            <a href=# id=test><button class='new-button'>Simulate 1 Step</button></a>
-            <a href=# id=reset><button class='new-button new-button-red'>Reset Simulation</button></a>
-            <a href=# id=clearNetwork><button class='new-button new-button-red' onclick="clearNetwork()">Clear Network</button></a>
-            <a href=# id=startExecution><button class='new-button'>Start Execution</button></a>
+            <button id="test" class='new-button' onclick="test()">Simulate 1 Step</button>
+            <button id=reset class='new-button new-button-red' onclick="reset()">Reset Simulation</button></a>
+            <button id=clearNetwork class='new-button new-button-red' onclick="clearNetwork()">Clear Network</button>
+            <button id=startExecution class='new-button' onclick="startExecution()">Start Execution</button>
+            <button id=stopExecution class='new-button new-button-red' onclick="stopExecution()">Stop Execution</button>
 
             <form action="{{ url_for('background_fire_chosen_transition') }}" method="post" id="userTransitionForm" enctype="multipart/form-data">
                 <select id="mySelect" name="chosenTransitionDropdown" class="dropdownStyle"></select>
@@ -183,6 +184,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
 
+            var stopped_execution = true;
+
             function clearNetwork() {
                 console.log("before")
                 console.log(NETWORK.body)
@@ -196,6 +199,7 @@
             function sleep(ms) {
               return new Promise(resolve => setTimeout(resolve, ms));
             }
+
             async function change_color(transition, places) {
                 nodes.update({id:transition, color:{border:'yellow'}, shadow:{enabled:true, color:'yellow', x:0, y:0, size:20}});
                 await sleep(1000);
@@ -229,18 +233,95 @@
             }
 
             setInterval(function(){
-              fetch('/return_gspn_updates').then(response => response.json()).then(data => {
-                if(data != "nothing") {
-                  for(iterator=0; iterator < data[0].length; iterator+=1) {
-                    marking_to_use = JSON.parse(data[1][iterator].replace(/'/g,"\""));
-                    console.log(data[0][iterator]);
-                    console.log(marking_to_use);
-                    change_color(data[0][iterator], marking_to_use);
+              if(stopped_execution == false) {
+                fetch('/return_gspn_updates').then(response => response.json()).then(data => {
+                  if(data != "nothing") {
+                    for(iterator=0; iterator < data[0].length; iterator+=1) {
+                      marking_to_use = JSON.parse(data[1][iterator].replace(/'/g,"\""));
+                      console.log(data[0][iterator]);
+                      console.log(marking_to_use);
+                      change_color(data[0][iterator], marking_to_use);
+                    }
                   }
-                }
-
-              })
+                })
+              }
             }, 1000);
+
+
+            function test() {
+              $.getJSON('/background_process_test', function(data) {
+                change_color(data[1], data[0]);
+                document.getElementById('mySelect').options.length = 0;
+                  var parsed_exp_transitions = data[2][0];
+                  for (var exp_transition in parsed_exp_transitions) {
+                       $('<option value="'+ exp_transition +'">' + exp_transition + '</option>').appendTo('#mySelect');
+                  }
+                  var parsed_imm_transitions = data[2][1];
+                  for (var imm_transition in parsed_imm_transitions) {
+                       $('<option value="'+ imm_transition +'">' + imm_transition + '</option>').appendTo('#mySelect');
+                  }
+              });
+              return false;
+            }
+
+            function startExecution() {
+              stopped_execution = false;
+              document.getElementById("test").disabled = true;
+              document.getElementById("test").style.background = "grey";
+              document.getElementById("reset").disabled = true;
+              document.getElementById("reset").style.background = "grey";
+              document.getElementById("clearNetwork").disabled = true;
+              document.getElementById("clearNetwork").style.background = "grey";
+
+              document.getElementById("checkUserTransition").disabled = true;
+              document.getElementById("checkUserTransition").style.background = "grey";
+              document.getElementById("checkNSteps").disabled = true;
+              document.getElementById("checkNSteps").style.background = "grey";
+
+              $.getJSON('/start_execution', function(data) {
+                console.log(data);
+              });
+              return false;
+            }
+
+            function stopExecution() {
+              $.getJSON('/stop_execution', function(data) {
+                stopped_execution = true;
+                document.getElementById("test").disabled = false;
+                document.getElementById("test").style.background = "#4CAF50";
+                document.getElementById("reset").disabled = false;
+                document.getElementById("reset").style.background = "#f44336";
+                document.getElementById("clearNetwork").disabled = false;
+                document.getElementById("clearNetwork").style.background = "#f44336";
+
+                document.getElementById("checkUserTransition").disabled = false;
+                document.getElementById("checkUserTransition").style.background = "#4CAF50";
+                document.getElementById("checkNSteps").disabled = false;
+                document.getElementById("checkNSteps").style.background = "#4CAF50";
+                reset();
+              });
+              return false;
+            }
+
+            function reset() {
+              $.getJSON('/background_reset_simulation', function(data) {
+                for(place in data[0]) {
+                  var marking = data[0][place];
+                  image_link = 'https://raw.githubusercontent.com/PedroACaldeira/gspn-framework/master/images/token_' + marking + '.png';
+                  nodes.update({id:place, image:image_link});
+                }
+                  document.getElementById('mySelect').options.length = 0;
+                  var parsed_exp_transitions = data[1][0];
+                  for (var exp_transition in parsed_exp_transitions) {
+                       $('<option value="'+ exp_transition +'">' + exp_transition + '</option>').appendTo('#mySelect');
+                  }
+                  var parsed_imm_transitions = data[1][1];
+                  for (var imm_transition in parsed_imm_transitions) {
+                       $('<option value="'+ imm_transition +'">' + imm_transition + '</option>').appendTo('#mySelect');
+                  }
+              });
+              return false;
+            }
 
 
             $(function() {

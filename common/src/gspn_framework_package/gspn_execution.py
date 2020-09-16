@@ -245,9 +245,18 @@ class GSPNexecution(object):
         sys.path.append(self.__project_path)
 
         # Create file to write the fired transition and the resulting marking
-
+        # This file will be used as an output of the execution and on the case
+        # when the user is running the Visualization Module.
         marking_transition_file = open("marking_transition.txt", 'w')
         marking_transition_file.close()
+
+        # Create file to write status of execution.
+        # This file will be used with the Visualization Module in order to know
+        # when the user intends to stop the execution or not.
+        execution_status_file = open("execution_status_file.txt", 'w')
+        execution_status_file.write("EXECUTING")
+        execution_status_file.close()
+        print("vim até aqui")
 
         '''
         Main execution cycle. At every instant, the threads check whether the tokens are done with their functions
@@ -256,75 +265,85 @@ class GSPNexecution(object):
         '''
         with ThreadPoolExecutor(max_workers=self.__number_of_tokens * 3) as executor:
             while True:
-                number_tokens = len(self.__token_positions)
-                for thread_number in range(number_tokens):
+                exe_stat_file = open("execution_status_file.txt", 'r')
+                content = exe_stat_file.read()
+                if content == "EXECUTING":
+                    number_tokens = len(self.__token_positions)
+                    for thread_number in range(number_tokens):
 
-                    if self.__token_states[thread_number] == 'Free':
-                        place = self.__token_positions[thread_number]
-                        splitted_path = self.__place_to_function_mapping[place].split(".")
+                        if self.__token_states[thread_number] == 'Free':
+                            place = self.__token_positions[thread_number]
+                            splitted_path = self.__place_to_function_mapping[place].split(".")
 
-                        # On the first case we have path = FILE.FUNCTION
-                        if len(splitted_path) <= 2:
-                            function_location = splitted_path[0]
-                            function_name = splitted_path[1]
-                            module_to_exec = __import__(function_location)
-                            function_to_exec = getattr(module_to_exec, function_name)
+                            # On the first case we have path = FILE.FUNCTION
+                            if len(splitted_path) <= 2:
+                                function_location = splitted_path[0]
+                                function_name = splitted_path[1]
+                                module_to_exec = __import__(function_location)
+                                function_to_exec = getattr(module_to_exec, function_name)
 
-                        # On the second case we have path = FOLDER. ... . FILE.FUNCTION
-                        else:
-                            new_path = splitted_path[0]
-                            for element in splitted_path[1:]:
-                                if element != splitted_path[-1]:
-                                    new_path = new_path + "." + element
-
-                            # dirpath = os.getcwd()
-                            function_location = new_path
-                            function_name = splitted_path[-1]
-                            module_to_exec = __import__(function_location, fromlist=[function_name])
-                            function_to_exec = getattr(module_to_exec, function_name)
-
-                        self.__token_states[thread_number] = 'Occupied'
-                        self.__futures[thread_number] = executor.submit(function_to_exec, thread_number)
-
-                    if self.__token_states[thread_number] == 'Occupied' and self.__futures[thread_number].done():
-                        self.__token_states[thread_number] = 'Done'
-
-                    if self.__token_states[thread_number] == 'Done':
-                        result = self.__futures[thread_number].result()
-                        print("BEFORE", self.__gspn.get_current_marking())
-                        if result is None:
-                            execution_policy = self.get_policy()
-                            current_marking = self.__gspn.get_current_marking()
-                            order = execution_policy.get_places_tuple()
-                            marking_tuple = self.convert_to_tuple(current_marking, order)
-                            pol_dict = execution_policy.get_policy_dictionary()
-                            transition_dictionary = self.get_transitions(marking_tuple, pol_dict)
-
-                            if transition_dictionary:
-                                print("Immediate Transition")
-                                transition_list = []
-                                probability_list = []
-                                for transition in transition_dictionary:
-                                    transition_list.append(transition)
-                                    probability_list.append(transition_dictionary[transition])
-                                transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
-                                print("TRANSITION TO FIRE", transition_to_fire)
-                                self.fire_execution(transition_to_fire, thread_number)
+                            # On the second case we have path = FOLDER. ... . FILE.FUNCTION
                             else:
-                                print("The place has no outbound connections.")
-                                self.__token_states[thread_number] = 'Inactive'
+                                new_path = splitted_path[0]
+                                for element in splitted_path[1:]:
+                                    if element != splitted_path[-1]:
+                                        new_path = new_path + "." + element
 
-                        else:
-                            print("Exponential Transition")
-                            self.fire_execution(result, thread_number)
-                        print("AFTER", self.__gspn.get_current_marking())
+                                # dirpath = os.getcwd()
+                                function_location = new_path
+                                function_name = splitted_path[-1]
+                                module_to_exec = __import__(function_location, fromlist=[function_name])
+                                function_to_exec = getattr(module_to_exec, function_name)
 
-                        if self.__token_states[thread_number] == 'Waiting':
-                            print("i am waiting")
+                            self.__token_states[thread_number] = 'Occupied'
+                            self.__futures[thread_number] = executor.submit(function_to_exec, thread_number)
 
-                        elif self.__token_states[thread_number] == 'Done':
-                            self.__token_states[thread_number] = 'Free'
-                        print("--------")
+                        if self.__token_states[thread_number] == 'Occupied' and self.__futures[thread_number].done():
+                            self.__token_states[thread_number] = 'Done'
+
+                        if self.__token_states[thread_number] == 'Done':
+                            result = self.__futures[thread_number].result()
+                            print("BEFORE", self.__gspn.get_current_marking())
+                            if result is None:
+                                execution_policy = self.get_policy()
+                                current_marking = self.__gspn.get_current_marking()
+                                order = execution_policy.get_places_tuple()
+                                marking_tuple = self.convert_to_tuple(current_marking, order)
+                                pol_dict = execution_policy.get_policy_dictionary()
+                                transition_dictionary = self.get_transitions(marking_tuple, pol_dict)
+
+                                if transition_dictionary:
+                                    print("Immediate Transition")
+                                    transition_list = []
+                                    probability_list = []
+                                    for transition in transition_dictionary:
+                                        transition_list.append(transition)
+                                        probability_list.append(transition_dictionary[transition])
+                                    transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
+                                    print("TRANSITION TO FIRE", transition_to_fire)
+                                    self.fire_execution(transition_to_fire, thread_number)
+                                else:
+                                    print("The place has no outbound connections.")
+                                    self.__token_states[thread_number] = 'Inactive'
+
+                            else:
+                                print("Exponential Transition")
+                                self.fire_execution(result, thread_number)
+                            print("AFTER", self.__gspn.get_current_marking())
+
+                            if self.__token_states[thread_number] == 'Waiting':
+                                print("i am waiting")
+
+                            elif self.__token_states[thread_number] == 'Done':
+                                self.__token_states[thread_number] = 'Free'
+                            print("--------")
+
+                else:
+                    executor.shutdown()
+                    exe_stat_file = open("execution_status_file.txt", 'w')
+                    exe_stat_file.write("DONE")
+                    exe_stat_file.close()
+
 
 
 def main():

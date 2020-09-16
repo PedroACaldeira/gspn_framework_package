@@ -1,5 +1,7 @@
+#! /usr/bin/env python3
 # Standard libs
 import os
+import signal
 from flask import Flask, render_template, jsonify, request, flash
 from werkzeug.utils import secure_filename, redirect
 import time
@@ -19,11 +21,11 @@ ALLOWED_EXTENSIONS = set(['xml'])
 global EXECUTION_STARTED
 EXECUTION_STARTED = False
 
-global OLD_MARKING
-OLD_MARKING = 0
-
 global NUMBER_OF_UPDATES
 NUMBER_OF_UPDATES = 0
+
+global CHILD_PID
+CHILD_PID = 0
 
 
 def allowed_file(filename):
@@ -34,8 +36,6 @@ def allowed_file(filename):
 def home():
     global my_pn
     my_pn = pn.GSPN()
-    global OLD_MARKING
-    OLD_MARKING = my_pn.get_current_marking()
     return render_template("gspn_visualization_open_gspn.html")
 
 
@@ -85,6 +85,7 @@ def use_xml():
     for place in marking:
         places.append(place)
         tokens.append(marking[place])
+    global my_pn
     my_pn.add_places(places, tokens)
 
     # Begin Second Part: add_transitions
@@ -127,6 +128,7 @@ def use_xml():
 
 @app.route('/background_process_test')
 def background_process_test():
+    global my_pn
     marking_and_transition_list = my_pn.simulate()
     print("marking and trans ", marking_and_transition_list)
     return jsonify(my_pn.get_current_marking(), marking_and_transition_list[-1][0], my_pn.get_enabled_transitions())
@@ -138,6 +140,13 @@ def start_execution():
     EXECUTION_STARTED = True
     new_pid = os.fork()
     if new_pid == 0:
+        time.sleep(3)
+        return jsonify("execution started")
+
+    else:
+        global CHILD_PID
+        global my_pn
+        CHILD_PID = new_pid
         project_path = '/home/pedro/vanilla_execution_functions'
         with open('/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json') as f:
             data = json.load(f)
@@ -146,12 +155,10 @@ def start_execution():
         policy_dictionary = ast.literal_eval(data["policy_dictionary"])
         places_tuple = ast.literal_eval(data["places_tuple"])
         created_policy = policy.Policy(policy_dictionary, places_tuple)
+        print("MARKING TO DEBUG ", my_pn.get_current_marking())
         my_execution = gspn_execution.GSPNexecution(my_pn, p_to_f_mapping, created_policy, project_path)
         my_execution.execute_gspn()
 
-    else:
-        time.sleep(10)
-        return jsonify("nothing")
 
 
 @app.route('/return_gspn_updates')
@@ -179,8 +186,30 @@ def return_gspn_updates():
 
     return jsonify("nothing")
 
+@app.route('/stop_execution')
+def stop_execution():
+    exe_stat_file = open("execution_status_file.txt", 'w')
+    exe_stat_file.write("SHUTDOWN")
+    exe_stat_file.close()
+    flag = True
+    while flag:
+        e_s_file = open("execution_status_file.txt", 'r')
+        if e_s_file.read() == "DONE":
+            flag = False
+        e_s_file.close()
+        time.sleep(1)
+
+    global CHILD_PID
+    os.kill(CHILD_PID, signal.SIGTERM)
+    global EXECUTION_STARTED
+    EXECUTION_STARTED = False
+
+    return jsonify("process killed")
+
+
 @app.route('/background_simulate_n_steps', methods=['GET', 'POST'])
 def background_simulate_n_steps():
+    global my_pn
     if request.method == 'POST':
         text = request.form['n_steps_text']
         if text == '':
@@ -197,6 +226,7 @@ def background_simulate_n_steps():
 
 @app.route('/background_fire_chosen_transition', methods=['GET', 'POST'])
 def background_fire_chosen_transition():
+    global my_pn
     if request.method == 'POST':
         text = request.form['chosenTransitionDropdown']
         processed_text = str(text)
@@ -206,12 +236,14 @@ def background_fire_chosen_transition():
 
 @app.route('/background_reset_simulation')
 def background_reset_simulation():
+    global my_pn
     my_pn.reset_simulation()
     return jsonify(my_pn.get_current_marking(), my_pn.get_enabled_transitions())
 
 
 @app.route('/background_check_liveness', methods=['GET', 'POST'])
 def background_check_liveness():
+    global my_pn
     my_pn.init_analysis()
     if request.method == 'POST':
         liveness_check = my_pn.liveness()
@@ -220,6 +252,7 @@ def background_check_liveness():
 
 @app.route('/background_check_throughputrate', methods=['GET', 'POST'])
 def background_check_throughputrate():
+    global my_pn
     my_pn.init_analysis()
     if request.method == 'POST':
         text = request.form['throughput_rate_dropdown']
@@ -233,6 +266,7 @@ def background_check_throughputrate():
 
 @app.route('/background_check_probntokens', methods=['GET', 'POST'])
 def background_check_probntokens():
+    global my_pn
     my_pn.init_analysis()
     text = request.form.get('prob_n_tokens_text', None)
     processed_text = str(text)
@@ -241,6 +275,7 @@ def background_check_probntokens():
 
 @app.route('/background_expected_n_tokens', methods=['GET', 'POST'])
 def background_expected_n_tokens():
+    global my_pn
     my_pn.init_analysis()
     if request.method == 'POST':
         text = request.form.get('expected_n_tokens_dropdown', None)
@@ -250,6 +285,7 @@ def background_expected_n_tokens():
 
 @app.route('/background_check_transitionprobevo', methods=['GET', 'POST'])
 def background_check_transitionprobevo():
+    global my_pn
     my_pn.init_analysis()
     text = request.form.get('transition_prob_evo_text', None)
     processed_text = str(text)
@@ -258,6 +294,7 @@ def background_check_transitionprobevo():
 
 @app.route('/background_check_mean_wait_time', methods=['GET', 'POST'])
 def background_check_mean_wait_time():
+    global my_pn
     if request.method == 'POST':
         my_pn.init_analysis()
         text = request.form.get('mean_wait_time_dropdown', None)

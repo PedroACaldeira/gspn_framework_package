@@ -1,7 +1,8 @@
+#! /usr/bin/env python3
 import time
 import numpy as np
 # tira daqui o from . para funcionar o gspn_execution
-import gspn_analysis
+from gspn_framework_package import gspn_analysis
 import sparse
 
 
@@ -61,11 +62,18 @@ class GSPN(object):
     def set_places(self, new_places):
         self.__places = new_places
 
+    def set_new_initial_marking(self):
+        self.__initial_marking = self.__places.copy()
+        self.__initial_marking_sparse = self.__sparse_marking.copy()
+
     def get_number_of_tokens(self):
         total = 0
         for place in self.__places:
             total = total + self.__places[place]
         return total
+
+    def get_sparse_marking(self):
+        return self.__sparse_marking
 
     def add_places(self, name, ntokens=[], set_initial_marking=True):
         '''

@@ -1,7 +1,9 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
 from scipy import linalg
+from gspn_framework_package import gspn as pn
 
 # TODO : Extend analysis methods to matrix equation and reduction decomposition approaches (take a look at Murata)
 class CoverabilityTree(object):
@@ -551,3 +553,25 @@ class CTMC(object):
 
         else:
             raise Exception('Continuous time Markov chain is not created. Please use the method generate to obtain the CTMC.')
+
+def main():
+    my_pn = pn.GSPN()
+
+    my_pn.add_places(['p1', 'p2', 'p3'],
+                     [1, 0, 0])
+    my_pn.add_transitions(['t1', 't2'],
+                          ['exp', 'exp'],
+                          [1, 1])
+
+    arc_in = {'p1': ['t1']}
+
+    arc_out = {'t1': ['p2'], 't2': ['p3']}
+
+    my_pn.add_arcs(arc_in, arc_out)
+
+    coverability_tree = CoverabilityTree(my_pn)
+    coverability_tree.generate()
+    print("nodes ", coverability_tree.nodes)
+
+if __name__ == "__main__":
+    main()
