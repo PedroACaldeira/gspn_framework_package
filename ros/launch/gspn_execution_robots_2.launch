@@ -11,7 +11,7 @@
 
   <node pkg="gspn_framework_package" ns="robot_2" type="gspn_execution_node.py" name="executor_2" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="2" />
-    <param name="user_current_place" value="p2" />
+    <param name="user_current_place" value="p1" />
   </node>
 
 </launch>
