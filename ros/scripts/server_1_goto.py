@@ -61,7 +61,8 @@ class MinimalActionServer(object):
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
         goal.target_pose.header.stamp = rospy.Time.now()
-        goal.target_pose.pose.position.x = 0.5
+        goal.target_pose.pose.position.x = 0.0
+        goal.target_pose.pose.position.y = 0.5
         goal.target_pose.pose.orientation.w = 1.0
 
         self._feedback.time_passed.append(1)

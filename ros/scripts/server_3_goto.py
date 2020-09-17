@@ -12,9 +12,9 @@ class MinimalActionServer(object):
     _feedback = gspn_framework_package.msg.ExecGSPNFeedback()
     _result = gspn_framework_package.msg.ExecGSPNResult()
 
-    def __init__(self, name):
+    def __init__(self, name, _namespace):
         self._action_name = name
-        self._name_space = str(name).split("/")[1]
+        self._namespace = _namespace
         self._as = actionlib.SimpleActionServer(self._action_name, gspn_framework_package.msg.ExecGSPNAction,
                                                 execute_cb=self.execute_callback, auto_start = False)
         self._as.start()
@@ -53,7 +53,7 @@ class MinimalActionServer(object):
         self._feedback.time_passed = []
 
         # This server creates an action client to connect with move_base
-        client = actionlib.SimpleActionClient('/'+self._name_space+'/move_base', MoveBaseAction)
+        client = actionlib.SimpleActionClient('/'+self._namespace+'/move_base', MoveBaseAction)
         rospy.loginfo("Waiting for move_base action server...")
         client.wait_for_server()
         rospy.loginfo("Server available, executing action...")
@@ -61,8 +61,8 @@ class MinimalActionServer(object):
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
         goal.target_pose.header.stamp = rospy.Time.now()
-        goal.target_pose.pose.position.x = -1.5
-        goal.target_pose.pose.position.y = 2.0
+        goal.target_pose.pose.position.x = -0.5
+        goal.target_pose.pose.position.y = 1.5
         goal.target_pose.pose.orientation.w = 1.0
 
         self._feedback.time_passed.append(1)
@@ -84,5 +84,7 @@ class MinimalActionServer(object):
 
 if __name__ == '__main__':
     rospy.init_node('action_server_3')
-    minimal_action_server = MinimalActionServer(rospy.get_name())
+    _namespace = str(rospy.get_name()).split("/")[1]
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", _namespace)
+    minimal_action_server = MinimalActionServer(rospy.get_name(), _namespace)
     rospy.spin()

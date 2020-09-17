@@ -86,7 +86,7 @@
     </tagged>
   </arc>
 
-  <arc id="t1 to p2" source="t1" target="p2">
+  <arc id="p1 to t2" source="p1" target="t2">
     <inscription>
       <value>Default,1</value>
     </inscription>
@@ -95,7 +95,7 @@
     </tagged>
   </arc>
 
-  <arc id="p2 to t2" source="p2" target="t2">
+  <arc id="t1 to p2" source="t1" target="p2">
     <inscription>
       <value>Default,1</value>
     </inscription>
