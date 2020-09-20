@@ -72,7 +72,7 @@ def use_xml():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
         else:
-            flash('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
+            flash('Allowed file types is xml')
             return redirect(request.url)
 
     tool = gspn_tools.GSPNtools()
