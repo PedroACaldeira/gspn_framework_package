@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+<node pkg="gspn_framework_package" ns="robot_1" type="place_1.py" name="action_server_1" output="screen"/>
+<node pkg="gspn_framework_package" ns="robot_1" type="place_2.py" name="action_server_2" output="screen"/>
+<node pkg="gspn_framework_package" ns="robot_1" type="place_3.py" name="action_server_3" output="screen"/>
+
+</launch>

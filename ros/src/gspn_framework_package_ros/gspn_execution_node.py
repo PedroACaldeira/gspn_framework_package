@@ -125,11 +125,22 @@ class GSPNExecutionROS(object):
     def get_transitions(self, marking, policy_dictionary):
         '''
         :param marking: tuple with the current marking (should already be ordered)
-        :param policy_dictionary: dictionary where key=Transition name; value=probability of transition
+        :param policy_dictionary: dictionary where key=Marking; value=possible transitions and probabilities
         :return: transition dictionary if marking is in policy_dictionary; False otherwise
         '''
+        print("marking ", marking)
         for mark in policy_dictionary:
-            if marking == mark:
+            print("mark ", mark)
+            i = 0
+            counter = 0
+            for i in range(len(mark)):
+                if mark[i] == '-':
+                    counter = counter + 1
+                else:
+                    if mark[i] == marking[i]:
+                        counter = counter + 1
+            print("counter ", counter)
+            if counter == len(mark):
                 return policy_dictionary[mark]
         return False
 
