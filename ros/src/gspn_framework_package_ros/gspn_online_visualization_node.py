@@ -28,11 +28,13 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     global my_pn
-    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/temperature_patrol_input.json') as f:
+    user_input_file = rospy.get_param("/user_input_file")
+    user_input_path = rospy.get_param("/user_input_path")
+    with open(user_input_file) as f:
         json_data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
-    to_open = '/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/' + json_data["gspn"]
+    to_open = user_input_path + json_data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
     return render_template("gspn_visualization_home.html", data=my_pn)
 
