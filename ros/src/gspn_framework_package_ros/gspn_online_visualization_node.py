@@ -28,7 +28,7 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     global my_pn
-    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/gspn_execution_input_simple.json') as f:
+    with open('/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/temperature_patrol_input.json') as f:
         json_data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
