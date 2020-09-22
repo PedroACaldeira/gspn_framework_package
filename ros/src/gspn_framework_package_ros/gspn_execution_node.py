@@ -46,7 +46,6 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
     3- We generate the reachibility graph for the new gspn
     4- We check if the number of tokens stays the same
     '''
-    print("Initiating gspn analysis...")
 
     '''Step 1'''
     new_gspn_to_analyze = gspn_to_analyze
@@ -76,43 +75,6 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
 
     '''Step 4'''
     return min(max_tokens) == max(max_tokens)
-
-    '''
-    Old Version which is working at 100%
-
-    transitions = gspn_to_analyze.get_transitions()
-    for transition in transitions:
-        arcs = gspn_to_analyze.get_connected_arcs(transition, 'transition')
-        index = gspn_to_analyze.transitions_to_index[transition]
-
-        if len(arcs[0]) > 1 and len(arcs[1][index]) == 1:
-            # We reject  because a robot cannot disappear
-            return False
-
-        elif len(arcs[0]) == 1 and len(arcs[1][index]) > 1:
-            # We are prunning away the places where no physical robot will exist
-            non_resource_places_counter = 0
-            for place_index in arcs[1][index]:
-                place = gspn_to_analyze.index_to_places[place_index]
-                if place not in resources:
-                    non_resource_places_counter = non_resource_places_counter + 1
-            if non_resource_places_counter > 1:
-                return False
-
-        elif len(arcs[0]) > 1 and len(arcs[1][index]) > 1:
-            # We are prunning away the places where no physical robot will exist
-            non_resource_places_counter = 0
-            for place_index in arcs[1][index]:
-                place = gspn_to_analyze.index_to_places[place_index]
-                if place not in resources:
-                    non_resource_places_counter = non_resource_places_counter + 1
-            if non_resource_places_counter != len(arcs[0]):
-                return False
-
-        print("Analysis complete.")
-        return True
-        '''
-
 
 
 class GSPNExecutionROS(object):
@@ -203,7 +165,6 @@ class GSPNExecutionROS(object):
             if msg.robot_id != self.__robot_id:
                 rospy.loginfo('I heard Robot %s firing %s' % (msg.robot_id, msg.transition))
                 self.__gspn.fire_transition(msg.transition)
-                print("AFTER", self.__gspn.get_current_marking())
             else:
                 rospy.loginfo('I heard myself firing %s' % msg.transition)
 
@@ -259,15 +220,11 @@ class GSPNExecutionROS(object):
             print(': Goal succeeded! Result: {0}'.format(result.transition))
             global GEN_CURRENT_STATUS
             GEN_CURRENT_STATUS = "DONE"
-            print("current place ", self.__current_place, "current robot ", self.__robot_id)
 
             bool_output_arcs = self.check_output_arcs(self.__current_place)
 
             if bool_output_arcs:
-                print("The place has output arcs.")
-                print("BEFORE", self.__gspn.get_current_marking())
                 if result.transition == 'None':
-                    print("Immediate transition")
 
                     if self.__full_synchronization == True:
                         imm_transition_to_fire = self.get_policy_transition()
@@ -303,13 +260,9 @@ class GSPNExecutionROS(object):
                             self.fire_execution(imm_transition_to_fire)
 
                 else:
-                    print("exponential transition")
-                    print(result.transition)
                     self.fire_execution(result.transition)
                     if self.__full_synchronization == True:
                         self.topic_talker_callback(result.transition)
-
-                print("AFTER", self.__gspn.get_current_marking())
 
                 action_type = self.__place_to_client_mapping[self.__current_place][0]
                 server_name = self.__place_to_client_mapping[self.__current_place][1]
@@ -423,7 +376,6 @@ class GSPNExecutionROS(object):
                 # If we have every robot waiting to be fired we enter this case
                 # The -1 is because the present robot is not considered for the count
                 if done_counter == len(arcs[0]) - 1:
-                    print("I'm the last one to be ready to fire.")
                     for id in done_ids:
                         service_name = '/robot_' + str(id) + '/fire_sync_transition_' + str(id)
                         rospy.wait_for_service(service_name, timeout=10)
@@ -445,13 +397,11 @@ class GSPNExecutionROS(object):
                 else:
                     while GEN_CURRENT_STATUS == "DONE":
                         time.sleep(1)
-                        print("I am waiting for a change in the status.")
                         continue
 
             else:
                 while GEN_CURRENT_STATUS == "DONE":
                     time.sleep(1)
-                    print("I am waiting for a change in the status.")
                     continue
 
             self.__gspn.fire_transition(transition)
@@ -472,7 +422,6 @@ class GSPNExecutionROS(object):
             transition_list.append(transition)
             probability_list.append(transition_dictionary[transition])
         transition_to_fire = np.random.choice(transition_list, 1, False, probability_list)[0]
-        print("TRANSITION TO FIRE", transition_to_fire)
         return transition_to_fire
 
     def check_output_arcs(self, place):
@@ -536,7 +485,6 @@ def main():
     resources = data["resources_list"]
     processed_resources = ast.literal_eval(resources)
     bool_accepted = analyze_gspn_structure(my_pn, processed_resources)
-    print(bool_accepted)
     if bool_accepted == False:
         print("The input GSPN is not valid.")
         return
