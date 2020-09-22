@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><pnml>
+<net id="Net-One" type="P/T net">
+  <token id="Default" enabled="true" red="0" green="0" blue="0"/>
+
+  <place id="p1:CleanL1">
+    <name>
+      <value>p1:CleanL1</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p2:AwaitOrders">
+    <name>
+      <value>p2:AwaitOrders</value>
+    </name>
+    <initialMarking>
+      <value>Default,1</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p3:CleanL2">
+    <name>
+      <value>p3:CleanL2</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p4:AwaitOrders">
+    <name>
+      <value>p4:AwaitOrders</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p5:CleanL3">
+    <name>
+      <value>p5:CleanL3</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p6:AwaitOrders">
+    <name>
+      <value>p6:AwaitOrders</value>
+    </name>
+    <initialMarking>
+      <value>Default,1</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p7:CleanL4">
+    <name>
+      <value>p7:CleanL4</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p8:AwaitOrders">
+    <name>
+      <value>p8:AwaitOrders</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <transition id="t1:L1Clean?">
+    <name>
+      <value>t1:L1Clean?</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t2:L2Full?">
+    <name>
+      <value>t2:L2Full?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t3:L2Empty?">
+    <name>
+      <value>t3:L2Empty?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t4:L2Clean?">
+    <name>
+      <value>t4:L2Clean?</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t5:L3Full?">
+    <name>
+      <value>t5:L3Full?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t6:L3Empty?">
+    <name>
+      <value>t6:L3Empty?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t7:L3Clean?">
+    <name>
+      <value>t7:L3Clean?</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t8:L4Full?">
+    <name>
+      <value>t8:L4Full?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t9:L4Empty?">
+    <name>
+      <value>t9:L4Empty?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t10:L4Clean?">
+    <name>
+      <value>t10:L4Clean?</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t11:L1Full?">
+    <name>
+      <value>t11:L1Full?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t12:L1Empty?">
+    <name>
+      <value>t12:L1Empty?</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <!-- SECTION 1 -->
+
+  <arc id="p1:CleanL1 to t1:L1Clean?" source="p1:CleanL1" target="t1:L1Clean?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t1:L1Clean? to p2:AwaitOrders" source="t1:L1Clean?" target="p2:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p2:AwaitOrders to t2:L2Full?" source="p2:AwaitOrders" target="t2:L2Full?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t2:L2Full? to p2:AwaitOrders" source="t2:L2Full?" target="p2:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p2:AwaitOrders to t3:L2Empty?" source="p2:AwaitOrders" target="t3:L2Empty?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t3:L2Empty? to p3:CleanL2" source="t3:L2Empty?" target="p3:CleanL2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- SECTION 2 -->
+
+  <arc id="p3:CleanL2 to t4:L2Clean?" source="p3:CleanL2" target="t4:L2Clean?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t4:L2Clean? to p4:AwaitOrders" source="t4:L2Clean?" target="p4:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p4:AwaitOrders to t5:L3Full?" source="p4:AwaitOrders" target="t5:L3Full?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t5:L3Full? to p4:AwaitOrders" source="t5:L3Full?" target="p4:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p4:AwaitOrders to t6:L3Empty?" source="p4:AwaitOrders" target="t6:L3Empty?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t6:L3Empty? to p5:CleanL3" source="t6:L3Empty?" target="p5:CleanL3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- SECTION 3 -->
+
+  <arc id="p5:CleanL3 to t7:L3Clean?" source="p5:CleanL3" target="t7:L3Clean?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t7:L3Clean? to p6:AwaitOrders" source="t7:L3Clean?" target="p6:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p6:AwaitOrders to t8:L4Full?" source="p6:AwaitOrders" target="t8:L4Full?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t8:L4Full? to p6:AwaitOrders" source="t8:L4Full?" target="p6:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p6:AwaitOrders to t9:L4Empty?" source="p6:AwaitOrders" target="t9:L4Empty?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t9:L4Empty? to p7:CleanL4" source="t9:L4Empty?" target="p7:CleanL4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- SECTION 4 -->
+
+  <arc id="p7:CleanL4 to t10:L4Clean?" source="p7:CleanL4" target="t10:L4Clean?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t10:L4Clean? to p8:AwaitOrders" source="t10:L4Clean?" target="p8:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p8:AwaitOrders to t11:L1Full?" source="p8:AwaitOrders" target="t11:L1Full?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t11:L1Full? to p8:AwaitOrders" source="t11:L1Full?" target="p8:AwaitOrders">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p8:AwaitOrders to t12:L1Empty?" source="p8:AwaitOrders" target="t12:L1Empty?">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t12:L1Empty? to p1:CleanL1" source="t12:L1Empty?" target="p1:CleanL1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  </net>
+</pnml>
