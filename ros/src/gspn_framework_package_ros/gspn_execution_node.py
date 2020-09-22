@@ -128,9 +128,7 @@ class GSPNExecutionROS(object):
         :param policy_dictionary: dictionary where key=Marking; value=possible transitions and probabilities
         :return: transition dictionary if marking is in policy_dictionary; False otherwise
         '''
-        print("marking ", marking)
         for mark in policy_dictionary:
-            print("mark ", mark)
             i = 0
             counter = 0
             for i in range(len(mark)):
@@ -139,7 +137,6 @@ class GSPNExecutionROS(object):
                 else:
                     if mark[i] == marking[i]:
                         counter = counter + 1
-            print("counter ", counter)
             if counter == len(mark):
                 return policy_dictionary[mark]
         return False
