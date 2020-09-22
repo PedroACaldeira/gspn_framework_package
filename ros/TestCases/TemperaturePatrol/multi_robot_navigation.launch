@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- Bringup two turtlebot3s - laptop/remotepc portion -->
-
   <!-- Command Line Arguments -->
   <arg name="tb3_0_init_x" default="-2.0"/>
   <arg name="tb3_0_init_y" default="0.0"/>
@@ -18,7 +16,6 @@
 
   <!-- Default value for location of map config file -->
   <arg name="map_file" default="$(find gspn_framework_package)/ros/config/map.yaml"/>
-
   <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
   <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro'" />
 
@@ -41,7 +38,7 @@
     </node>
   </group>
 
-  <!-- Second Robot -->
+  <!-- Second Robot-->
   <group ns="robot_2">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find turtlebot3_nps)/param/amcl_params.yaml" command="load" />
@@ -54,7 +51,7 @@
     </node>
   </group>
 
-  <!-- Second Robot -->
+  <!-- Third Robot
   <group ns="robot_3">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find turtlebot3_nps)/param/amcl_params.yaml" command="load" />
@@ -65,7 +62,7 @@
       <param name="base_frame_id"  value="robot_3/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>
+  </group>-->
 
   <!-- RVIZ configured for tb3_0/1
   <node pkg="rviz" type="rviz" name="rviz" required="true"

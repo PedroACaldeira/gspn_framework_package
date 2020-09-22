@@ -1,8 +1,8 @@
 <launch>
 	<!-- Single Robot System -->
-	<include file="$(find gspn_framework_package)/ros/launch/TemperaturePatrol/multi_robot_simulation.launch"/>
-	<include file="$(find gspn_framework_package)/ros/launch/TemperaturePatrol/multi_robot_move_base.launch"/>
-	<include file="$(find gspn_framework_package)/ros/launch/TemperaturePatrol/multi_robot_navigation.launch"/>
+	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_simulation.launch"/>
+	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_move_base.launch"/>
+	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_navigation.launch"/>
 
 	<!-- GSPN Servers-->
 	<node pkg="gspn_framework_package" ns="robot_1" type="P1_Check_Temperature_L1.py" name="action_server_1" output="screen"/>

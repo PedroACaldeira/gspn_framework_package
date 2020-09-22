@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/temperature_patrol_input.json" />
-  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/src/gspn_framework_package_ros/" />
+  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/temperature_patrol_input.json" />
+  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/" />
+
+  <node pkg="gspn_framework_package" type="gspn_online_visualization_node.py" name="gspn_online_visualization" output="screen" launch-prefix="gnome-terminal --command"/>
 
   <node pkg="gspn_framework_package" ns="robot_1" type="gspn_execution_node.py" name="executor_1" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="1" />
@@ -13,10 +15,4 @@
     <param name="user_robot_id" value="2" />
     <param name="user_current_place" value="p4:Check_Temperature_L2" />
   </node>
-
-  <node pkg="gspn_framework_package" ns="robot_3" type="gspn_execution_node.py" name="executor_3" output="screen" launch-prefix="gnome-terminal --command">
-    <param name="user_robot_id" value="3" />
-    <param name="user_current_place" value="p1:Check_Temperature_L1" />
-  </node>
-
 </launch>
