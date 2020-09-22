@@ -9,7 +9,7 @@
       <value>p1:Check_Temperature_L1</value>
     </name>
     <initialMarking>
-      <value>Default,0</value>
+      <value>Default,1</value>
     </initialMarking>
     <capacity>
       <value>0</value>
