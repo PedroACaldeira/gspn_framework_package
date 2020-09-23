@@ -1,0 +1,3 @@
+top -b -n1 | grep ^%Cpu | awk '{print "Current CPU Utilization is : " 100-$8}'
+
+free -t | awk 'NR == 2 {print "Current Memory Utilization is : " $3/$2*100}'
