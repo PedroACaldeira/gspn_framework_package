@@ -2,16 +2,16 @@
 <launch>
 
   <!-- Command Line Arguments -->
-  <arg name="tb3_0_init_x" default="-2.0"/>
+  <arg name="tb3_0_init_x" default="2.0"/>
   <arg name="tb3_0_init_y" default="0.0"/>
   <arg name="tb3_0_init_a" default="0.0"/>
 
-  <arg name="tb3_1_init_x" default="2.0"/>
-  <arg name="tb3_1_init_y" default="0.0"/>
+  <arg name="tb3_1_init_x" default="0.0"/>
+  <arg name="tb3_1_init_y" default="2.0"/>
   <arg name="tb3_1_init_a" default="0.0"/>
 
-  <arg name="tb3_2_init_x" default="0.0"/>
-  <arg name="tb3_2_init_y" default="2.0"/>
+  <arg name="tb3_2_init_x" default="-2.0"/>
+  <arg name="tb3_2_init_y" default="0.0"/>
   <arg name="tb3_2_init_a" default="0.0"/>
 
   <!-- Default value for location of map config file -->
@@ -51,7 +51,7 @@
     </node>
   </group>
 
-  <!-- Third Robot
+  <!-- Third Robot -->
   <group ns="robot_3">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find turtlebot3_nps)/param/amcl_params.yaml" command="load" />
@@ -62,7 +62,7 @@
       <param name="base_frame_id"  value="robot_3/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>-->
+  </group>
 
   <!-- RVIZ configured for tb3_0/1
   <node pkg="rviz" type="rviz" name="rviz" required="true"
