@@ -132,7 +132,7 @@ class GSPNExecutionROS(object):
         for mark in policy_dictionary:
             i = 0
             counter = 0
-            for i in range(len(mark) - 1):
+            for i in range(len(mark)):
                 if mark[i] == '-':
                     counter = counter + 1
                 else:
@@ -239,6 +239,7 @@ class GSPNExecutionROS(object):
                         imm_transition_to_fire = self.get_policy_transition()
                         if imm_transition_to_fire == False:
                             print("The policy does not include this case.")
+                            print(self.__gspn.get_current_marking())
                             return
                         else:
                             self.fire_execution(imm_transition_to_fire)
@@ -343,9 +344,9 @@ class GSPNExecutionROS(object):
             for place_index in arcs[1][index]:
                 place = self.__gspn.index_to_places[place_index]
                 if place not in self.__resources:
-                    new_place = self.__gspn.index_to_places[arcs[1][index][0]]
-                    self.__current_place = new_place
-                    GEN_CURRENT_PLACE = new_place
+                    #new_place = self.__gspn.index_to_places[arcs[1][index][0]]
+                    self.__current_place = place
+                    GEN_CURRENT_PLACE = place
             self.__gspn.fire_transition(transition)
 
         # Many to many
@@ -518,7 +519,6 @@ def main():
     global GEN_ROBOT_ID
     GEN_CURRENT_PLACE = user_current_place
     GEN_ROBOT_ID = int(user_robot_id)
-
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, processed_resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
     #time.sleep(60)
     my_execution.ros_gspn_execution()
