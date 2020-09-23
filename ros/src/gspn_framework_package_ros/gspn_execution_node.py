@@ -9,6 +9,7 @@ import time
 import random
 import json
 import ast
+import copy
 # ROS libs
 import rospy
 import actionlib
@@ -48,7 +49,7 @@ def analyze_gspn_structure(gspn_to_analyze, resources):
     '''
 
     '''Step 1'''
-    new_gspn_to_analyze = gspn_to_analyze
+    new_gspn_to_analyze = copy.deepcopy(gspn_to_analyze)
     for resource_place in resources:
         if resource_place in new_gspn_to_analyze.get_places():
             new_gspn_to_analyze.remove_place(resource_place)
@@ -131,7 +132,7 @@ class GSPNExecutionROS(object):
         for mark in policy_dictionary:
             i = 0
             counter = 0
-            for i in range(len(mark)):
+            for i in range(len(mark) - 1):
                 if mark[i] == '-':
                     counter = counter + 1
                 else:
@@ -345,7 +346,6 @@ class GSPNExecutionROS(object):
                     new_place = self.__gspn.index_to_places[arcs[1][index][0]]
                     self.__current_place = new_place
                     GEN_CURRENT_PLACE = new_place
-
             self.__gspn.fire_transition(transition)
 
         # Many to many
@@ -493,6 +493,7 @@ def main():
     resources = data["resources_list"]
     processed_resources = ast.literal_eval(resources)
     bool_accepted = analyze_gspn_structure(my_pn, processed_resources)
+    print("MY PN ", my_pn.get_current_marking())
     if bool_accepted == False:
         print("The input GSPN is not valid.")
         return
