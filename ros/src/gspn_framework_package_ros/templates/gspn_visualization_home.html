@@ -21,7 +21,7 @@
       var parsed_places = JSON.parse('{{data.get_places() | tojson}}');
       for(place in parsed_places) {
         var marking = parsed_places[place];
-        image_link = 'https://raw.githubusercontent.com/PedroACaldeira/gspn-framework/master/images/token_' + marking + '.png';
+        image_link = 'https://raw.githubusercontent.com/PedroACaldeira/gspn_framework_package/master/common/src/gspn_framework_package/images/token_' + marking + '.png';
         nodes.add({id:place, shape:'circularImage', color:'black', title:place, physics:'false', label:place, image:image_link});
       }
 
