@@ -493,7 +493,6 @@ def main():
     resources = data["resources_list"]
     processed_resources = ast.literal_eval(resources)
     bool_accepted = analyze_gspn_structure(my_pn, processed_resources)
-    print("MY PN ", my_pn.get_current_marking())
     if bool_accepted == False:
         print("The input GSPN is not valid.")
         return
