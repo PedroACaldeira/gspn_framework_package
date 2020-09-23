@@ -519,7 +519,7 @@ def main():
     GEN_CURRENT_PLACE = user_current_place
     GEN_ROBOT_ID = int(user_robot_id)
 
-    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
+    my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, processed_resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
     #time.sleep(60)
     my_execution.ros_gspn_execution()
 
