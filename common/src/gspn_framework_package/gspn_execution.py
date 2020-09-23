@@ -256,7 +256,6 @@ class GSPNexecution(object):
         execution_status_file = open("execution_status_file.txt", 'w')
         execution_status_file.write("EXECUTING")
         execution_status_file.close()
-        print("vim até aqui")
 
         '''
         Main execution cycle. At every instant, the threads check whether the tokens are done with their functions
