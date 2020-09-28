@@ -1,49 +1,94 @@
 <launch>
 	<!-- GSPN Servers-->
-	<node pkg="gspn_framework_package" ns="robot_1" type="P1_no_gazebo_t.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P2_no_gazebo_t.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P3_no_gazebo_t.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P4_no_gazebo_t.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P5_no_gazebo_t.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P6_no_gazebo_t.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="P7_no_gazebo_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P1_no_gazebo_p.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P2_no_gazebo_p.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P3_no_gazebo_p.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P4_no_gazebo_p.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P5_no_gazebo_p.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P6_no_gazebo_p.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P7_no_gazebo_p.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P8_no_gazebo_p.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P9_no_gazebo_p.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P10_no_gazebo_p.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P11_no_gazebo_p.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P12_no_gazebo_p.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P13_no_gazebo_p.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P14_no_gazebo_p.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P15_no_gazebo_p.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P16_no_gazebo_p.py" name="action_server_16" output="screen"/>
 
-	<node pkg="gspn_framework_package" ns="robot_2" type="P1_no_gazebo_t.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P2_no_gazebo_t.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P3_no_gazebo_t.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P4_no_gazebo_t.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P5_no_gazebo_t.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P6_no_gazebo_t.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="P7_no_gazebo_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P1_no_gazebo_p.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P2_no_gazebo_p.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P3_no_gazebo_p.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P4_no_gazebo_p.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P5_no_gazebo_p.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P6_no_gazebo_p.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P7_no_gazebo_p.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P8_no_gazebo_p.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P9_no_gazebo_p.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P10_no_gazebo_p.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P11_no_gazebo_p.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P12_no_gazebo_p.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P13_no_gazebo_p.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P14_no_gazebo_p.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P15_no_gazebo_p.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P16_no_gazebo_p.py" name="action_server_16" output="screen"/>
 
-	<node pkg="gspn_framework_package" ns="robot_3" type="P1_no_gazebo_t.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P2_no_gazebo_t.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P3_no_gazebo_t.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P4_no_gazebo_t.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P5_no_gazebo_t.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P6_no_gazebo_t.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P7_no_gazebo_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P1_no_gazebo_p.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P2_no_gazebo_p.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P3_no_gazebo_p.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P4_no_gazebo_p.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P5_no_gazebo_p.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P6_no_gazebo_p.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P7_no_gazebo_p.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P8_no_gazebo_p.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P9_no_gazebo_p.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P10_no_gazebo_p.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P11_no_gazebo_p.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P12_no_gazebo_p.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P13_no_gazebo_p.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P14_no_gazebo_p.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P15_no_gazebo_p.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P16_no_gazebo_p.py" name="action_server_16" output="screen"/>
 
-	<node pkg="gspn_framework_package" ns="robot_4" type="P1_no_gazebo_t.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P2_no_gazebo_t.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P3_no_gazebo_t.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P4_no_gazebo_t.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P5_no_gazebo_t.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P6_no_gazebo_t.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_4" type="P7_no_gazebo_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P1_no_gazebo_p.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P2_no_gazebo_p.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P3_no_gazebo_p.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P4_no_gazebo_p.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P5_no_gazebo_p.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P6_no_gazebo_p.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P7_no_gazebo_p.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P8_no_gazebo_p.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P9_no_gazebo_p.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P10_no_gazebo_p.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P11_no_gazebo_p.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P12_no_gazebo_p.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P13_no_gazebo_p.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P14_no_gazebo_p.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P15_no_gazebo_p.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_4" type="P16_no_gazebo_p.py" name="action_server_16" output="screen"/>
 
-	<node pkg="gspn_framework_package" ns="robot_5" type="P1_no_gazebo_t.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P2_no_gazebo_t.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P3_no_gazebo_t.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P4_no_gazebo_t.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P5_no_gazebo_t.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P6_no_gazebo_t.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_5" type="P7_no_gazebo_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P1_no_gazebo_p.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P2_no_gazebo_p.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P3_no_gazebo_p.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P4_no_gazebo_p.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P5_no_gazebo_p.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P6_no_gazebo_p.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P7_no_gazebo_p.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P8_no_gazebo_p.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P9_no_gazebo_p.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P10_no_gazebo_p.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P11_no_gazebo_p.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P12_no_gazebo_p.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P13_no_gazebo_p.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P14_no_gazebo_p.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P15_no_gazebo_p.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_5" type="P16_no_gazebo_p.py" name="action_server_16" output="screen"/>
 
 
 	<!-- Online Visualization -->
-  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboTokens/no_gazebo_t_input.json" />
-  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboTokens/" />
+  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/no_gazebo_p_input.json" />
+  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/" />
 
   <node pkg="gspn_framework_package" type="gspn_online_visualization_node.py" name="gspn_online_visualization" output="screen" launch-prefix="gnome-terminal --command"/>
 

@@ -50,6 +50,7 @@ class MinimalActionServer(object):
         self._feedback.time_passed = []
 
         # Start executing the action
+        x = 0
         for i in range(1, 5):
             if self._as.is_preempt_requested():
                 self._as.set_preempted()
@@ -63,9 +64,10 @@ class MinimalActionServer(object):
 
             # Publish the feedback
             self._as.publish_feedback(self._feedback)
+            x = x + 10
 
             # Sleep for demonstration purposes
-            time.sleep(1)
+            time.sleep(0.2)
 
         if success:
             self._result.transition = 't7'

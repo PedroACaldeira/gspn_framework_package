@@ -28,4 +28,55 @@
     <param name="user_robot_id" value="5" />
     <param name="user_current_place" value="p7" />
   </node>
+
+  <node pkg="gspn_framework_package" ns="robot_6" type="gspn_execution_node.py" name="executor_6" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="6" />
+    <param name="user_current_place" value="p1" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_7" type="gspn_execution_node.py" name="executor_7" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="7" />
+    <param name="user_current_place" value="p2" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_8" type="gspn_execution_node.py" name="executor_8" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="8" />
+    <param name="user_current_place" value="p3" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_9" type="gspn_execution_node.py" name="executor_9" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="9" />
+    <param name="user_current_place" value="p5" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_10" type="gspn_execution_node.py" name="executor_10" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="10" />
+    <param name="user_current_place" value="p7" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_11" type="gspn_execution_node.py" name="executor_11" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="11" />
+    <param name="user_current_place" value="p1" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_12" type="gspn_execution_node.py" name="executor_12" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="12" />
+    <param name="user_current_place" value="p2" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_13" type="gspn_execution_node.py" name="executor_13" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="13" />
+    <param name="user_current_place" value="p3" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_14" type="gspn_execution_node.py" name="executor_14" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="14" />
+    <param name="user_current_place" value="p5" />
+  </node>
+
+  <node pkg="gspn_framework_package" ns="robot_15" type="gspn_execution_node.py" name="executor_15" output="screen" launch-prefix="gnome-terminal --command">
+    <param name="user_robot_id" value="15" />
+    <param name="user_current_place" value="p7" />
+  </node>
+
 </launch>

@@ -1,6 +1,6 @@
-{ "gspn":"no_gazebo_t_gspn.xml",
-    "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2'], 'p3': ['ExecGSPN', 'action_server_3'], 'p4': ['ExecGSPN', 'action_server_4'], 'p5': ['ExecGSPN', 'action_server_5'], 'p6': ['ExecGSPN', 'action_server_6'], 'p7': ['ExecGSPN', 'action_server_7']}",
-  "resources_list": "['p4']",
+{ "gspn":"no_gazebo_p_gspn.xml",
+    "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2'], 'p3': ['ExecGSPN', 'action_server_3'], 'p4': ['ExecGSPN', 'action_server_4'], 'p5': ['ExecGSPN', 'action_server_5'], 'p6': ['ExecGSPN', 'action_server_6'], 'p7': ['ExecGSPN', 'action_server_7'], 'p8': ['ExecGSPN', 'action_server_8'], 'p9': ['ExecGSPN', 'action_server_9'], 'p10': ['ExecGSPN', 'action_server_10'], 'p11': ['ExecGSPN', 'action_server_11'], 'p12': ['ExecGSPN', 'action_server_12'], 'p13': ['ExecGSPN', 'action_server_13'], 'p14': ['ExecGSPN', 'action_server_14'], 'p15': ['ExecGSPN', 'action_server_15'], 'p16': ['ExecGSPN', 'action_server_16']}",
+  "resources_list": "[]",
   "places_tuple": "('p1','p2','p3','p4','p5','p6','p7')",
   "policy_dictionary": "{('-','-','-','-','-','-',1): {'t5':1}, ('1','-','-','-','-','-','-'): {'t6':1}, ('-','-','-','-','-','-','-'): {'t5':1}}",
   "full_synchronization":"True"

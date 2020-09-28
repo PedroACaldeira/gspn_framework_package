@@ -9,7 +9,7 @@
       <value>p1</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,3</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -21,7 +21,7 @@
       <value>p2</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,3</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -33,7 +33,7 @@
       <value>p3</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,3</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -57,7 +57,7 @@
       <value>p5</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,3</value>
     </initialMarking>
     <capacity>
       <value>0</value>
@@ -81,7 +81,7 @@
       <value>p7</value>
     </name>
     <initialMarking>
-      <value>Default,1</value>
+      <value>Default,3</value>
     </initialMarking>
     <capacity>
       <value>0</value>

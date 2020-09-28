@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboTokens/no_gazebo_t_input.json" />
-  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboTokens/" />
+  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/no_gazebo_p_input.json" />
+  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/" />
 
   <node pkg="gspn_framework_package" ns="robot_1" type="gspn_execution_node.py" name="executor_1" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="1" />
@@ -21,11 +21,11 @@
 
   <node pkg="gspn_framework_package" ns="robot_4" type="gspn_execution_node.py" name="executor_4" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="4" />
-    <param name="user_current_place" value="p5" />
+    <param name="user_current_place" value="p4" />
   </node>
 
   <node pkg="gspn_framework_package" ns="robot_5" type="gspn_execution_node.py" name="executor_5" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="5" />
-    <param name="user_current_place" value="p7" />
+    <param name="user_current_place" value="p5" />
   </node>
 </launch>
