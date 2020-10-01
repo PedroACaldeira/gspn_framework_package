@@ -38,7 +38,7 @@
     </node>
   </group>
 
-  <!-- Second Robot-->
+  <!-- Second Robot
   <group ns="robot_2">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -49,9 +49,9 @@
       <param name="base_frame_id"  value="robot_2/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>
+  </group>-->
 
-  <!-- Third Robot -->
+  <!-- Third Robot
   <group ns="robot_3">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -62,10 +62,6 @@
       <param name="base_frame_id"  value="robot_3/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>
-
-  <!-- RVIZ configured for tb3_0/1
-  <node pkg="rviz" type="rviz" name="rviz" required="true"
-         args="-d $(find gspn_framework_package)/ros/rviz/3_BOTS.rviz"/>-->
+  </group>-->
 
 </launch>

@@ -17,7 +17,7 @@
 	<node pkg="gspn_framework_package" ns="robot_1" type="P10_Check_Temperature_L4.py" name="action_server_10" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_1" type="P11_Alarm_L4.py" name="action_server_11" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_1" type="P12_Decide_L4.py" name="action_server_12" output="screen"/>
-
+<!--
 	<node pkg="gspn_framework_package" ns="robot_2" type="P1_Check_Temperature_L1.py" name="action_server_1" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_2" type="P2_Alarm_L1.py" name="action_server_2" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_2" type="P3_Decide_L1.py" name="action_server_3" output="screen"/>
@@ -42,6 +42,6 @@
 	<node pkg="gspn_framework_package" ns="robot_3" type="P9_Decide_L3.py" name="action_server_9" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_3" type="P10_Check_Temperature_L4.py" name="action_server_10" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_3" type="P11_Alarm_L4.py" name="action_server_11" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_3" type="P12_Decide_L4.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P12_Decide_L4.py" name="action_server_12" output="screen"/>-->
 
 </launch>
