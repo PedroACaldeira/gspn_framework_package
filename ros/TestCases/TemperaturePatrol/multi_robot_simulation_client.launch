@@ -1,0 +1,9 @@
+<launch>
+  <!-- Start Robot world -->
+  <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/Worlds/temperature_patrol_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="debug" value="false"/>
+  </include>
+</launch>

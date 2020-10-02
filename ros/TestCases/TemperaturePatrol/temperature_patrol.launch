@@ -1,6 +1,6 @@
 <launch>
-	<!-- Single Robot System -->
-	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_simulation.launch"/>
+	<!-- Robot related files -->
+	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_simulation_client.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_move_base.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_navigation.launch"/>
 
