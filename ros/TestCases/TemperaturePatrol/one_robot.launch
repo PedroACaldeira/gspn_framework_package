@@ -3,7 +3,7 @@
     <arg name="init_pose"/>
     <arg name="name_space"/>
 
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description -model $(arg robot_name)" respawn="false" output="screen"/>
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description -model $(arg robot_name)" respawn="true" output="screen"/>
 
     <node pkg='tf2_ros' type='static_transform_publisher' name='static_transform_publisher' args='0 0 0.010 0 0 0 $(arg name_space)/base_footprint $(arg name_space)/base_link'/>
     <node pkg='tf2_ros' type='static_transform_publisher' name='wheel_left_joint' args='0.0 0.144 0.023 -1.57 0 0 $(arg name_space)/base_link $(arg name_space)/wheel_left_link'/>
