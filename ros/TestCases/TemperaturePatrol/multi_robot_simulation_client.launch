@@ -8,5 +8,4 @@
     <arg name="debug" value="false"/>
   </include>
   <!-- include our robots -->
-  <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/robots.launch"/>
 </launch>
