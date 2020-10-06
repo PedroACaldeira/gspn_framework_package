@@ -466,9 +466,7 @@ class GSPNExecutionROS(object):
         # Setup current status and change place service (used when we have many to many case)
         fire_sync_service_name = 'fire_sync_transition_' + str(self.__robot_id)
         fire_sync_service = rospy.Service(fire_sync_service_name, FireSyncTransition, service_fire_sync)
-        print("cheguei aqui 1")
         self.action_send_goal(self.__current_place, action_type, server_name)
-        print("cheguei aqui 2")
         rospy.spin()
 
 def main():

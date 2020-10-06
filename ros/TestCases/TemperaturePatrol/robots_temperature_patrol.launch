@@ -15,4 +15,5 @@
     <param name="user_robot_id" value="2" />
     <param name="user_current_place" value="p4:Check_Temperature_L2" />
   </node>
+
 </launch>
