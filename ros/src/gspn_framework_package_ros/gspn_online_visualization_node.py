@@ -29,12 +29,11 @@ def allowed_file(filename):
 def home():
     global my_pn
     user_input_file = rospy.get_param("/user_input_file")
-    user_input_path = rospy.get_param("/user_input_path")
     with open(user_input_file) as f:
         json_data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
-    to_open = user_input_path + json_data["gspn"]
+    to_open = json_data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
     return render_template("gspn_visualization_home.html", data=my_pn)
 

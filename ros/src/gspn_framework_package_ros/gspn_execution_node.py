@@ -480,13 +480,12 @@ def main():
     rospy.init_node(node_name)
 
     user_input_file = rospy.get_param("/user_input_file")
-    user_input_path = rospy.get_param("/user_input_path")
 
     with open(user_input_file) as f:
         data = json.load(f)
 
     tool = gspn_tools.GSPNtools()
-    to_open = user_input_path + data["gspn"]
+    to_open = data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
 
     # After receiving the gspn, we need to analyze it
@@ -519,7 +518,6 @@ def main():
     GEN_CURRENT_PLACE = user_current_place
     GEN_ROBOT_ID = int(user_robot_id)
     my_execution = GSPNExecutionROS(my_pn, p_to_c_mapping, processed_resources, created_policy, str(user_current_place), int(user_robot_id), full_synchronization)
-    #time.sleep(60)
     my_execution.ros_gspn_execution()
 
 
