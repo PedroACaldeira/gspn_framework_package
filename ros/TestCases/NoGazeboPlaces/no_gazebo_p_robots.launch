@@ -2,7 +2,6 @@
 <launch>
 
   <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/no_gazebo_p_input.json" />
-  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlaces/" />
 
   <node pkg="gspn_framework_package" ns="robot_1" type="gspn_execution_node.py" name="executor_1" output="screen" launch-prefix="gnome-terminal --command">
     <param name="user_robot_id" value="1" />

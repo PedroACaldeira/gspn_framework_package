@@ -1,4 +1,4 @@
-{ "gspn":"gspn_immediate_test_case.xml",
+{ "gspn":"/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/ImmediateTransitions/gspn_immediate_test_case.xml",
   "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2'], 'p3': ['ExecGSPN', 'action_server_3']}",
   "resources_list": "[]",
   "places_tuple": "('p1', 'p2', 'p3')",

@@ -1,4 +1,4 @@
-{ "gspn":"no_gazebo_t_gspn.xml",
+{ "gspn":"/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboTokens/no_gazebo_t_gspn.xml",
     "place_to_client_mapping": "{'p1': ['ExecGSPN', 'action_server_1'], 'p2': ['ExecGSPN', 'action_server_2'], 'p3': ['ExecGSPN', 'action_server_3'], 'p4': ['ExecGSPN', 'action_server_4'], 'p5': ['ExecGSPN', 'action_server_5'], 'p6': ['ExecGSPN', 'action_server_6'], 'p7': ['ExecGSPN', 'action_server_7']}",
   "resources_list": "['p4']",
   "places_tuple": "('p1','p2','p3','p4','p5','p6','p7')",
