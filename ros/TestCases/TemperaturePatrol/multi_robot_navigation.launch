@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Laucnh file to run the the amcl and other navigation related packages -->
   <!-- Command Line Arguments -->
   <arg name="tb3_0_init_x" default="0.0"/>
   <arg name="tb3_0_init_y" default="2.0"/>

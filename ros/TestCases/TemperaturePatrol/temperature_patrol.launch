@@ -1,5 +1,7 @@
 <launch>
-	<!-- Robot related files -->
+  <!-- Laucnh file to run the necessary robot packages and the GSPN servers -->
+
+	<!-- Robot necessary packages -->
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_simulation_client.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_move_base.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/multi_robot_navigation.launch"/>
@@ -30,7 +32,5 @@
 	<node pkg="gspn_framework_package" ns="robot_2" type="P10_Check_Temperature_L4.py" name="action_server_10" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_2" type="P11_Alarm_L4.py" name="action_server_11" output="screen"/>
 	<node pkg="gspn_framework_package" ns="robot_2" type="P12_Decide_L4.py" name="action_server_12" output="screen"/>
-
-
 
 </launch>

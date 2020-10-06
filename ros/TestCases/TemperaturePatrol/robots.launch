@@ -18,13 +18,4 @@
       <arg name="name_space"  value="robot_2" />
     </include>
   </group>
-
-  <!-- BEGIN ROBOT 3
-  <group ns="robot_3">
-    <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/one_robot.launch" >
-      <arg name="init_pose" value="-x -2 -y 0 -z 0" />
-      <arg name="robot_name"  value="Robot3" />
-      <arg name="name_space"  value="robot_3" />
-    </include>
-  </group>-->
 </launch>

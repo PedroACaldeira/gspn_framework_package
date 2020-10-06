@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+  <!-- Laucnh file to run the move base package on each robot -->
   <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/move_base_namespace.launch">
     <arg name="robot_namespace" value="robot_1" />
   </include>
