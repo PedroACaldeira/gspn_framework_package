@@ -10,21 +10,21 @@
     </include>
   </group>
 
-  <!-- BEGIN ROBOT 2
+  <!-- BEGIN ROBOT 2-->
   <group ns="robot_2">
     <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/one_robot.launch" >
       <arg name="init_pose" value="-x 0 -y 2 -z 0" />
       <arg name="robot_name"  value="Robot2" />
       <arg name="name_space"  value="robot_2" />
     </include>
-  </group>-->
+  </group>
 
-  <!-- BEGIN ROBOT 3
+  <!-- BEGIN ROBOT 3-->
   <group ns="robot_3">
     <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/one_robot.launch" >
       <arg name="init_pose" value="-x -2 -y 0 -z 0" />
       <arg name="robot_name"  value="Robot3" />
       <arg name="name_space"  value="robot_3" />
     </include>
-  </group>-->
+  </group>
 </launch>

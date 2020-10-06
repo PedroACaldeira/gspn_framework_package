@@ -25,7 +25,7 @@
   <!-- Map Server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
-  <!-- First Robot -->
+  <!-- First Robot-->
   <group ns="robot_1">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -38,7 +38,7 @@
     </node>
   </group>
 
-  <!-- Second Robot
+  <!-- Second Robot-->
   <group ns="robot_2">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -49,9 +49,9 @@
       <param name="base_frame_id"  value="robot_2/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>-->
+  </group>
 
-  <!-- Third Robot
+  <!-- Third Robot-->
   <group ns="robot_3">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -62,6 +62,6 @@
       <param name="base_frame_id"  value="robot_3/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>-->
+  </group>
 
 </launch>
