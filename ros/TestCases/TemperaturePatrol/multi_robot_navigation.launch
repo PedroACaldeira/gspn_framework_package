@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- Laucnh file to run the the amcl and other navigation related packages -->
+  <!-- Launch file to run the the amcl and other navigation related packages -->
   <!-- Command Line Arguments -->
   <arg name="tb3_0_init_x" default="0.0"/>
   <arg name="tb3_0_init_y" default="2.0"/>
@@ -11,8 +11,8 @@
   <arg name="tb3_1_init_y" default="0.0"/>
   <arg name="tb3_1_init_a" default="0.0"/>
 
-  <arg name="tb3_2_init_x" default="-2.0"/>
-  <arg name="tb3_2_init_y" default="0.0"/>
+  <arg name="tb3_2_init_x" default="0.0"/>
+  <arg name="tb3_2_init_y" default="-2.0"/>
   <arg name="tb3_2_init_a" default="0.0"/>
 
   <!-- Default value for location of map config file -->
@@ -48,6 +48,19 @@
       <param name="initial_pose_a" value="$(arg tb3_1_init_a)"/>
       <param name="odom_frame_id"  value="robot_2/odom"/>
       <param name="base_frame_id"  value="robot_2/base_footprint"/>
+      <remap from="static_map" to="/static_map"/>
+    </node>
+  </group>
+
+  <!-- Third Robot-->
+  <group ns="robot_3">
+    <node pkg="amcl" type="amcl" name="amcl">
+      <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
+      <param name="initial_pose_x" value="$(arg tb3_2_init_x)"/>
+      <param name="initial_pose_y" value="$(arg tb3_2_init_y)"/>
+      <param name="initial_pose_a" value="$(arg tb3_2_init_a)"/>
+      <param name="odom_frame_id"  value="robot_3/odom"/>
+      <param name="base_frame_id"  value="robot_3/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
   </group>

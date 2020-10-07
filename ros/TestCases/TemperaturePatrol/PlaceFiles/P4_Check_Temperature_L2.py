@@ -3,6 +3,7 @@ import roslib
 import rospy
 import actionlib
 import time
+import psutil
 
 import gspn_framework_package.msg
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
@@ -58,6 +59,10 @@ class MinimalActionServer(object):
         self._feedback.time_passed.append(1)
         time.sleep(1)
 
+        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/3_robot_execution_results.txt", 'a')
+        results_file.write("Place 4.1: " + str(psutil.cpu_percent(interval=1)) + " and " + str(psutil.virtual_memory().percent) + '\n')
+        results_file.close()
+
         client.send_goal(goal)
         wait = client.wait_for_result()
 
@@ -69,6 +74,11 @@ class MinimalActionServer(object):
             self._result.transition = 't8:Temperature_Low_L2'
             rospy.loginfo('CHECK TEMPERATURE L2 SERVER : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
+
+        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/3_robot_execution_results.txt", 'a')
+        results_file.write("Place 4.2: " + str(psutil.cpu_percent(interval=1)) + " and " + str(psutil.virtual_memory().percent) + '\n')
+        results_file.close()
+
         return self._result.transition
 
 
