@@ -12,4 +12,8 @@
   <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/move_base_namespace.launch">
     <arg name="robot_namespace" value="robot_3" />
   </include>
+
+  <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/move_base_namespace.launch">
+    <arg name="robot_namespace" value="robot_4" />
+  </include>
 </launch>
