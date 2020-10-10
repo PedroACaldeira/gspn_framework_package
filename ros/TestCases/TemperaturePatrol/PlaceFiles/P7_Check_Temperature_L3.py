@@ -59,7 +59,7 @@ class MinimalActionServer(object):
         self._feedback.time_passed.append(1)
         time.sleep(1)
 
-        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/4_robot_execution_results.txt", 'a')
+        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/3_robot_execution_results_redone.txt", 'a')
         results_file.write("Place 7.1: " + str(psutil.cpu_percent(interval=1)) + " and " + str(psutil.virtual_memory().percent) + '\n')
         results_file.close()
 
@@ -75,7 +75,7 @@ class MinimalActionServer(object):
             rospy.loginfo('CHECK TEMPERATURE L3 SERVER : Returning result: {0}'.format(self._result.transition))
             self._as.set_succeeded(self._result)
 
-        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/4_robot_execution_results.txt", 'a')
+        results_file = open("/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/Results/3_robot_execution_results_redone.txt", 'a')
         results_file.write("Place 7.2: " + str(psutil.cpu_percent(interval=1)) + " and " + str(psutil.virtual_memory().percent) + '\n')
         results_file.close()
 

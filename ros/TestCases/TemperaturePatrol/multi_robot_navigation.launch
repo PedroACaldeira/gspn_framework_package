@@ -69,7 +69,7 @@
     </node>
   </group>
 
-  <!-- Fourth Robot-->
+  <!-- Fourth Robot
   <group ns="robot_4">
     <node pkg="amcl" type="amcl" name="amcl">
       <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
@@ -80,6 +80,6 @@
       <param name="base_frame_id"  value="robot_4/base_footprint"/>
       <remap from="static_map" to="/static_map"/>
     </node>
-  </group>
+  </group>-->
 
 </launch>

@@ -19,9 +19,4 @@
     <param name="user_current_place" value="p7:Check_Temperature_L3" />
   </node>
 
-  <node pkg="gspn_framework_package" ns="robot_4" type="gspn_execution_node.py" name="executor_4" output="screen">
-    <param name="user_robot_id" value="4" />
-    <param name="user_current_place" value="p10:Check_Temperature_L4" />
-  </node>
-
 </launch>

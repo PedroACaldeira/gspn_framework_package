@@ -28,12 +28,12 @@
     </include>
   </group>
 
-  <!-- BEGIN ROBOT 4-->
+  <!-- BEGIN ROBOT 4
   <group ns="robot_4">
     <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/one_robot.launch" >
       <arg name="init_pose" value="-x -2 -y 0 -z 0" />
       <arg name="robot_name"  value="Robot4" />
       <arg name="name_space"  value="robot_4" />
     </include>
-  </group>
+  </group>-->
 </launch>
