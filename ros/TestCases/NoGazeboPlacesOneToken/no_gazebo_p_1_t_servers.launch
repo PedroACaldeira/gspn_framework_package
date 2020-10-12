@@ -1,0 +1,26 @@
+<launch>
+	<!-- GSPN Servers-->
+	<node pkg="gspn_framework_package" ns="robot_1" type="P1_no_gazebo_p_1_t.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P2_no_gazebo_p_1_t.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P3_no_gazebo_p_1_t.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P4_no_gazebo_p_1_t.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P5_no_gazebo_p_1_t.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P6_no_gazebo_p_1_t.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P7_no_gazebo_p_1_t.py" name="action_server_7" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P8_no_gazebo_p_1_t.py" name="action_server_8" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P9_no_gazebo_p_1_t.py" name="action_server_9" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P10_no_gazebo_p_1_t.py" name="action_server_10" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P11_no_gazebo_p_1_t.py" name="action_server_11" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P12_no_gazebo_p_1_t.py" name="action_server_12" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P13_no_gazebo_p_1_t.py" name="action_server_13" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P14_no_gazebo_p_1_t.py" name="action_server_14" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P15_no_gazebo_p_1_t.py" name="action_server_15" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P16_no_gazebo_p_1_t.py" name="action_server_16" output="screen"/>
+
+
+	<!-- Online Visualization -->
+  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/NoGazeboPlacesOneToken/no_gazebo_p_1_t_input.json" />
+
+  <node pkg="gspn_framework_package" type="gspn_online_visualization_node.py" name="gspn_online_visualization" output="screen"/>
+
+</launch>
