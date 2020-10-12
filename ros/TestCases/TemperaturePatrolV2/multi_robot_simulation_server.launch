@@ -1,0 +1,13 @@
+<launch>
+  <!-- Laucnh file to run the simulation on the gazebo server --> 
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <!-- Start Robot world -->
+  <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/Worlds/temperature_patrol_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  <!-- include our robots -->
+  <include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrol/robots.launch"/>
+</launch>

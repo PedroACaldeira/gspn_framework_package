@@ -1,0 +1,1134 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><pnml>
+<net id="Net-One" type="P/T net">
+  <token id="Default" enabled="true" red="0" green="0" blue="0"/>
+
+  <!-- LOCATION 1 -->
+
+  <place id="p1:Check_Temperature_L1">
+    <name>
+      <value>p1:Check_Temperature_L1</value>
+    </name>
+    <initialMarking>
+      <value>Default,1</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p2:Alarm_L1">
+    <name>
+      <value>p2:Alarm_L1</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p3:Decide_L1">
+    <name>
+      <value>p3:Decide_L1</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p4:Wait_L1">
+    <name>
+      <value>p4:Wait_L1</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <!-- LOCATION 2 -->
+
+  <place id="p5:Check_Temperature_L2">
+    <name>
+      <value>p5:Check_Temperature_L2</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p6:Alarm_L2">
+    <name>
+      <value>p6:Alarm_L2</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p7:Decide_L2">
+    <name>
+      <value>p7:Decide_L2</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p8:Wait_L2">
+    <name>
+      <value>p8:Wait_L2</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <!-- LOCATION 3 -->
+
+  <place id="p9:Check_Temperature_L3">
+    <name>
+      <value>p9:Check_Temperature_L3</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p10:Alarm_L3">
+    <name>
+      <value>p10:Alarm_L3</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p11:Decide_L3">
+    <name>
+      <value>p11:Decide_L3</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p12:Wait_L3">
+    <name>
+      <value>p12:Wait_L3</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <!-- LOCATION 4 -->
+
+  <place id="p13:Check_Temperature_L4">
+    <name>
+      <value>p13:Check_Temperature_L4</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p14:Alarm_L4">
+    <name>
+      <value>p14:Alarm_L4</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p15:Decide_L4">
+    <name>
+      <value>p15:Decide_L4</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <place id="p16:Wait_L4">
+    <name>
+      <value>p16:Wait_L4</value>
+    </name>
+    <initialMarking>
+      <value>Default,0</value>
+    </initialMarking>
+    <capacity>
+      <value>0</value>
+    </capacity>
+  </place>
+
+  <!-- LOCATION 1 -->
+
+  <transition id="t1:Temperature_High_L1">
+    <name>
+      <value>t1:Temperature_High_L1</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t2:AlarmOff_L1">
+    <name>
+      <value>t2:AlarmOff_L1</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t3:Temperature_Low_L1">
+    <name>
+      <value>t3:Temperature_Low_L1</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t4:Go_Wait_L1">
+    <name>
+      <value>t4:Go_Wait_L1</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t5:Wait_Done_L1">
+    <name>
+      <value>t5:Wait_Done_L1</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t6:Go_Check_L2">
+    <name>
+      <value>t6:Go_Check_L2</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <!-- LOCATION 2 -->
+
+  <transition id="t7:Temperature_High_L2">
+    <name>
+      <value>t7:Temperature_High_L2</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t8:AlarmOff_L2">
+    <name>
+      <value>t8:AlarmOff_L2</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t9:Temperature_Low_L2">
+    <name>
+      <value>t9:Temperature_Low_L2</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t10:Go_Wait_L2">
+    <name>
+      <value>t10:Go_Wait_L2</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t11:Wait_Done_L2">
+    <name>
+      <value>t11:Wait_Done_L2</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t12:Go_Check_L3">
+    <name>
+      <value>t12:Go_Check_L3</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <!-- LOCATION 3 -->
+
+  <transition id="t13:Temperature_High_L3">
+    <name>
+      <value>t13:Temperature_High_L3</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t14:AlarmOff_L3">
+    <name>
+      <value>t14:AlarmOff_L3</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t15:Temperature_Low_L3">
+    <name>
+      <value>t15:Temperature_Low_L3</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t16:Go_Wait_L3">
+    <name>
+      <value>t16:Go_Wait_L3</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t17:Wait_Done_L3">
+    <name>
+      <value>t17:Wait_Done_L3</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t18:Go_Check_L4">
+    <name>
+      <value>t18:Go_Check_L4</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <!-- LOCATION 4 -->
+
+  <transition id="t19:Temperature_High_L4">
+    <name>
+      <value>t19:Temperature_High_L4</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t20:AlarmOff_L4">
+    <name>
+      <value>t20:AlarmOff_L4</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t21:Temperature_Low_L4">
+    <name>
+      <value>t21:Temperature_Low_L4</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t22:Go_Wait_L4">
+    <name>
+      <value>t22:Go_Wait_L4</value>
+    </name>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t23:Wait_Done_L4">
+    <name>
+      <value>t23:Wait_Done_L4</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>true</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <transition id="t24:Go_Check_L1">
+    <name>
+      <value>t24:Go_Check_L1</value>
+    </name>
+    <orientation>
+      <value>0</value>
+    </orientation>
+    <rate>
+      <value>1.0</value>
+    </rate>
+    <timed>
+      <value>false</value>
+    </timed>
+    <infiniteServer>
+      <value>false</value>
+    </infiniteServer>
+    <priority>
+      <value>1</value>
+    </priority>
+  </transition>
+
+  <!-- LOCATION 1 -->
+
+  <arc id="p1:Check_Temperature_L1 to t1:Temperature_High_L1" source="p1:Check_Temperature_L1" target="t1:Temperature_High_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t1:Temperature_High_L1 to p2:Alarm_L1" source="t1:Temperature_High_L1" target="p2:Alarm_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p2:Alarm_L1 to t2:AlarmOff_L1" source="p2:Alarm_L1" target="t2:AlarmOff_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t2:AlarmOff_L1 to p1:Check_Temperature_L1" source="t2:AlarmOff_L1" target="p1:Check_Temperature_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p1:Check_Temperature_L1 to t3:Temperature_Low_L1" source="p1:Check_Temperature_L1" target="t3:Temperature_Low_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t3:Temperature_Low_L1 to p3:Decide_L1" source="t3:Temperature_Low_L1" target="p3:Decide_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p3:Decide_L1 to t4:Go_Wait_L1" source="p3:Decide_L1" target="t4:Go_Wait_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t4:Go_Wait_L1 to p4:Wait_L1" source="t4:Go_Wait_L1" target="p4:Wait_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p4:Wait_L1 to t5:Wait_Done_L1" source="p4:Wait_L1" target="t5:Wait_Done_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t5:Wait_Done_L1 to p3:Decide_L1" source="t5:Wait_Done_L1" target="p3:Decide_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p3:Decide_L1 to t6:Go_Check_L2" source="p3:Decide_L1" target="t6:Go_Check_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t6:Go_Check_L2 to p5:Check_Temperature_L2" source="t6:Go_Check_L2" target="p5:Check_Temperature_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- LOCATION 2 -->
+
+  <arc id="p5:Check_Temperature_L2 to t7:Temperature_High_L2" source="p5:Check_Temperature_L2" target="t7:Temperature_High_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t7:Temperature_High_L2 to p6:Alarm_L2" source="t7:Temperature_High_L2" target="p6:Alarm_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p6:Alarm_L2 to t8:AlarmOff_L2" source="p6:Alarm_L2" target="t8:AlarmOff_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t8:AlarmOff_L2 to p5:Check_Temperature_L2" source="t8:AlarmOff_L2" target="p5:Check_Temperature_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p5:Check_Temperature_L2 to t9:Temperature_Low_L2" source="p5:Check_Temperature_L2" target="t9:Temperature_Low_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t9:Temperature_Low_L2 to p7:Decide_L2" source="t9:Temperature_Low_L2" target="p7:Decide_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p7:Decide_L2 to t10:Go_Wait_L2" source="p7:Decide_L2" target="t10:Go_Wait_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t10:Go_Wait_L2 to p8:Wait_L2" source="t10:Go_Wait_L2" target="p8:Wait_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p8:Wait_L2 to t11:Wait_Done_L2" source="p8:Wait_L2" target="t11:Wait_Done_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t11:Wait_Done_L2 to p7:Decide_L2" source="t11:Wait_Done_L2" target="p7:Decide_L2">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p7:Decide_L2 to t12:Go_Check_L3" source="p7:Decide_L2" target="t12:Go_Check_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t12:Go_Check_L3 to p9:Check_Temperature_L3" source="t12:Go_Check_L3" target="p9:Check_Temperature_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- LOCATION 3 -->
+
+  <arc id="p9:Check_Temperature_L3 to t13:Temperature_High_L3" source="p9:Check_Temperature_L3" target="t13:Temperature_High_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t13:Temperature_High_L3 to p10:Alarm_L3" source="t13:Temperature_High_L3" target="p10:Alarm_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p10:Alarm_L3 to t14:AlarmOff_L3" source="p10:Alarm_L3" target="t14:AlarmOff_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t14:AlarmOff_L3 to p9:Check_Temperature_L3" source="t14:AlarmOff_L3" target="p9:Check_Temperature_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p9:Check_Temperature_L3 to t15:Temperature_Low_L3" source="p9:Check_Temperature_L3" target="t15:Temperature_Low_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t15:Temperature_Low_L3 to p11:Decide_L3" source="t15:Temperature_Low_L3" target="p11:Decide_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p11:Decide_L3 to t16:Go_Wait_L3" source="p11:Decide_L3" target="t16:Go_Wait_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t16:Go_Wait_L3 to p12:Wait_L3" source="t16:Go_Wait_L3" target="p12:Wait_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p12:Wait_L3 to t17:Wait_Done_L3" source="p12:Wait_L3" target="t17:Wait_Done_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t17:Wait_Done_L3 to p11:Decide_L3" source="t17:Wait_Done_L3" target="p11:Decide_L3">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p11:Decide_L3 to t18:Go_Check_L4" source="p11:Decide_L3" target="t18:Go_Check_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t18:Go_Check_L4 to p13:Check_Temperature_L4" source="t18:Go_Check_L4" target="p13:Check_Temperature_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <!-- LOCATION 4 -->
+
+  <arc id="p13:Check_Temperature_L4 to t19:Temperature_High_L4" source="p13:Check_Temperature_L4" target="t19:Temperature_High_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t19:Temperature_High_L4 to p14:Alarm_L4" source="t19:Temperature_High_L4" target="p14:Alarm_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p14:Alarm_L4 to t20:AlarmOff_L4" source="p14:Alarm_L4" target="t20:AlarmOff_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t20:AlarmOff_L4 to p13:Check_Temperature_L4" source="t20:AlarmOff_L4" target="p13:Check_Temperature_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p13:Check_Temperature_L4 to t21:Temperature_Low_L4" source="p13:Check_Temperature_L4" target="t21:Temperature_Low_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t21:Temperature_Low_L4 to p15:Decide_L4" source="t21:Temperature_Low_L4" target="p15:Decide_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p15:Decide_L4 to t22:Go_Wait_L4" source="p15:Decide_L4" target="t22:Go_Wait_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t22:Go_Wait_L4 to p16:Wait_L4" source="t22:Go_Wait_L4" target="p16:Wait_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p16:Wait_L4 to t23:Wait_Done_L4" source="p16:Wait_L4" target="t23:Wait_Done_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t23:Wait_Done_L4 to p15:Decide_L4" source="t23:Wait_Done_L4" target="p15:Decide_L4">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="p15:Decide_L4 to t24:Go_Check_L1" source="p15:Decide_L4" target="t24:Go_Check_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  <arc id="t24:Go_Check_L1 to p1:Check_Temperature_L1" source="t24:Go_Check_L1" target="p1:Check_Temperature_L1">
+    <inscription>
+      <value>Default,1</value>
+    </inscription>
+    <tagged>
+      <value>false</value>
+    </tagged>
+  </arc>
+
+  </net>
+</pnml>
