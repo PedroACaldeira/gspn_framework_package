@@ -59,7 +59,7 @@
       <value>p5:Check_Temperature_L2</value>
     </name>
     <initialMarking>
-      <value>Default,0</value>
+      <value>Default,1</value>
     </initialMarking>
     <capacity>
       <value>0</value>
