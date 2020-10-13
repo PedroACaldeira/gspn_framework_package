@@ -43,4 +43,17 @@
     </node>
   </group>
 
+  <!-- Second Robot-->
+  <group ns="robot_2">
+    <node pkg="amcl" type="amcl" name="amcl">
+      <rosparam file="$(find gspn_framework_package)/ros/param/amcl_params.yaml" command="load" />
+      <param name="initial_pose_x" value="$(arg tb3_2_init_x)"/>
+      <param name="initial_pose_y" value="$(arg tb3_2_init_y)"/>
+      <param name="initial_pose_a" value="$(arg tb3_2_init_a)"/>
+      <param name="odom_frame_id"  value="robot_2/odom"/>
+      <param name="base_frame_id"  value="robot_2/base_footprint"/>
+      <remap from="static_map" to="/static_map"/>
+    </node>
+  </group>
+
 </launch>

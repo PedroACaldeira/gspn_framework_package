@@ -23,7 +23,7 @@ class MinimalActionServer(object):
         self._as = actionlib.SimpleActionServer(self._action_name, gspn_framework_package.msg.ExecGSPNAction,
                                                 execute_cb=self.execute_callback, auto_start = False)
         self._as.start()
-        rospy.loginfo('DECIDE L4 SERVER : ONLINE')
+        rospy.loginfo('DECIDE L4 SERVER : MEGA ONLINE')
         self._as.start()
 
     def destroy(self):
@@ -42,12 +42,11 @@ class MinimalActionServer(object):
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal):
-
-        success = True
-
-        if success:
-            self._result.transition = 'None'
-            self._as.set_succeeded(self._result)
+        print("P15 immediate place running.")
+        self._result.transition = 'None'
+        rospy.loginfo('DECIDE L4 SERVER : Returning result: {0}'.format(self._result.transition))
+        self._as.set_succeeded(self._result)
+        rospy.loginfo('DECIDE L4 SERVER : Returning result: {0}'.format(self._result.transition))
 
         return self._result.transition
 

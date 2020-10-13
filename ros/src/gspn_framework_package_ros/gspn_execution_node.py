@@ -237,6 +237,7 @@ class GSPNExecutionROS(object):
 
                     if self.__full_synchronization == True:
                         imm_transition_to_fire = self.get_policy_transition()
+                        print("ROBOT ", self.__robot_id, "transition to fire ", imm_transition_to_fire)
                         if imm_transition_to_fire == False:
                             print("The policy does not include this case.")
                             print(self.__gspn.get_current_marking())
@@ -305,6 +306,7 @@ class GSPNExecutionROS(object):
     def action_send_goal(self, current_place, action_type, server_name):
         self.__action_client.wait_for_server()
         print('Waiting for action server '+ server_name)
+        print("---->>>>>>>>>>>>>>", current_place)
         goal = gspn_framework_package.msg.ExecGSPNGoal(current_place)
         print('Sending goal request to '+ server_name)
         global GEN_CURRENT_STATUS
