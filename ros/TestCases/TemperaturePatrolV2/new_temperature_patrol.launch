@@ -1,44 +1,9 @@
 <launch>
-  <!-- Launch file to run the necessary robot packages and the GSPN servers -->
+  <!-- Launch file to run the necessary robot packages -->
 
 	<!-- Robot necessary packages -->
-	<!--<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrolV2/multi_robot_simulation_client.launch"/>-->
+	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrolV2/multi_robot_simulation_client.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrolV2/multi_robot_move_base.launch"/>
 	<include file="$(find gspn_framework_package)/ros/TestCases/TemperaturePatrolV2/multi_robot_navigation.launch"/>
-
-	<!-- GSPN Servers-->
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P1_Check_Temperature_L1.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P2_Alarm_L1.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P3_Decide_L1.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P4_Wait_L1.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P5_Check_Temperature_L2.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P6_Alarm_L2.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P7_Decide_L2.py" name="action_server_7" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P8_Wait_L2.py" name="action_server_8" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P9_Check_Temperature_L3.py" name="action_server_9" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P10_Alarm_L3.py" name="action_server_10" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P11_Decide_L3.py" name="action_server_11" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P12_Wait_L3.py" name="action_server_12" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P13_Check_Temperature_L4.py" name="action_server_13" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P14_Alarm_L4.py" name="action_server_14" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P15_Decide_L4.py" name="action_server_15" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_1" type="new_P16_Wait_L4.py" name="action_server_16" output="screen"/>
-
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P1_Check_Temperature_L1.py" name="action_server_1" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P2_Alarm_L1.py" name="action_server_2" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P3_Decide_L1.py" name="action_server_3" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P4_Wait_L1.py" name="action_server_4" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P5_Check_Temperature_L2.py" name="action_server_5" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P6_Alarm_L2.py" name="action_server_6" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P7_Decide_L2.py" name="action_server_7" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P8_Wait_L2.py" name="action_server_8" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P9_Check_Temperature_L3.py" name="action_server_9" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P10_Alarm_L3.py" name="action_server_10" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P11_Decide_L3.py" name="action_server_11" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P12_Wait_L3.py" name="action_server_12" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P13_Check_Temperature_L4.py" name="action_server_13" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P14_Alarm_L4.py" name="action_server_14" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P15_Decide_L4.py" name="action_server_15" output="screen"/>
-	<node pkg="gspn_framework_package" ns="robot_2" type="new_P16_Wait_L4.py" name="action_server_16" output="screen"/>
 
 </launch>
