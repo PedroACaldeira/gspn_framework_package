@@ -1,5 +1,0 @@
-<launch>
-	<!-- Launch file to run the online visualization module -->
-	<param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/TestCases/TemperaturePatrol/temperature_patrol_input.json" />
-	<node pkg="gspn_framework_package" type="gspn_online_visualization_node.py" name="gspn_online_visualization" output="screen"/>
-</launch>
