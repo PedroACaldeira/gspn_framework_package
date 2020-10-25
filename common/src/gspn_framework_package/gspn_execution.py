@@ -346,12 +346,11 @@ class GSPNexecution(object):
 
 
 def main():
-
-    input_path = '/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input.json'
+    input_path = input("Enter JSON input path: ")
     with open(input_path) as f:
         data = json.load(f)
 
-    project_path = input_path + data["project_path"]
+    project_path = data["project_path"]
     sys.path.append(os.path.join(project_path))
 
     tool = gspn_tools.GSPNtools()
