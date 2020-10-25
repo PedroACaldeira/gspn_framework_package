@@ -41,16 +41,23 @@ The ROS implementation was built with:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+The necessary packages of software depend on the version of the framework that you wish to use. 
+If you do not want to use the package with robots, you must run the following commands to install the necessary software:
+* sparse
 ```sh
-npm install npm@latest -g
+pip install sparse
 ```
+* numpy
+```sh
+pip install numpy
+```
+* flask
+```sh
+pip install Flask
+```
+On the other hand, if you do wish to use this framework with robots, then you must run the previously mentioned commands and also the following:
+
+
 
 ### Installation
 
@@ -91,15 +98,17 @@ On this case, you will be queried about the whereabouts of the input file and yo
 
 <!-- USAGE EXAMPLES -->
 ## ROS version usage 
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
+In order to use the ROS version, you can use the example provided inside gspn_framework_package/ros/Example . This example does not use the Gazzebo simulator and instead, it only uses our framework. Before running it, you will have to change the path to the gspn on example_input.json, the "user_input_file" on example_robots.launch and the "user_input_file" and "user_input_path" on example_servers.launch . Afterwards, run the following commands on separate terminals:
+```sh
+roscore
+```
+```sh
+roslaunch gspn_framework_package example_servers.launch
+```
+The previous command will also open a terminal with the online visualization module, which you can open by clicking on the link provided by "Running on".
+```sh
+roslaunch gspn_framework_package example_robots.launch
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
