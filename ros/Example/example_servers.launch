@@ -1,0 +1,34 @@
+<launch>
+	<!-- GSPN Servers-->
+	<node pkg="gspn_framework_package" ns="robot_1" type="P1_example.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P2_example.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P3_example.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P4_example.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P5_example.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P6_example.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_1" type="P7_example.py" name="action_server_7" output="screen"/>
+
+	<node pkg="gspn_framework_package" ns="robot_2" type="P1_example.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P2_example.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P3_example.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P4_example.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P5_example.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P6_example.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_2" type="P7_example.py" name="action_server_7" output="screen"/>
+
+	<node pkg="gspn_framework_package" ns="robot_3" type="P1_example.py" name="action_server_1" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P2_example.py" name="action_server_2" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P3_example.py" name="action_server_3" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P4_example.py" name="action_server_4" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P5_example.py" name="action_server_5" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P6_example.py" name="action_server_6" output="screen"/>
+	<node pkg="gspn_framework_package" ns="robot_3" type="P7_example.py" name="action_server_7" output="screen"/>
+
+
+	<!-- Online Visualization -->
+  <param name="user_input_file" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/Example/example_input.json" />
+  <param name="user_input_path" value="/home/pedro/catkin_ws/src/gspn_framework_package/ros/Example/" />
+
+  <node pkg="gspn_framework_package" type="gspn_online_visualization_node.py" name="gspn_online_visualization" output="screen" launch-prefix="gnome-terminal --command"/>
+
+</launch>
