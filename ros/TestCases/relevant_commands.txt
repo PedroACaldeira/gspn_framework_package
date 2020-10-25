@@ -1,6 +1,1 @@
-top -b -n1 | grep ^%Cpu | awk '{print "Current CPU Utilization is : " 100-$8}'
-
-free -t | awk 'NR == 2 {print "Current Memory Utilization is : " $3/$2*100}'
-
 rosservice call robot_1/move_base/clear_costmaps "{}"
-rosservice call robot_2/move_base/clear_costmaps "{}"
