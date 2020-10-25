@@ -72,18 +72,23 @@ const API_KEY = 'ENTER YOUR API';
 
 <!-- USAGE EXAMPLES -->
 ## Standalone version usage 
-In order to run the standalone version of the full package, all you need to do is run the following command inside gspn_framework_package/common/src/gspn_framework_package/:
+Before running the example for the standalone version, you should change the "project_path" in the example JSON input file (gspn_execution_input.json) because that path is set to my computer and it will not work in yours. 
+After doing so, you can either run the full standalone version (visualization + execution) or simply the execution module. 
+An important note to take is that since the used GSPN has no immediate transitions, "places_tuple" and "policy_dictionary" are not considered. However, those values are set for illustrative reasons. 
+THe input file uses a very simple GSPN with three places and two exponential transitions. The functions used are also very simple as well (they only print a message into the terminal).  
+
+In order to run the full standalone version, all you need to do is run the following command inside gspn_framework_package/common/src/gspn_framework_package/:
 ```sh
 python3 gspn_visualization.py
 ```
-Afterwards, choose one of the example GSPNs and play around with the user interface. You do not need to run the execution module as well because the visualization module is connected with the execution module. 
+Afterwards, click on the link on the terminal next to "Running on", choose the example JSON input and play around with the user interface. 
 
 However, if you only want to run the execution module, you must run the following command inside gspn_framework_package/common/src/gspn_framework_package/:
 ```sh
 python3 gspn_execution.py
 ```
 
-On this case, you will be queried about the whereabouts of the input file. 
+On this case, you will be queried about the whereabouts of the input file and you can provide the path to the example JSON input file. 
 
 <!-- USAGE EXAMPLES -->
 ## ROS version usage 
