@@ -8,6 +8,7 @@ import time
 import json
 import ast
 import mmap
+import sys
 # Files from my package
 import gspn as pn
 import gspn_tools
@@ -16,7 +17,7 @@ import policy
 
 app = Flask(__name__)  # create an app instance
 
-ALLOWED_EXTENSIONS = set(['xml'])
+ALLOWED_EXTENSIONS = set(['json'])
 
 global EXECUTION_STARTED
 EXECUTION_STARTED = False
@@ -26,7 +27,6 @@ NUMBER_OF_UPDATES = 0
 
 global CHILD_PID
 CHILD_PID = 0
-
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -39,28 +39,10 @@ def home():
     return render_template("gspn_visualization_open_gspn.html")
 
 
-@app.route("/use_code")
-def use_code():
-    # Write your code here
-    my_pn.add_places(['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12'],
-                     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1])
-    my_pn.add_transitions(['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9', 't10'],
-                          ['exp', 'exp', 'exp', 'exp', 'exp', 'imm', 'imm', 'exp', 'exp', 'exp'],
-                          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-
-    arc_in = {'p1': ['t1'], 'p2': ['t2'], 'p3': ['t3'], 'p5': ['t4'], 'p6': ['t4'], 'p7': ['t5'],
-              'p8': ['t6', 't7'], 'p9': ['t8', 't9'], 'p10': ['t10'], 'p11': ['t4'], 'p12': ['t5']}
-
-    arc_out = {'t1': ['p2'], 't2': ['p3'], 't3': ['p4', 'p5', 'p6'], 't4': ['p7'], 't5': ['p8', 'p9'], 't6': ['p1'],
-               't7': ['p9'], 't8': ['p2'], 't9': ['p10'], 't10': ['p1']}
-
-    my_pn.add_arcs(arc_in, arc_out)
-    return render_template("gspn_visualization_home.html", data=my_pn)
-
-
-@app.route("/use_xml", methods=['POST'])
-def use_xml():
-    filename = ""
+@app.route("/use_json", methods=['POST'])
+def use_json():
+    global FILENAME
+    FILENAME = ""
     # Get file from user's explorer
     # I saved the source for this code in the folder TESE
     if request.method == 'POST':
@@ -70,13 +52,20 @@ def use_xml():
             flash('No file selected for uploading')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            FILENAME = secure_filename(file.filename)
         else:
-            flash('Allowed file types is xml')
+            flash('Allowed file types is json')
             return redirect(request.url)
 
+    with open(FILENAME) as f:
+        data = json.load(f)
+
+    project_path = data["project_path"]
+    sys.path.append(os.path.join(project_path))
+
     tool = gspn_tools.GSPNtools()
-    gspn = tool.import_xml(filename)[0]
+    to_open = project_path + data["gspn"]
+    gspn = tool.import_xml(to_open)[0]
 
     # Begin First Part: add_places
     marking = gspn.get_current_marking()
@@ -147,15 +136,17 @@ def start_execution():
         global CHILD_PID
         global my_pn
         CHILD_PID = new_pid
-        project_path = '/home/pedro/vanilla_execution_functions'
-        with open('/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json') as f:
+
+        with open(FILENAME) as f:
             data = json.load(f)
+
+        project_path = data["project_path"]
+        sys.path.append(os.path.join(project_path))
 
         p_to_f_mapping = ast.literal_eval(data["place_to_function_mapping"])
         policy_dictionary = ast.literal_eval(data["policy_dictionary"])
         places_tuple = ast.literal_eval(data["places_tuple"])
         created_policy = policy.Policy(policy_dictionary, places_tuple)
-        print("MARKING TO DEBUG ", my_pn.get_current_marking())
         my_execution = gspn_execution.GSPNexecution(my_pn, p_to_f_mapping, created_policy, project_path)
         my_execution.execute_gspn()
 
@@ -257,10 +248,8 @@ def background_check_throughputrate():
     if request.method == 'POST':
         text = request.form['throughput_rate_dropdown']
         processed_text = str(text)
-        print("processed text", processed_text)
         throughput = my_pn.transition_throughput_rate(processed_text)
         rounded_value = round(throughput, 1)
-        print("rounded_value ", rounded_value)
         return jsonify(processed_text)
 
 
