@@ -74,8 +74,8 @@ const API_KEY = 'ENTER YOUR API';
 ## Standalone version usage 
 Before running the example for the standalone version, you should change the "project_path" in the example JSON input file (gspn_execution_input.json) because that path is set to my computer and it will not work in yours. 
 After doing so, you can either run the full standalone version (visualization + execution) or simply the execution module. 
-An important note to take is that since the used GSPN has no immediate transitions, "places_tuple" and "policy_dictionary" are not considered. However, those values are set for illustrative reasons. 
-THe input file uses a very simple GSPN with three places and two exponential transitions. The functions used are also very simple as well (they only print a message into the terminal).  
+An important note to take is that since the GSPN used on the example JSON input file has no immediate transitions, "places_tuple" and "policy_dictionary" are not used. However, those values are set for illustrative reasons. 
+THh input file uses a very simple GSPN with three places and two exponential transitions. The functions used are also very simple as well (they only print a message into the terminal).  
 
 In order to run the full standalone version, all you need to do is run the following command inside gspn_framework_package/common/src/gspn_framework_package/:
 ```sh
@@ -87,7 +87,6 @@ However, if you only want to run the execution module, you must run the followin
 ```sh
 python3 gspn_execution.py
 ```
-
 On this case, you will be queried about the whereabouts of the input file and you can provide the path to the example JSON input file. 
 
 <!-- USAGE EXAMPLES -->
