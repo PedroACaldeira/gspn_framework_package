@@ -346,15 +346,16 @@ class GSPNexecution(object):
 
 
 def main():
-    project_path = "/home/pedro/vanilla_execution_functions"
-    sys.path.append(os.path.join(project_path))
 
-    with open(
-            '/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json') as f:
+    input_path = '/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input.json'
+    with open(input_path) as f:
         data = json.load(f)
 
+    project_path = input_path + data["project_path"]
+    sys.path.append(os.path.join(project_path))
+
     tool = gspn_tools.GSPNtools()
-    to_open = '/home/pedro/catkin_ws/src/gspn_framework_package/common/src/gspn_framework_package/gspn_execution_input_2.json' + data["gspn"]
+    to_open = project_path + data["gspn"]
     my_pn = tool.import_xml(to_open)[0]
 
     p_to_f_mapping = ast.literal_eval(data["place_to_function_mapping"])
