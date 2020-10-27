@@ -23,7 +23,7 @@ This package was developed in the scope of my Master's Thesis in Instituto Super
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This package extended the package created on https://github.com/cazevedo/gspn-framework by adding two new modules: the execution module and the visualization module. The architecture is briefly presented in . And more specifically in .
+This package extended the package created on https://github.com/cazevedo/gspn-framework by adding two new modules: the execution module and the visualization module. The architecture is generally presented in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/framework_end.pdf?raw=true). And more specifically in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/full-architecture.pdf).
 
 ### Built With
 This framework was generally built with: 
@@ -132,23 +132,3 @@ Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.c
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
