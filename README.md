@@ -7,14 +7,11 @@ This package was developed in the scope of my Master's Thesis in Instituto Super
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
 * [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
+* [Usage Examples](#usage-examples)
+  * [Standalone version usage](#standalone-version-usage)
+  * [ROS version usage](#ros-version-usage)
 * [Contributing](#contributing)
 * [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
 
 
 
@@ -73,7 +70,10 @@ Regarding the turtlebot3 packages, you must clone the repositories from the prov
 
 
 <!-- USAGE EXAMPLES -->
-## Standalone version usage 
+## Usage Examples
+Since this framework is composed by two different implementations, there are two different ways of running our proposed examples. 
+
+### Standalone version usage 
 Before running the example for the standalone version, you should change the "project_path" in the example JSON input file (gspn_execution_input.json) because that path is set to my computer and it will not work in yours. 
 After doing so, you can either run the full standalone version (visualization + execution) or simply the execution module. 
 An important note to take is that since the GSPN used on the example JSON input file has no immediate transitions, "places_tuple" and "policy_dictionary" are not used. However, those values are set for illustrative reasons. 
@@ -92,7 +92,7 @@ python3 gspn_execution.py
 On this case, you will be queried about the whereabouts of the input file and you can provide the path to the example JSON input file. 
 
 <!-- USAGE EXAMPLES -->
-## ROS version usage 
+### ROS version usage 
 In order to use the ROS version, you can use the example provided inside gspn_framework_package/ros/Example . This example does not use the Gazzebo simulator and instead, it only uses our framework. Before running it, you will have to change the path to the gspn on example_input.json, the "user_input_file" on example_robots.launch and the "user_input_file" and "user_input_path" on example_servers.launch . Afterwards, run the following commands on separate terminals:
 ```sh
 roscore
