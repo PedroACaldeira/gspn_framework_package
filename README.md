@@ -64,9 +64,10 @@ pip install numpy
 ```sh
 pip install Flask
 ```
-On the other hand, if you do wish to use this framework with robots, then you must run the previously mentioned commands and also the following:
-
-
+On the other hand, if you do wish to use this framework with robots, then you must run the previously mentioned commands and also install the remaining packages with:
+```sh
+sudo apt-get install ros-noetic-PACKAGE_NAME
+```
 Regarding the turtlebot3 packages, you must clone the repositories from the provided links because they are currently not available for ROS Noetic. 
 
 
@@ -107,7 +108,7 @@ roslaunch gspn_framework_package example_robots.launch
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Since we can never achieve our greatest potential alone, you can always contribute to this project if you are interested in it. 
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
