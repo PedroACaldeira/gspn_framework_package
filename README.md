@@ -26,7 +26,7 @@ This package was developed in the scope of my Master's Thesis in Instituto Super
 This package extended the package created on https://github.com/cazevedo/gspn-framework by adding two new modules: the execution module and the visualization module. The architecture is briefly presented in . And more specifically in .
 
 ### Built With
-This framework was generally built with concurrent futures, Vis.js, sparse, numpy, flask and json. 
+This framework was generally built with: 
 * [Concurrent futures](https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures)
 * [Vis.js](https://visjs.org/)
 * [Sparse](https://pypi.org/project/sparse/)
@@ -35,7 +35,16 @@ This framework was generally built with concurrent futures, Vis.js, sparse, nump
 * [Json](https://www.json.org/json-en.html)
 
 The ROS implementation was built with:
-
+* [Actionlib](http://wiki.ros.org/actionlib)
+* [Topics](http://wiki.ros.org/Topics)
+* [Services](http://wiki.ros.org/Services)
+* [Movebase](http://wiki.ros.org/move_base)
+* [Mapserver](http://wiki.ros.org/map_server)
+* [Amcl](http://wiki.ros.org/amcl)
+* [Tf2](https://wiki.ros.org/tf2)
+* [turtlebot3 navigation](http://wiki.ros.org/turtlebot3_navigation)
+* [turtlebot3 gazebo](http://wiki.ros.org/turtlebot3_gazebo)
+* [turtlebot3 description](http://wiki.ros.org/turtlebot3_description)
 
 
 <!-- GETTING STARTED -->
@@ -58,22 +67,7 @@ pip install Flask
 On the other hand, if you do wish to use this framework with robots, then you must run the previously mentioned commands and also the following:
 
 
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
-3. Install NPM packages
-```sh
-npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
-```
+Regarding the turtlebot3 packages, you must clone the repositories from the provided links because they are currently not available for ROS Noetic. 
 
 
 
@@ -137,21 +131,6 @@ Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.c
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
 
 
 
