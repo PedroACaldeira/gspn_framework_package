@@ -23,7 +23,7 @@ This package was developed in the scope of my Master's Thesis in Instituto Super
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This package extended the package created on https://github.com/cazevedo/gspn-framework by adding two new modules: the execution module and the visualization module. The architecture is generally presented in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/framework_end.pdf?raw=true). And more specifically in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/full-architecture.pdf).
+This package extended the package created on https://github.com/cazevedo/gspn-framework by adding two new modules: the execution module and the visualization module. The architecture is generally presented in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/framework_end.pdf?raw=true). And more specifically in ![here](https://github.com/PedroACaldeira/gspn_framework_package/blob/master/imgs/full-architecture.pdf?raw=true).
 
 ### Built With
 This framework was generally built with: 
